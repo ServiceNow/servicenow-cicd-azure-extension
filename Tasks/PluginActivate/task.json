@@ -1,0 +1,42 @@
+{
+    "$schema": "https://raw.githubusercontent.com/Microsoft/azure-pipelines-task-lib/master/tasks.schema.json",
+    "id": "23e1b115-2add-408e-aad7-a3bd182106b4",
+    "name": "ServiceNow-CICD-Plugin-Activate",
+    "friendlyName": "ServiceNow CI/CD add a plugin",
+    "description": "Activate a desired plugin on your ServiceNow instance",
+    "helpMarkDown": "",
+    "category": "Package",
+    "author": "ServiceNow",
+    "version": {
+        "Major": 1,
+        "Minor": 2,
+        "Patch": 9
+    },
+    "instanceNameFormat": "ServiceNow CICD Plugin activation",
+    "showEnvironmentVariables": false,
+    "inputs": [{
+            "name": "connectedServiceName",
+            "type": "connectedService:ServiceNow CICD",
+            "label": "ServiceNow endpoint",
+            "required": true,
+            "helpMarkDown": "ServiceNow endpoint connection"
+        },
+        {
+            "name": "pluginID",
+            "type": "string",
+            "label": "Plugin ID",
+            "required": true,
+            "helpMarkDown": "SOme markdown"
+        }
+    ],
+    "runsOn": [
+        "Agent",
+        "MachineGroup",
+        "Server"
+    ],
+    "execution": {
+        "Node": {
+            "target": "index.js"
+        }
+    }
+}

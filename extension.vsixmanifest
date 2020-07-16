@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
+  <Metadata>
+    <Identity Language="en-US" Id="vss-services-servicenow-cicd" Version="1.2.10" Publisher="midnight-labs" />
+    <DisplayName>ServiceNow CI/CD</DisplayName>
+    <Description xml:space="preserve">This extension allows you to integrate Azure Pipelines with ServiceNow CI/CD.</Description>
+    <Categories>Azure Pipelines</Categories>
+    <Properties>
+      <Property Id="Microsoft.VisualStudio.Services.Branding.Color" Value="#81b5a1" />
+    </Properties>
+    <GalleryFlags>Private</GalleryFlags>
+    <Icon>images/service-now.png</Icon>
+    <PublisherDetails>
+      <DisplayName>Midnight Labs</DisplayName>
+    </PublisherDetails>
+    <Tags>__market</Tags>
+  </Metadata>
+  <Dependencies />
+  <Installation>
+    <InstallationTarget Id="Microsoft.VisualStudio.Services" />
+  </Installation>
+  <Assets>
+    <Asset Type="Microsoft.VisualStudio.Services.Icons.Default" d:Source="File" Path="images/service-now.png" Addressable="true" />
+    <Asset Type="Microsoft.VisualStudio.Services.Manifest" d:Source="File" Path="extension.vsomanifest" Addressable="true" />
+  </Assets>
+</PackageManifest>
