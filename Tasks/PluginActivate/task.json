@@ -9,10 +9,10 @@
     "author": "ServiceNow",
     "version": {
         "Major": 1,
-        "Minor": 2,
-        "Patch": 9
+        "Minor": 3,
+        "Patch": 0
     },
-    "instanceNameFormat": "ServiceNow CICD Plugin activation",
+    "instanceNameFormat": "ServiceNow CI/CD add a plugin",
     "showEnvironmentVariables": false,
     "inputs": [{
             "name": "connectedServiceName",
@@ -22,11 +22,11 @@
             "helpMarkDown": "ServiceNow endpoint connection"
         },
         {
-            "name": "pluginID",
+            "name": "pluginId",
             "type": "string",
             "label": "Plugin ID",
-            "required": true,
-            "helpMarkDown": "SOme markdown"
+            "required": false,
+            "helpMarkDown": "If no plugin ID specified as an input, the environment variable *pluginID* will be read."
         }
     ],
     "runsOn": [

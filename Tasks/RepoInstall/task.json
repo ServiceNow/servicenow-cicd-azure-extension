@@ -1,0 +1,56 @@
+{
+    "$schema": "https://raw.githubusercontent.com/Microsoft/azure-pipelines-task-lib/master/tasks.schema.json",
+    "id": "23e1b115-2add-408e-aad7-a3bd182106b4",
+    "name": "ServiceNow-CICD-App-Install",
+    "friendlyName": "ServiceNow CI/CD Install Application",
+    "description": "Installs the specified application from the application repository onto the local instance",
+    "helpMarkDown": "",
+    "category": "Package",
+    "author": "ServiceNow",
+    "version": {
+        "Major": 1,
+        "Minor": 3,
+        "Patch": 0
+    },
+    "instanceNameFormat": "ServiceNow CI/CD Install App",
+    "showEnvironmentVariables": false,
+    "inputs": [{
+            "name": "connectedServiceName",
+            "type": "connectedService:ServiceNow CICD",
+            "label": "ServiceNow endpoint",
+            "required": true,
+            "helpMarkDown": "ServiceNow endpoint connection"
+        },
+        {
+            "name": "scope",
+            "type": "string",
+            "label": "Scope",
+            "required": false,
+            "helpMarkDown": "Required if sys_id is not specified. The scope name of the application, such as x_aah_custom_app. You can locate this value in the scope field in the Custom Application [sys_app] table."
+        },
+        {
+            "name": "sysId",
+            "type": "string",
+            "label": "sys_id",
+            "required": false,
+            "helpMarkDown": "Required if scope is not specified. The sys_id of the application to install. You can locate this value in the Sys ID field in the Custom Application [sys_app] table."
+        },
+        {
+            "name": "version",
+            "type": "string",
+            "label": "Version",
+            "required": false,
+            "helpMarkDown": "Version of the application to install. Default: Latest"
+        }
+    ],
+    "runsOn": [
+        "Agent",
+        "MachineGroup",
+        "Server"
+    ],
+    "execution": {
+        "Node": {
+            "target": "index.js"
+        }
+    }
+}

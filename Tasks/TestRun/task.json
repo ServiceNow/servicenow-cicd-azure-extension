@@ -1,0 +1,87 @@
+{
+  "$schema": "https://raw.githubusercontent.com/Microsoft/azure-pipelines-task-lib/master/tasks.schema.json",
+  "id": "23e1b115-2add-408e-aad7-a3bd182106b4",
+  "name": "ServiceNow-CICD-TestSuite-Run",
+  "friendlyName": "ServiceNow CI/CD Start Test Suite",
+  "description": "Start a specified automated test suite.",
+  "helpMarkDown": "",
+  "category": "Package",
+  "author": "ServiceNow",
+  "version": {
+    "Major": 1,
+    "Minor": 3,
+    "Patch": 0
+  },
+  "instanceNameFormat": "ServiceNow CI/CD Start Test Suite",
+  "showEnvironmentVariables": false,
+  "inputs": [
+    {
+      "name": "connectedServiceName",
+      "type": "connectedService:ServiceNow CICD",
+      "label": "ServiceNow endpoint",
+      "required": true,
+      "helpMarkDown": "ServiceNow endpoint connection"
+    },
+    {
+      "name": "testSuiteSysId",
+      "type": "string",
+      "label": "Test suite sys_id",
+      "required": false,
+      "helpMarkDown": "Required if test_suite_name is not specified. The sys_id of the test suite to run. This value is located in the Test [sys_atf_test_suite] table."
+    },
+    {
+      "name": "testSuiteName",
+      "type": "string",
+      "label": "Test suite name",
+      "required": false,
+      "helpMarkDown": "Required if test_suite_sys_id is not specified. The name of the test suite to run. This value is located in the Test [sys_atf_test_suite] table."
+    },
+    {
+      "name": "browserName",
+      "type": "pickList",
+      "label": "Browser name",
+      "required": false,
+      "helpMarkDown": "Name of the browser to use to run the client test. This value must match what is specified in the scheduled client test runner.",
+      "options": {
+        "Any": "Any",
+        "Chrome": "Chrome",
+        "Firefox": "Firefox",
+        "Edge": "Edge",
+        "IE": "IE",
+        "Safari": "Safari"
+      }
+    },
+    {
+      "name": "browserVersion",
+      "type": "string",
+      "label": "Browser version",
+      "required": false,
+      "helpMarkDown": "Starting value of the version of the browser specified in browser_name to use to run the test. For example, if you enter \"9\", that would enable all 9.x.x.x versions. This value must match what is specified in the scheduled client test runner."
+    },
+    {
+      "name": "osName",
+      "type": "string",
+      "label": "OS name",
+      "required": false,
+      "helpMarkDown": "Name of the operating system under which to run the test suite. This value must match what is specified in the scheduled client test runner."
+    },
+    {
+      "name": "osVersion",
+      "type": "string",
+      "label": "OS version",
+      "required": false,
+      "helpMarkDown": "Starting value of the version of the operating system under which to run the test suite. For example, if you enter \"8\", that would enable all 8.x.x.x versions. This value must match what is specified in the scheduled client test runner."
+    }
+
+  ],
+  "runsOn": [
+    "Agent",
+    "MachineGroup",
+    "Server"
+  ],
+  "execution": {
+    "Node": {
+      "target": "index.js"
+    }
+  }
+}

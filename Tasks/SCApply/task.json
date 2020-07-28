@@ -1,0 +1,56 @@
+{
+    "$schema": "https://raw.githubusercontent.com/Microsoft/azure-pipelines-task-lib/master/tasks.schema.json",
+    "id": "23e1b115-2add-408e-aad7-a3bd182106b4",
+    "name": "ServiceNow-CICD-SC-Apply",
+    "friendlyName": "ServiceNow CI/CD Apply Changes",
+    "description": "Apply changes from a remote source control to a specified local application",
+    "helpMarkDown": "",
+    "category": "Package",
+    "author": "ServiceNow",
+    "version": {
+        "Major": 1,
+        "Minor": 3,
+        "Patch": 0
+    },
+    "instanceNameFormat": "ServiceNow CI/CD Apply Changes",
+    "showEnvironmentVariables": false,
+    "inputs": [{
+            "name": "connectedServiceName",
+            "type": "connectedService:ServiceNow CICD",
+            "label": "ServiceNow endpoint",
+            "required": true,
+            "helpMarkDown": "ServiceNow endpoint connection"
+        },
+        {
+            "name": "appScope",
+            "type": "string",
+            "label": "Plugin ID",
+            "required": true,
+            "helpMarkDown": "Required if app_sys_id is not specified.\nThe scope name of the application for which to apply the changes, such as x_aah_custom_app. You can locate this value in the scope field in the Custom Application [sys_app] table."
+        },
+        {
+            "name": "appSysId",
+            "type": "string",
+            "label": "Plugin ID",
+            "required": true,
+            "helpMarkDown": "Required if app_scope is not specified.\nThe sys_id of the application for which to apply the changes. You can locate this value in the Sys ID field in the Custom Application [sys_app] table."
+        },
+        {
+            "name": "branchName",
+            "type": "string",
+            "label": "Plugin ID",
+            "required": true,
+            "helpMarkDown": "Name of the branch in the source control system from which to acquire the application.\nDefault: Default branch specified on the source control system."
+        }
+    ],
+    "runsOn": [
+        "Agent",
+        "MachineGroup",
+        "Server"
+    ],
+    "execution": {
+        "Node": {
+            "target": "index.js"
+        }
+    }
+}

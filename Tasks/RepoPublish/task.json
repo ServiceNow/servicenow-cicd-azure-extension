@@ -1,0 +1,63 @@
+{
+    "$schema": "https://raw.githubusercontent.com/Microsoft/azure-pipelines-task-lib/master/tasks.schema.json",
+    "id": "23e1b115-2add-408e-aad7-a3bd182106b4",
+    "name": "ServiceNow-CICD-App-Publish",
+    "friendlyName": "ServiceNow CI/CD Publish Application",
+    "description": "Installs the specified application from the application repository onto the local instance",
+    "helpMarkDown": "",
+    "category": "Package",
+    "author": "ServiceNow",
+    "version": {
+        "Major": 1,
+        "Minor": 3,
+        "Patch": 0
+    },
+    "instanceNameFormat": "ServiceNow CI/CD Publish Application",
+    "showEnvironmentVariables": false,
+    "inputs": [{
+            "name": "connectedServiceName",
+            "type": "connectedService:ServiceNow CICD",
+            "label": "ServiceNow endpoint",
+            "required": true,
+            "helpMarkDown": "ServiceNow endpoint connection"
+        },
+        {
+            "name": "scope",
+            "type": "string",
+            "label": "Scope",
+            "required": false,
+            "helpMarkDown": "Required if sys_id is not specified. The scope of the application. You can locate this value in the scope field in the Custom Application [sys_app] table."
+        },
+        {
+            "name": "sysId",
+            "type": "string",
+            "label": "sys_id",
+            "required": false,
+            "helpMarkDown": "Required if scope is not specified. The sys_id of the application to store in the repository. You can locate this value in the Sys ID field in the Custom Application [sys_app] table."
+        },
+        {
+            "name": "version",
+            "type": "string",
+            "label": "Version",
+            "required": false,
+            "helpMarkDown": "Version under which to store the application.\nIf the version number is passed, the publish process uses that version and updates the local application version if different. If the version number is not passed, the publish process uses the current version of the local application."
+        },
+        {
+            "name": "devNotes",
+            "type": "multiLine",
+            "label": "Developer notes",
+            "required": false,
+            "helpMarkDown": "Developer notes to store with the application."
+        }
+    ],
+    "runsOn": [
+        "Agent",
+        "MachineGroup",
+        "Server"
+    ],
+    "execution": {
+        "Node": {
+            "target": "index.js"
+        }
+    }
+}
