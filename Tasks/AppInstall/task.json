@@ -1,6 +1,6 @@
 {
     "$schema": "https://raw.githubusercontent.com/Microsoft/azure-pipelines-task-lib/master/tasks.schema.json",
-    "id": "23e1b115-2add-408e-aad7-a3bd182106b4",
+    "id": "23e1b115-2add-408e-aad7-a3bd182106b1",
     "name": "ServiceNow-CICD-App-Install",
     "friendlyName": "ServiceNow CI/CD Install Application",
     "description": "Installs the specified application from the application repository onto the local instance",

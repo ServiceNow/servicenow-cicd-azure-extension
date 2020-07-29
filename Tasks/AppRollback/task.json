@@ -1,6 +1,6 @@
 {
     "$schema": "https://raw.githubusercontent.com/Microsoft/azure-pipelines-task-lib/master/tasks.schema.json",
-    "id": "23e1b115-2add-408e-aad7-a3bd182106b4",
+    "id": "23e1b115-2add-408e-aad7-a3bd182106b3",
     "name": "ServiceNow-CICD-App-Rollback",
     "friendlyName": "ServiceNow CI/CD Install App",
     "description": "Installs the specified application from the application repository onto the local instance",
@@ -10,7 +10,7 @@
     "version": {
         "Major": 1,
         "Minor": 3,
-        "Patch": 0
+        "Patch": 2
     },
     "instanceNameFormat": "ServiceNow CI/CD Install App",
     "showEnvironmentVariables": false,

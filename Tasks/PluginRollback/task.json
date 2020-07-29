@@ -10,7 +10,7 @@
     "version": {
         "Major": 1,
         "Minor": 3,
-        "Patch": 0
+        "Patch": 2
     },
     "instanceNameFormat": "ServiceNow CI/CD rollback a plugin",
     "showEnvironmentVariables": false,
@@ -25,7 +25,7 @@
             "name": "pluginId",
             "type": "string",
             "label": "Plugin ID",
-            "required": true,
+            "required": false,
             "helpMarkDown": "If no plugin ID specified as an input, the environment variable *pluginID* will be read."
         }
     ],

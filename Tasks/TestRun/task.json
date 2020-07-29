@@ -1,6 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/Microsoft/azure-pipelines-task-lib/master/tasks.schema.json",
-  "id": "23e1b115-2add-408e-aad7-a3bd182106b4",
+  "id": "23e1b115-2add-408e-aad7-a3bd182106b7",
   "name": "ServiceNow-CICD-TestSuite-Run",
   "friendlyName": "ServiceNow CI/CD Start Test Suite",
   "description": "Start a specified automated test suite.",
@@ -10,7 +10,7 @@
   "version": {
     "Major": 1,
     "Minor": 3,
-    "Patch": 0
+    "Patch": 2
   },
   "instanceNameFormat": "ServiceNow CI/CD Start Test Suite",
   "showEnvironmentVariables": false,
@@ -40,7 +40,7 @@
       "name": "browserName",
       "type": "pickList",
       "label": "Browser name",
-      "required": false,
+      "required": true,
       "helpMarkDown": "Name of the browser to use to run the client test. This value must match what is specified in the scheduled client test runner.",
       "options": {
         "Any": "Any",
@@ -49,7 +49,9 @@
         "Edge": "Edge",
         "IE": "IE",
         "Safari": "Safari"
-      }
+      },
+      "defaultValue": "Any"
+
     },
     {
       "name": "browserVersion",

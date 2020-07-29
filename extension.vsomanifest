@@ -1,83 +1,124 @@
 {
-    "manifestVersion": 1,
-    "contributions": [
-        {
-            "id": "serviceNowCICD-plugin-activate-task",
-            "type": "ms.vss-distributed-task.task",
-            "targets": [
-                "ms.vss-distributed-task.tasks"
-            ],
-            "properties": {
-                "name": "Tasks/PluginActivate"
-            }
+  "manifestVersion": 1,
+  "contributions": [
+    {
+      "id": "serviceNowCICD-plugin-activate-task",
+      "type": "ms.vss-distributed-task.task",
+      "targets": [
+        "ms.vss-distributed-task.tasks"
+      ],
+      "properties": {
+        "name": "Tasks/PluginActivate"
+      }
+    },
+    {
+      "id": "serviceNowCICD-plugin-rollback-task",
+      "type": "ms.vss-distributed-task.task",
+      "targets": [
+        "ms.vss-distributed-task.tasks"
+      ],
+      "properties": {
+        "name": "Tasks/PluginRollback"
+      }
+    },
+    {
+      "id": "ServiceNow-CICD-App-Install",
+      "type": "ms.vss-distributed-task.task",
+      "targets": [
+        "ms.vss-distributed-task.tasks"
+      ],
+      "properties": {
+        "name": "Tasks/AppInstall"
+      }
+    },
+    {
+      "id": "serviceNowCICD-App-Publish",
+      "type": "ms.vss-distributed-task.task",
+      "targets": [
+        "ms.vss-distributed-task.tasks"
+      ],
+      "properties": {
+        "name": "Tasks/AppPublish"
+      }
+    },
+    {
+      "id": "serviceNowCICD-App-Rollback",
+      "type": "ms.vss-distributed-task.task",
+      "targets": [
+        "ms.vss-distributed-task.tasks"
+      ],
+      "properties": {
+        "name": "Tasks/AppRollback"
+      }
+    },
+    {
+      "id": "serviceNowCICD-SC-Apply",
+      "type": "ms.vss-distributed-task.task",
+      "targets": [
+        "ms.vss-distributed-task.tasks"
+      ],
+      "properties": {
+        "name": "Tasks/SCApply"
+      }
+    },
+    {
+      "id": "serviceNowCICD-TestSuite-Run",
+      "type": "ms.vss-distributed-task.task",
+      "targets": [
+        "ms.vss-distributed-task.tasks"
+      ],
+      "properties": {
+        "name": "Tasks/TestRun"
+      }
+    },
+    {
+      "id": "serviceNowCICD-service-connection",
+      "type": "ms.vss-endpoint.service-endpoint-type",
+      "targets": [
+        "ms.vss-endpoint.endpoint-types"
+      ],
+      "properties": {
+        "name": "ServiceNow CICD",
+        "displayName": "ServiceNow CICD",
+        "helpMarkDown": "Use to connect the Azure pipeline to ServiceNow CICD.",
+        "url": {
+          "displayName": "ServiceNow Instance",
+          "helpText": "The Service Now instance Url, e.g. `https://instance.service-now.com`."
         },
-        {
-            "id": "serviceNowCICD-plugin-rollback-task",
-            "type": "ms.vss-distributed-task.task",
-            "targets": [
-                "ms.vss-distributed-task.tasks"
-            ],
-            "properties": {
-                "name": "Tasks/PluginRollback"
-            }
-        },
-        {
-            "id": "serviceNowCICD-service-connection",
-            "type": "ms.vss-endpoint.service-endpoint-type",
-            "targets": [
-                "ms.vss-endpoint.endpoint-types"
-            ],
-            "properties": {
-                "name": "ServiceNow CICD",
-                "displayName": "ServiceNow CICD",
-                "helpMarkDown": "Use to connect the Azure pipeline to ServiceNow CICD.",
-                "inputDescriptors": [
-                    {
-                        "id": "url",
-                        "name": "ServiceNow Instance",
-                        "description": "The Service Now instance Url, e.g. `https://myinstance.service-now.com`.",
-                        "inputMode": "textbox",
-                        "isConfidential": false,
-                        "validation": {
-                            "isRequired": true,
-                            "maxLength": 40
-                        }
-                    }
-                ],
-                "authenticationSchemes": [
-                    {
-                        "type": "ms.vss-endpoint.endpoint-auth-scheme-basic",
-                        "inputDescriptors": [
-                            {
-                                "id": "username",
-                                "name": "User Name",
-                                "description": "Username",
-                                "inputMode": "textbox",
-                                "isConfidential": false,
-                                "validation": {
-                                    "isRequired": true,
-                                    "dataType": "string",
-                                    "maxLength": 300
-                                }
-                            },
-                            {
-                                "id": "password",
-                                "name": "Password",
-                                "description": "Password for the user account.",
-                                "inputMode": "passwordbox",
-                                "isConfidential": true,
-                                "validation": {
-                                    "isRequired": true,
-                                    "dataType": "string",
-                                    "maxLength": 300
-                                }
-                            }
-                        ]
-                    }
-                ]
-            }
-        }
-    ],
-    "scopes": [],
-    "contributionTypes": []
+        "authenticationSchemes": [
+          {
+            "type": "ms.vss-endpoint.endpoint-auth-scheme-basic",
+            "inputDescriptors": [
+              {
+                "id": "username",
+                "name": "User Name",
+                "description": "Username",
+                "inputMode": "textbox",
+                "isConfidential": false,
+                "validation": {
+                  "isRequired": true,
+                  "dataType": "string",
+                  "maxLength": 300
+                }
+              },
+              {
+                "id": "password",
+                "name": "Password",
+                "description": "Password for the user account.",
+                "inputMode": "passwordbox",
+                "isConfidential": true,
+                "validation": {
+                  "isRequired": true,
+                  "dataType": "string",
+                  "maxLength": 300
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "scopes": [],
+  "contributionTypes": []
 }
