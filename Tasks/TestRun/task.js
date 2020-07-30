@@ -29,11 +29,16 @@ module.exports = {
             .testSuiteRun(options)
             .then(function (status) {
                 console.log('\x1b[32mSuccess\x1b[0m\n');
-                console.log(Object.keys(messages)
-                    .filter(name => status[name])
-                    .map(name=>messages[name] + ': '+ status[name])
-                    .join('\n')
-                )
+                if(status) {
+                    if(status.links && status.links.results && status.links.results.url) {
+                        console.log('Link to results is: ' + status.links.results.url);
+                    }
+                    console.log(Object.keys(messages)
+                        .filter(name => status[name])
+                        .map(name => messages[name] + ': ' + status[name])
+                        .join('\n')
+                    );
+                }
             })
             .catch(err=>{
                 console.error('\x1b[31mTestsuite run failed\x1b[0m\n');

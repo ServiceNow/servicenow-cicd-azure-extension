@@ -20,7 +20,10 @@ module.exports = {
             .appRepoInstall(options)
             .then(function (status) {
                 console.log('\x1b[32mSuccess\x1b[0m\n');
-                console.log('Rollback version is: ' + status)
+                if(status) {
+                    pipeline.setVar('rollback_version', status);
+                    console.log('Rollback version is: ' + status);
+                }
             })
             .catch(err => {
                 console.error('\x1b[31mInstallation failed\x1b[0m\n');

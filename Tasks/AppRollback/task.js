@@ -16,6 +16,9 @@ module.exports = {
                     options[name] = val;
                 }
             });
+        if(!options.version) { // try to get envvar
+            options.version = pipeline.getVar('rollback_version');
+        }
         return API
             .appRepoRollback(options)
             .then(function (status) {
