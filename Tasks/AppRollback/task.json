@@ -2,17 +2,17 @@
     "$schema": "https://raw.githubusercontent.com/Microsoft/azure-pipelines-task-lib/master/tasks.schema.json",
     "id": "23e1b115-2add-408e-aad7-a3bd182106b3",
     "name": "ServiceNow-CICD-App-Rollback",
-    "friendlyName": "ServiceNow CI/CD Install App",
-    "description": "Installs the specified application from the application repository onto the local instance",
+    "friendlyName": "ServiceNow CI/CD Rollback App",
+    "description": "Initiate a rollback of a specified application to a specified version.",
     "helpMarkDown": "",
     "category": "Package",
     "author": "ServiceNow",
     "version": {
         "Major": 1,
         "Minor": 3,
-        "Patch": 2
+        "Patch": 5
     },
-    "instanceNameFormat": "ServiceNow CI/CD Install App",
+    "instanceNameFormat": "ServiceNow CI/CD Rollback App",
     "showEnvironmentVariables": false,
     "inputs": [{
             "name": "connectedServiceName",
