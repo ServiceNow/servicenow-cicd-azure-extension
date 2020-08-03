@@ -4,7 +4,7 @@ let API, pipeline;
 module.exports = {
     init: (_pipeline, transport) => {
         pipeline = _pipeline;
-        API = new APIService(pipeline.url, pipeline.auth, transport);
+        API = new APIService(pipeline.url(), pipeline.auth(), transport);
     },
     run: () => {
         let options = {};

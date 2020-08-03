@@ -4,7 +4,7 @@ let API, pipeline;
 module.exports = {
     init:(_pipeline, transport) =>{
         pipeline = _pipeline;
-        API = new APIService(pipeline.url, pipeline.auth, transport);
+        API = new APIService(pipeline.url(), pipeline.auth(), transport);
     },
     run: () => {
         let options = {};
@@ -17,7 +17,7 @@ module.exports = {
                 }
             });
         if(!options.version) { // try to get envvar
-            options.version = pipeline.getVar('rollback_version');
+            options.version = pipeline.getVar('ServiceNow-CICD-App-Install.rollbackVersion');
         }
         return API
             .appRepoRollback(options)

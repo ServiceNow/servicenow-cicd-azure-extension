@@ -8,29 +8,40 @@ const messages = {
     'status_detail': 'Additional information about the current state',
     'status_message': 'Description of the current state',
     'test_suite_duration': 'Amount of time that it took to execute the test suite',
-    'test_suite_name': 'Name of the test suite'};
+    'test_suite_name': 'Name of the test suite'
+};
 let API, pipeline;
 module.exports = {
-    init:(_pipeline, transport) =>{
+    init: (_pipeline, transport) => {
         pipeline = _pipeline;
-        API = new APIService(pipeline.url, pipeline.auth, transport);
+        API = new APIService(pipeline.url(), pipeline.auth(), transport);
     },
     run: () => {
         let options = {};
         'browser_name browser_version os_name os_version test_suite_sys_id test_suite_name'
             .split(' ')
-            .forEach(name=> {
+            .forEach(name => {
                 const val = pipeline.get(name);
-                if(val) {
+                if (val) {
                     options[name] = val;
                 }
             });
         return API
             .testSuiteRun(options)
+            .catch(err => {
+                console.error('\x1b[31mTestsuite run failed\x1b[0m\n');
+                console.error('The error is:', err);
+                return Promise.reject();
+            })
             .then(function (status) {
-                console.log('\x1b[32mSuccess\x1b[0m\n');
-                if(status) {
-                    if(status.links && status.links.results && status.links.results.url) {
+                if (status) {
+                    if (status.status === 2) { //success
+                        console.log('\x1b[32mSuccess\x1b[0m\n');
+                    } else {
+                        console.error('\x1b[31mTestsuite run failed\x1b[0m\n');
+                    }
+
+                    if (status.links && status.links.results && status.links.results.url) {
                         console.log('Link to results is: ' + status.links.results.url);
                     }
                     console.log(Object.keys(messages)
@@ -38,12 +49,11 @@ module.exports = {
                         .map(name => messages[name] + ': ' + status[name])
                         .join('\n')
                     );
+                    if (status.status !== 2) {
+                        return Promise.reject();
+                    }
                 }
             })
-            .catch(err=>{
-                console.error('\x1b[31mTestsuite run failed\x1b[0m\n');
-                console.error('The error is:', err);
-                return Promise.reject();
-            })
+
     }
 }

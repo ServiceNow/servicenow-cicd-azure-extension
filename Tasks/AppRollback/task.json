@@ -10,7 +10,7 @@
     "version": {
         "Major": 1,
         "Minor": 3,
-        "Patch": 5
+        "Patch": 8
     },
     "instanceNameFormat": "ServiceNow CI/CD Rollback App",
     "showEnvironmentVariables": false,

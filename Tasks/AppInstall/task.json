@@ -10,7 +10,7 @@
     "version": {
         "Major": 1,
         "Minor": 3,
-        "Patch": 5
+        "Patch": 8
     },
     "instanceNameFormat": "ServiceNow CI/CD Install App",
     "showEnvironmentVariables": false,
@@ -52,5 +52,11 @@
         "Node": {
             "target": "index.js"
         }
-    }
+    },
+    "OutputVariables": [
+        {
+            "name": "rollbackVersion",
+            "description": "Previously installed app's version, used to roll-back task"
+        }
+    ]
 }
