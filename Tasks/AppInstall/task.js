@@ -16,12 +16,18 @@ module.exports = {
                     options[name] = val;
                 }
             });
+        if(!options.version) {
+            let envVersion = pipeline.getVar('ServiceNow-CICD-App-Publish.publishVersion');
+            if(envVersion) {
+                options.version = envVersion;
+            }
+        }
         return API
             .appRepoInstall(options)
             .then(function (status) {
                 console.log('\x1b[32mSuccess\x1b[0m\n');
                 if(status) {
-                    pipeline.setVar('rollbackVersion', status);
+                    pipeline.setVar('ServiceNow-CICD-App-Install.rollbackVersion', status);
                     console.log('Rollback version is: ' + status);
                 }
             })
