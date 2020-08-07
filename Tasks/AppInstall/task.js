@@ -22,6 +22,9 @@ module.exports = {
                 options.version = envVersion;
             }
         }
+        if(options.version) {
+            console.log('Installing with version: ' + options.version);
+        }
         return API
             .appRepoInstall(options)
             .then(function (status) {

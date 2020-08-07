@@ -10,7 +10,7 @@
   "version": {
     "Major": 1,
     "Minor": 3,
-    "Patch": 9
+    "Patch": 14
   },
   "instanceNameFormat": "ServiceNow CI/CD Start Test Suite",
   "showEnvironmentVariables": false,

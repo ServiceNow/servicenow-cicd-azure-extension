@@ -10,7 +10,7 @@
     "version": {
         "Major": 1,
         "Minor": 3,
-        "Patch": 9
+        "Patch": 14
     },
     "instanceNameFormat": "ServiceNow CI/CD Rollback App",
     "showEnvironmentVariables": false,
@@ -41,6 +41,18 @@
             "label": "Version",
             "required": false,
             "helpMarkDown": "Required. Expected rollback version. This version is compared to the version that is contained in the last rollback context, if they don't match, the method returns an error."
+        },
+        {
+            "name": "autodetectVersion",
+            "type": "radio",
+            "label": "Autodetect roll-back version",
+            "options": {
+                "yes": "Yes, try to roll-back anyway",
+                "no": "No, use only version from previous installation step"
+            },
+            "defaultValue": "no",
+            "required": true,
+            "helpMarkDown": "If yes, then system will determine the previous successfully installed version and will roll-back to it.\n Otherwise, version from field above or from 'Install app' step in the same job will be used."
         }
     ],
     "runsOn": [
