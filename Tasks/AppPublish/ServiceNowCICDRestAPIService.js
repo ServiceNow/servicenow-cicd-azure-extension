@@ -1,1 +1,1 @@
-C:/Projects/servicenow/cicdplugin/lib/ServiceNowCICDRestAPIService.js
+../../lib/ServiceNowCICDRestAPIService.js

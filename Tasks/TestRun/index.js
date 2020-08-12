@@ -1,1 +1,1 @@
-C:/Projects/servicenow/cicdplugin/lib/index.js
+../../lib/index.js

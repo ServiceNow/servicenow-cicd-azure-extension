@@ -1,1 +1,1 @@
-C:/Projects/servicenow/cicdplugin/lib/test.js
+../../lib/test.js

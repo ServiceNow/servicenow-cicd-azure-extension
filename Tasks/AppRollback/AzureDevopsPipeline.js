@@ -1,1 +1,1 @@
-C:/Projects/servicenow/cicdplugin/lib/AzureDevopsPipeline.js
+../../lib/AzureDevopsPipeline.js
