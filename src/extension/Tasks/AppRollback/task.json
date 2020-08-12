@@ -10,11 +10,12 @@
     "version": {
         "Major": 1,
         "Minor": 3,
-        "Patch": 14
+        "Patch": 17
     },
     "instanceNameFormat": "ServiceNow CI/CD Rollback App",
     "showEnvironmentVariables": false,
-    "inputs": [{
+    "inputs": [
+        {
             "name": "connectedServiceName",
             "type": "connectedService:ServiceNow CICD",
             "label": "ServiceNow endpoint",
@@ -36,13 +37,6 @@
             "helpMarkDown": "Required if scope is not specified. The sys_id of the application to rollback."
         },
         {
-            "name": "version",
-            "type": "string",
-            "label": "Version",
-            "required": false,
-            "helpMarkDown": "Required. Expected rollback version. This version is compared to the version that is contained in the last rollback context, if they don't match, the method returns an error."
-        },
-        {
             "name": "autodetectVersion",
             "type": "radio",
             "label": "Autodetect roll-back version",
@@ -53,6 +47,14 @@
             "defaultValue": "no",
             "required": true,
             "helpMarkDown": "If yes, then system will determine the previous successfully installed version and will roll-back to it.\n Otherwise, version from field above or from 'Install app' step in the same job will be used."
+        },
+        {
+            "name": "version",
+            "type": "string",
+            "label": "Version",
+            "required": false,
+            "helpMarkDown": "Required. Expected rollback version. This version is compared to the version that is contained in the last rollback context, if they don't match, the method returns an error.",
+            "visibleRule": "autodetectVersion=no"
         }
     ],
     "runsOn": [

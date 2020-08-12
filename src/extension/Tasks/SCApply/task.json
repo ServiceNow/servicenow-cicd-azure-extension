@@ -10,11 +10,12 @@
     "version": {
         "Major": 1,
         "Minor": 3,
-        "Patch": 14
+        "Patch": 17
     },
     "instanceNameFormat": "ServiceNow CI/CD Apply Changes",
     "showEnvironmentVariables": false,
-    "inputs": [{
+    "inputs": [
+        {
             "name": "connectedServiceName",
             "type": "connectedService:ServiceNow CICD",
             "label": "ServiceNow endpoint",

@@ -11,9 +11,9 @@ const options = {
 
 }
 module.exports = {
-    auth: 'admin:SoftServe1!',
+    auth: () =>'admin:SoftServe1!',
     // url: 'cicdazureappclient.service-now.com',
-    url: 'extintprod.service-now.com',
+    url: () =>'mail.gert.dp.ua',
     // url: 'cicdazureappauthor.service-now.com',
     get: (name, required=false) => {
         let result = options[name];

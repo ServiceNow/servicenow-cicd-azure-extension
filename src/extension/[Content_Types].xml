@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
+  <Default Extension=".png" ContentType="image/png"/>
+  <Default Extension=".js" ContentType="application/javascript"/>
+  <Default Extension=".ts" ContentType="text/plain"/>
+  <Default Extension=".md" ContentType="text/markdown"/>
+  <Default Extension=".json" ContentType="application/json"/>
+  <Default Extension=".bnf" ContentType="text/plain"/>
+  <Default Extension=".yml" ContentType="text/plain"/>
+  <Default Extension=".markdown" ContentType="text/plain"/>
+  <Default Extension=".txt" ContentType="text/plain"/>
+  <Default Extension=".resjson" ContentType="text/plain"/>
+  <Default Extension=".vsixmanifest" ContentType="text/xml"/>
+  <Default Extension=".vsomanifest" ContentType="application/json"/>
+</Types>

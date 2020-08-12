@@ -276,6 +276,7 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
             options.headers = {};
         }
         options.headers.accept = 'application/json';
+        options.headers['User-Agent'] = 'ServiceNow CI/CD Azure DevOps extension. Version 1.0';
         return httpsRequest(options)
             .catch(err => {
                 // console.error(err);

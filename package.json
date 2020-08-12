@@ -1,0 +1,32 @@
+{
+  "name": "servicenow_cicd_azuredevops",
+  "version": "1.0.0",
+  "description": "some description",
+  "main": "build.js",
+  "scripts": {
+    "test": "test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/antonmalyi/cicdplugin.git"
+  },
+  "keywords": [
+    "azure",
+    "servicenow",
+    "extension",
+    "cicd"
+  ],
+  "author": "SoftServe inc.",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/antonmalyi/cicdplugin/issues"
+  },
+  "homepage": "https://github.com/antonmalyi/cicdplugin#readme",
+  "dependencies": {
+    "archiver": "^5.0.0",
+    "fs-extra": "^9.0.1"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  }
+}
