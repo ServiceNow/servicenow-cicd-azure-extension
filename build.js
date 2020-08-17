@@ -13,6 +13,9 @@ const tasks = [
     'TestRun',
 ];
 
+function copy(src, dst) {
+    return fse.copy(path.join(__dirname, src), path.join(__dirname, dst));
+}
 
 function getVersion(task = '') {
     if ('' === task) {
@@ -75,7 +78,7 @@ function setVersion(version) {
             }
         });
     }));
-    return Promise.all(promises);
+    return Promise.all(promises).then(() => stringVersion);
 }
 
 function incrementVersion() {
@@ -97,26 +100,27 @@ function incrementVersion() {
         });
 }
 
-function build() {
+function build(version) {
     const outDir = path.join(__dirname, 'out');
     return fse.ensureDir(path.join(__dirname, 'tmp'), 0o2775)
         .then(() => fse.emptyDir(outDir))
-        .then(() => fse.copy(path.join(__dirname, 'src/extension'), outDir))
-        .then(() => tasks.map(task => Promise.all([
-                fse.copy(path.join(__dirname, 'src/lib/AzureDevopsPipeline.js'), path.join(outDir, 'Tasks', task, 'AzureDevopsPipeline.js')),
-                fse.copy(path.join(__dirname, 'src/lib/ServiceNowCICDRestAPIService.js'), path.join(outDir, 'Tasks', task, 'ServiceNowCICDRestAPIService.js')),
-                fse.copy(path.join(__dirname, 'src/lib/index.js'), path.join(outDir, 'Tasks', task, 'index.js')),
-                fse.copy(path.join(__dirname, `src/lib/${task}.js`), path.join(outDir, 'Tasks', task, 'task.js')),
-                fse.copy(path.join(__dirname, 'src/node_modules'), path.join(outDir, 'Tasks', task, 'node_modules'))
-            ]))
+        .then(() => copy('src/extension', 'out'))
+        .then(() => Promise.all(tasks.map(task => Promise.all([
+                copy('src/lib/AzureDevopsPipeline.js', `out/Tasks/${task}/AzureDevopsPipeline.js`),
+                copy('src/lib/ServiceNowCICDRestAPIService.js', `out/Tasks/${task}/ServiceNowCICDRestAPIService.js`),
+                copy('src/lib/index.js', `out/Tasks/${task}/index.js`),
+                copy(`src/lib/${task}.js`, `out/Tasks/${task}/task.js`),
+                copy('src/node_modules', `out/Tasks/${task}/node_modules`)
+            ])))
         )
-        .then(() => createArchive())
-        .then(() => fse.move(path.join(__dirname, 'tmp/servicenow.vsix'), path.join(__dirname, 'out/servicenow.vsix')));
+        .then(() => createArchive(version))
+        .then(() => fse.move(path.join(__dirname, 'tmp/servicenow.vsix'), path.join(__dirname, `out/servicenow.extension.${version}.vsix`)));
 }
 
 function createArchive() {
+    console.log('Creating archive');
     return new Promise((resolve, reject) => {
-        const output = fs.createWriteStream(path.join(__dirname, 'tmp/servicenow.vsix'));
+        const output = fs.createWriteStream(path.join(__dirname, `tmp/servicenow.vsix`));
         const archive = archiver('zip', {
             zlib: {level: 5} // Sets the compression level.
         });
@@ -131,4 +135,7 @@ function createArchive() {
     });
 }
 
-incrementVersion().then(() => build()).then(() => console.log('success')).catch(e => console.error(e));
+incrementVersion()
+    .then(version => build(version))
+    .then(() => console.log('success'))
+    .catch(e => console.error(e));

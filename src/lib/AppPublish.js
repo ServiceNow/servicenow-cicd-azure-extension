@@ -75,7 +75,10 @@ module.exports = {
                 options.version = pipeline.get('version', true);
                 break;
             case "template":
-                options.version = pipeline.get('versionTemplate', true) + '.' + process.env['BUILD_BUILDNUMBER'];
+                options.version = pipeline.get('versionTemplate', true) +
+                    '.' +
+                    process.env['BUILD_BUILDID']
+                        .replace(/\D+/g, '');
                 break;
             case "detect":
                 console.log('Trying to get version from FS')

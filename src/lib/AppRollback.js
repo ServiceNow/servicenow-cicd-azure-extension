@@ -22,21 +22,22 @@ module.exports = {
         if(!options.version) { // try to get envvar
             options.version = pipeline.getVar('rollbackVersion');
         }
+        if(options.version) {
+            console.log(`Using version ${options.version} to rollback application.`)
+        }
         const forceRollback = pipeline.get('autodetectVersion') === 'yes';
         if(!options.version && forceRollback) { //
+            console.log('Trying to detect rollback version automatically.');
             options.version = '9999.9999.9999';
         }
         return API
             .appRepoRollback(options, forceRollback)
             .then(function (status) {
                 console.log('\x1b[32mSuccess\x1b[0m\n');
-                console.log('Rollback version is: ' + status)
+                console.log('Successfully rolled back to version: ' + status)
             })
             .catch(err=>{
-                if(err.indexOf('Expected rollback version does not match target: ') === 0) {
-
-                }
-                console.error('\x1b[31mInstallation failed\x1b[0m\n');
+                console.error('\x1b[31mRollback failed\x1b[0m\n');
                 console.error('The error is:', err);
                 return Promise.reject();
             })

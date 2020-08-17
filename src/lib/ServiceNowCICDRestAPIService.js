@@ -167,6 +167,7 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
                 }
             })
             .then(resp => getProgress(resp))
+            .then(()=>options.version)
             .catch(err=>Promise.reject(err.errorMessage));
     }
 

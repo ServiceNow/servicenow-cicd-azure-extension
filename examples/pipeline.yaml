@@ -1,0 +1,74 @@
+﻿pool:
+  name: Azure Pipelines
+  vmImage: 'vs2017-win2016'
+
+jobs:
+- job: PublishAndInstall
+  steps:
+  - task: midnight-labs.vss-services-servicenow-cicd.serviceNowCICD-SC-Apply.ServiceNow-CICD-SC-Apply@1
+    displayName: 'ServiceNow CI/CD Apply Changes'
+    inputs:
+      connectedServiceName: cicdazureappauthor
+      appScope: 'x_sofse_cicdazurea'
+
+  - task: midnight-labs.vss-services-servicenow-cicd.serviceNowCICD-App-Publish.ServiceNow-CICD-App-Publish@1
+    displayName: 'ServiceNow CI/CD Publish Application'
+    inputs:
+      connectedServiceName: cicdazureappauthor
+      scope: 'x_sofse_cicdazurea'
+      versionFormat: template
+      versionTemplate: 1.1
+      devNotes: 'Update to 1.0.3'
+    name: 'Publish'
+
+  - task: midnight-labs.vss-services-servicenow-cicd.ServiceNow-CICD-App-Install.ServiceNow-CICD-App-Install@1
+    displayName: 'ServiceNow CI/CD Install App'
+    inputs:
+      connectedServiceName: cicdazureappclient
+      sysId: 0cdb16a7db821010969a9646db9619bd
+    name: 'Install'
+
+  - task: midnight-labs.vss-services-servicenow-cicd.serviceNowCICD-plugin-activate-task.ServiceNow-CICD-Plugin-Activate@1
+    displayName: 'ServiceNow CI/CD add a plugin'
+    inputs:
+      connectedServiceName: cicdazureappclient
+      pluginId: 'com.glide.web_service_aggregate'
+
+
+- job: Tests
+  dependsOn: PublishAndInstall
+  steps:
+    - task: midnight-labs.vss-services-servicenow-cicd.serviceNowCICD-TestSuite-Run.ServiceNow-CICD-TestSuite-Run@1
+      displayName: 'ServiceNow CI/CD Start Test Suite'
+      inputs:
+        connectedServiceName: cicdazureappclient
+        testSuiteSysId: 0a383a65532023008cd9ddeeff7b1258
+
+    - task: midnight-labs.vss-services-servicenow-cicd.serviceNowCICD-TestSuite-Run.ServiceNow-CICD-TestSuite-Run@1
+      displayName: 'ServiceNow CI/CD Start Test Suite'
+      inputs:
+        connectedServiceName: cicdazureappclient
+        testSuiteSysId: 73159102db125010022240ceaa961937
+
+- job: Rollback
+  dependsOn:
+    - PublishAndInstall
+    - Tests
+  condition: failed('Tests')
+  variables:
+    rollbackVersion: $[ dependencies.PublishAndInstall.outputs['Install.rollbackVersion'] ]
+
+  steps:
+    - task: midnight-labs.vss-services-servicenow-cicd.serviceNowCICD-App-Rollback.ServiceNow-CICD-App-Rollback@1
+      displayName: 'ServiceNow CI/CD Rollback App'
+      inputs:
+        connectedServiceName: cicdazureappclient
+        sysId: 0cdb16a7db821010969a9646db9619bd
+        autodetectVersion: no
+
+    - task: midnight-labs.vss-services-servicenow-cicd.serviceNowCICD-plugin-rollback-task.ServiceNow-CICD-Plugin-Rollback@1
+      displayName: 'ServiceNow CI/CD rollback a plugin'
+      inputs:
+        connectedServiceName: cicdazureappclient
+        pluginId: 'com.glide.web_service_aggregate'
+

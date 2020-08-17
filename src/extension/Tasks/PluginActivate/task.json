@@ -10,7 +10,7 @@
     "version": {
         "Major": 1,
         "Minor": 3,
-        "Patch": 17
+        "Patch": 22
     },
     "instanceNameFormat": "ServiceNow CI/CD add a plugin",
     "showEnvironmentVariables": false,
