@@ -102,15 +102,14 @@ function build() {
     return fse.ensureDir(path.join(__dirname, 'tmp'), 0o2775)
         .then(() => fse.emptyDir(outDir))
         .then(() => fse.copy(path.join(__dirname, 'src/extension'), outDir))
-        .then(() => Promise.all([
-            fse.copy(path.join(__dirname, 'src/Tasks'), path.join(outDir, 'Tasks')),
-            ...tasks.map(task => Promise.all([
+        .then(() => tasks.map(task => Promise.all([
                 fse.copy(path.join(__dirname, 'src/lib/AzureDevopsPipeline.js'), path.join(outDir, 'Tasks', task, 'AzureDevopsPipeline.js')),
                 fse.copy(path.join(__dirname, 'src/lib/ServiceNowCICDRestAPIService.js'), path.join(outDir, 'Tasks', task, 'ServiceNowCICDRestAPIService.js')),
                 fse.copy(path.join(__dirname, 'src/lib/index.js'), path.join(outDir, 'Tasks', task, 'index.js')),
+                fse.copy(path.join(__dirname, `src/lib/${task}.js`), path.join(outDir, 'Tasks', task, 'task.js')),
                 fse.copy(path.join(__dirname, 'src/node_modules'), path.join(outDir, 'Tasks', task, 'node_modules'))
             ]))
-        ]))
+        )
         .then(() => createArchive())
         .then(() => fse.move(path.join(__dirname, 'tmp/servicenow.vsix'), path.join(__dirname, 'out/servicenow.vsix')));
 }
