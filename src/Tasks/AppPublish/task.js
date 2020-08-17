@@ -98,6 +98,7 @@ module.exports = {
             .appRepoPublish(options)
             .then(function () {
                 pipeline.setVar('ServiceNow-CICD-App-Publish.publishVersion', options.version);
+                pipeline.setVar('publishVersion', options.version);
                 console.log('\x1b[32mSuccess\x1b[0m\n');
                 console.log('Publication was made with version: ' + options.version);
             })

@@ -19,6 +19,9 @@ module.exports = {
         if(!options.version) { // try to get envvar
             options.version = pipeline.getVar('ServiceNow-CICD-App-Install.rollbackVersion');
         }
+        if(!options.version) { // try to get envvar
+            options.version = pipeline.getVar('rollbackVersion');
+        }
         const forceRollback = pipeline.get('autodetectVersion') === 'yes';
         if(!options.version && forceRollback) { //
             options.version = '9999.9999.9999';
