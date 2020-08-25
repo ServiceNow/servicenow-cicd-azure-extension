@@ -11,18 +11,19 @@ steps:
   inputs:
     verbose: false
 
-- script: npm run test
-  displayName: 'Run Unit tests task'
+#- script: npm run test
+#  displayName: 'Run Unit tests task'
 
-- script: npm run integration
-  displayName: 'Run Integration tests task'
+#- script: npm run integration
+#  displayName: 'Run Integration tests task'
 
 - script: npm run build
   displayName: 'Create extension file'
 
+- script: echo $(artifactName)
 - task: PublishBuildArtifacts@1
-  displayName: 'Publish artifacts: drop'
+  displayName: 'Publish artifacts: '
   inputs:
-    artifactName: 'drop'
-    publishLocation: 'filePath'
-    targetPath: src/*.vsix
+    pathToPublish: src/$(artifactName)
+    artifactName: $(artifactName)
+    publishLocation: 'container'

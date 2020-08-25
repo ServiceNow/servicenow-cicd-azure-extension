@@ -114,7 +114,8 @@ function build(version) {
             ])))
         )
         .then(() => createArchive(version))
-        .then(() => fse.move(path.join(__dirname, 'tmp/servicenow.vsix'), path.join(__dirname, `out/servicenow.extension.${version}.vsix`)));
+        .then(() => fse.move(path.join(__dirname, 'tmp/servicenow.vsix'), path.join(__dirname, `out/servicenow.extension.${version}.vsix`)))
+        .then(() => console.log(`##vso[task.setvariable variable=artifactName;isOutput=true]servicenow.extension.${version}.vsix`));
 }
 
 function createArchive() {
