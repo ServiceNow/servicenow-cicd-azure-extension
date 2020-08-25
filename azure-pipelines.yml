@@ -21,11 +21,9 @@ steps:
   displayName: 'Create extension file'
   name: build
 
-- script: |
-    echo "artifact name is: $ARTIFACTNAME"
+- script: echo $(build.artifactName)
 
-- script: |
-    echo "artifact name is: $artifactName"
+- script: echo
 
 #- task: PublishBuildArtifacts@1
 #  displayName: 'Publish artifacts: '
