@@ -23,11 +23,10 @@ steps:
 
 - script: echo $(build.artifactName)
 
-- script: echo
 
-#- task: PublishBuildArtifacts@1
-#  displayName: 'Publish artifacts: '
-#  inputs:
-#    pathToPublish: src/$(artifactName)
-#    artifactName: $(artifactName)
-#    publishLocation: 'container'
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish artifacts'
+  inputs:
+    pathToPublish: src/$(build.artifactName)
+    artifactName: $(build.artifactName)
+    publishLocation: 'container'
