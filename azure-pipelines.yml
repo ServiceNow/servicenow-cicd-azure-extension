@@ -11,8 +11,8 @@ steps:
   inputs:
     verbose: false
 
-#- script: npm run test
-#  displayName: 'Run Unit tests task'
+- script: npm run test
+  displayName: 'Run Unit tests task'
 
 #- script: npm run integration
 #  displayName: 'Run Integration tests task'
@@ -27,6 +27,6 @@ steps:
 - task: PublishBuildArtifacts@1
   displayName: 'Publish artifacts'
   inputs:
-    pathToPublish: src/$(build.artifactName)
+    pathToPublish: out/$(build.artifactName)
     artifactName: $(build.artifactName)
     publishLocation: 'container'
