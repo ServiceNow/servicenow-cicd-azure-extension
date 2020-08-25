@@ -1,0 +1,62 @@
+{
+  "plugin/rollback": [
+    {
+      "links": {
+        "progress": {
+          "id": "c6b2fd46dbfed01026a440ceaa96194a",
+          "url": "https://cicdazureappauthor.service-now.com/api/sn_cicd/progress/c6b2fd46dbfed01026a440ceaa96194a"
+        }
+      },
+      "status": "0",
+      "status_label": "Pending",
+      "status_message": "",
+      "status_detail": "",
+      "error": "",
+      "percent_complete": 0
+    }
+  ],
+  "progress": [
+    {
+      "links": {
+        "progress": {
+          "id": "c6b2fd46dbfed01026a440ceaa96194a",
+          "url": "https://cicdazureappauthor.service-now.com/api/sn_cicd/progress/c6b2fd46dbfed01026a440ceaa96194a"
+        }
+      },
+      "status": "1",
+      "status_label": "Running",
+      "status_message": "",
+      "status_detail": "",
+      "error": "",
+      "percent_complete": 0
+    },
+    {
+      "links": {
+        "progress": {
+          "id": "c6b2fd46dbfed01026a440ceaa96194a",
+          "url": "https://cicdazureappauthor.service-now.com/api/sn_cicd/progress/c6b2fd46dbfed01026a440ceaa96194a"
+        }
+      },
+      "status": "1",
+      "status_label": "Running",
+      "status_message": "",
+      "status_detail": "",
+      "error": "",
+      "percent_complete": 93
+    },
+    {
+      "links": {
+        "progress": {
+          "id": "c6b2fd46dbfed01026a440ceaa96194a",
+          "url": "https://cicdazureappauthor.service-now.com/api/sn_cicd/progress/c6b2fd46dbfed01026a440ceaa96194a"
+        }
+      },
+      "status": "2",
+      "status_label": "Successful",
+      "status_message": "",
+      "status_detail": "",
+      "error": "",
+      "percent_complete": 100
+    }
+  ]
+}

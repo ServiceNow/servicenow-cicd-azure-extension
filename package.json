@@ -4,7 +4,9 @@
   "description": "some description",
   "main": "build.js",
   "scripts": {
-    "test": "test.js"
+    "test": "jest mockTransport --runInBand",
+    "integration": "jest integration --runInBand --bail",
+    "build": "build.js"
   },
   "repository": {
     "type": "git",
@@ -28,5 +30,8 @@
   },
   "engines": {
     "node": ">=8.0.0"
+  },
+  "devDependencies": {
+    "jest": "^26.4.0"
   }
 }

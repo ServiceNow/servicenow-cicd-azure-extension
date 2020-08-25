@@ -1,0 +1,17 @@
+{
+  "sc/apply_changes": [
+    {
+      "errorMessage": "Invalid app scope",
+      "response": {
+        "statusCode": 404,
+        "body": {
+          "status": "3",
+          "status_label": "Failed",
+          "status_message": "",
+          "status_detail": "",
+          "error": "Invalid app scope: x_sofse_cicdazurea3"
+        }
+      }
+    }
+  ]
+}

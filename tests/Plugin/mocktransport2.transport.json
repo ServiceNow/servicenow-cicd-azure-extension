@@ -1,0 +1,13 @@
+{
+  "plugin/activate": [
+    {
+      "links": {},
+      "status": "2",
+      "status_label": "Successful",
+      "status_message": "[WARNING] The plugin is already active, repair plugin to upgrade or fix.",
+      "status_detail": "[WARNING] The plugin is already active, repair plugin to upgrade or fix.",
+      "error": "",
+      "percent_complete": 100
+    }
+  ]
+}

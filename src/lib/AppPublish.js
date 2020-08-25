@@ -40,13 +40,13 @@ function getCurrVersionFromFS(sysId, scope) {
                     }
                 }
             } else {
-                console.error('sn_source_control.properties not found')
+                process.stderr.write('sn_source_control.properties not found\n')
             }
         } catch (e) {
-            console.error(e);
+            process.stderr.write(e.toString() + '\n');
         }
     } else {
-        console.error('BUILD_SOURCESDIRECTORY env not found');
+        process.stderr.write('BUILD_SOURCESDIRECTORY env not found\n');
     }
     return version;
 }
@@ -91,24 +91,28 @@ module.exports = {
                     options.version = version;
                 }
                 break;
+            case "autodetect":
+                options.autodetect = true;
+                break;
             default:
-                console.error('No version format selected');
+                process.stderr.write('No version format selected\n');
                 return Promise.reject();
         }
 
         console.log('Start installation with version ' + (options.version || ''));
         return API
             .appRepoPublish(options)
-            .then(function () {
-                pipeline.setVar('ServiceNow-CICD-App-Publish.publishVersion', options.version);
-                pipeline.setVar('publishVersion', options.version);
+            .then(function (version) {
+                pipeline.setVar('ServiceNow-CICD-App-Publish.publishVersion', version);
+                pipeline.setVar('publishVersion', version);
                 console.log('\x1b[32mSuccess\x1b[0m\n');
-                console.log('Publication was made with version: ' + options.version);
+                console.log('Publication was made with version: ' + version);
+                return version;
             })
             .catch(err => {
-                console.error('\x1b[31mInstallation failed\x1b[0m\n');
-                console.error('The error is:', err);
-                return Promise.reject();
+                process.stderr.write('\x1b[31mPublication failed\x1b[0m\n');
+                process.stderr.write('The error is:' + err);
+                return Promise.reject(err);
             })
     }
 }

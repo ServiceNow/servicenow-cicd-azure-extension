@@ -1,0 +1,48 @@
+{
+  "app_repo/rollback": [
+    {
+      "links": {
+        "progress": {
+          "id": "eeb84b4a1bf65050251da82b234bcbdf",
+          "url": "https://cicdazureappclient.service-now.com/api/sn_cicd/progress/eeb84b4a1bf65050251da82b234bcbdf"
+        }
+      },
+      "status": "0",
+      "status_label": "Pending",
+      "status_message": "",
+      "status_detail": "",
+      "error": "",
+      "percent_complete": 0
+    }
+  ],
+  "progress": [
+    {
+      "links": {
+        "progress": {
+          "id": "eeb84b4a1bf65050251da82b234bcbdf",
+          "url": "https://cicdazureappclient.service-now.com/api/sn_cicd/progress/eeb84b4a1bf65050251da82b234bcbdf"
+        }
+      },
+      "status": "1",
+      "status_label": "Running",
+      "status_message": "",
+      "status_detail": "",
+      "error": "",
+      "percent_complete": 94
+    },
+    {
+      "links": {
+        "progress": {
+          "id": "eeb84b4a1bf65050251da82b234bcbdf",
+          "url": "https://cicdazureappclient.service-now.com/api/sn_cicd/progress/eeb84b4a1bf65050251da82b234bcbdf"
+        }
+      },
+      "status": "2",
+      "status_label": "Successful",
+      "status_message": "",
+      "status_detail": "",
+      "error": "",
+      "percent_complete": 100
+    }
+  ]
+}

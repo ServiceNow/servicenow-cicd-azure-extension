@@ -1,0 +1,61 @@
+{
+  "testsuite/run": [
+    {
+      "links": {
+        "progress": {
+          "id": "2b299286dbb21050022240ceaa961983",
+          "url": "https://cicdazureappclient.service-now.com/api/sn_cicd/progress/2b299286dbb21050022240ceaa961983"
+        }
+      },
+      "status": "0",
+      "status_label": "Pending",
+      "status_message": "",
+      "status_detail": "",
+      "error": "",
+      "percent_complete": 0
+    }
+  ],
+  "progress": [
+    {
+      "links": {
+        "progress": {
+          "id": "2b299286dbb21050022240ceaa961983",
+          "url": "https://cicdazureappclient.service-now.com/api/sn_cicd/progress/2b299286dbb21050022240ceaa961983"
+        },
+        "results": {
+          "id": "67299286dbb21050022240ceaa961990",
+          "url": "https://cicdazureappclient.service-now.com/api/sn_cicd/testsuite/results/67299286dbb21050022240ceaa961990"
+        }
+      },
+      "status": "3",
+      "status_label": "Failed",
+      "status_message": "Suite failed",
+      "status_detail": "Suite failed",
+      "error": "",
+      "percent_complete": 100
+    }
+  ],
+  "testsuite/results": [
+    {
+      "links": {
+        "results": {
+          "id": "67299286dbb21050022240ceaa961990",
+          "url": "https://cicdazureappclient.service-now.com/sys_atf_test_suite_result.do?sys_id=67299286dbb21050022240ceaa961990"
+        }
+      },
+      "status": "3",
+      "status_label": "Failed",
+      "status_message": "",
+      "status_detail": "",
+      "error": "",
+      "test_suite_status": "failure",
+      "test_suite_duration": "0 Seconds",
+      "rolledup_test_success_count": 0,
+      "rolledup_test_failure_count": 1,
+      "rolledup_test_error_count": 0,
+      "rolledup_test_skip_count": 0,
+      "test_suite_name": "My New Test Suite",
+      "child_suite_results": []
+    }
+  ]
+}

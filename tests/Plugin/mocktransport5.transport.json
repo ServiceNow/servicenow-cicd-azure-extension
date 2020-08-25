@@ -1,0 +1,14 @@
+{
+  "plugin/rollback": [
+    {
+      "errorMessage": "Plugin is not Active on the instance, unable to rollback",
+      "response": {
+        "status": "3",
+        "status_label": "Failed",
+        "status_message": "",
+        "status_detail": "",
+        "error": "Plugin is not Active on the instance, unable to rollback"
+      }
+    }
+  ]
+}

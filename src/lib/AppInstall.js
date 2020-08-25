@@ -16,32 +16,33 @@ module.exports = {
                     options[name] = val;
                 }
             });
-        if(!options.version) {
+        if (!options.version) {
             let envVersion = pipeline.getVar('ServiceNow-CICD-App-Publish.publishVersion');
-            if(!envVersion) {
+            if (!envVersion) {
                 pipeline.getVar('publishVersion');
             }
-            if(envVersion) {
+            if (envVersion) {
                 options.version = envVersion;
             }
         }
-        if(options.version) {
+        if (options.version) {
             console.log('Installing with version: ' + options.version);
         }
         return API
             .appRepoInstall(options)
-            .then(function (status) {
+            .then(function (version) {
                 console.log('\x1b[32mSuccess\x1b[0m\n');
-                if(status) {
-                    pipeline.setVar('ServiceNow-CICD-App-Install.rollbackVersion', status);
-                    pipeline.setVar('rollbackVersion', status);
-                    console.log('Rollback version is: ' + status);
+                if (version) {
+                    pipeline.setVar('ServiceNow-CICD-App-Install.rollbackVersion', version);
+                    pipeline.setVar('rollbackVersion', version);
+                    console.log('Rollback version is: ' + version);
+                    return version;
                 }
             })
             .catch(err => {
-                console.error('\x1b[31mInstallation failed\x1b[0m\n');
-                console.error('The error is:', err);
-                return Promise.reject();
+                process.stderr.write('\x1b[31mInstallation failed\x1b[0m\n');
+                process.stderr.write('The error is:' + err);
+                return Promise.reject(err);
             })
     }
 }

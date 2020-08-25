@@ -29,28 +29,28 @@ module.exports = {
         return API
             .testSuiteRun(options)
             .catch(err => {
-                console.error('\x1b[31mTestsuite run failed\x1b[0m\n');
-                console.error('The error is:', err);
-                return Promise.reject();
+                process.stderr.write('\x1b[31mTestsuite run failed\x1b[0m\n');
+                process.stderr.write('The error is:' + err);
+                return Promise.reject(err);
             })
-            .then(function (status) {
-                if (status) {
-                    if (status.status === 2) { //success
+            .then(function (response) {
+                if (response) {
+                    if (response.status === '2') { //success
                         console.log('\x1b[32mSuccess\x1b[0m\n');
                     } else {
-                        console.error('\x1b[31mTestsuite run failed\x1b[0m\n');
+                        process.stderr.write('\x1b[31mTestsuite run failed\x1b[0m\n');
                     }
 
-                    if (status.links && status.links.results && status.links.results.url) {
-                        console.log('Link to results is: ' + status.links.results.url);
+                    if (response.links && response.links.results && response.links.results.url) {
+                        console.log('Link to results is: ' + response.links.results.url);
                     }
                     console.log(Object.keys(messages)
-                        .filter(name => status[name])
-                        .map(name => messages[name] + ': ' + status[name])
+                        .filter(name => response[name])
+                        .map(name => messages[name] + ': ' + response[name])
                         .join('\n')
                     );
-                    if (status.status !== 2) {
-                        return Promise.reject();
+                    if (response.status !== '2') {
+                        return Promise.reject('Testsuite failed');
                     }
                 }
             })

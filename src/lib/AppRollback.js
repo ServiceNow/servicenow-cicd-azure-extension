@@ -32,14 +32,15 @@ module.exports = {
         }
         return API
             .appRepoRollback(options, forceRollback)
-            .then(function (status) {
+            .then(function (version) {
                 console.log('\x1b[32mSuccess\x1b[0m\n');
-                console.log('Successfully rolled back to version: ' + status)
+                console.log('Successfully rolled back to version: ' + version)
+                return version;
             })
             .catch(err=>{
-                console.error('\x1b[31mRollback failed\x1b[0m\n');
-                console.error('The error is:', err);
-                return Promise.reject();
+                process.stderr.write('\x1b[31mRollback failed\x1b[0m\n');
+                process.stderr.write('The error is:' +  err);
+                return Promise.reject(err);
             })
     }
 }

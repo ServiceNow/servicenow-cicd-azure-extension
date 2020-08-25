@@ -1,0 +1,17 @@
+{
+  "plugin/activate": [
+    {
+      "errorMessage": "Not found. The requested item was not found.",
+      "response": {
+        "statusCode": 404,
+        "body": {
+          "status": "3",
+          "status_label": "Failed",
+          "status_message": "",
+          "status_detail": "",
+          "error": "Plugin ID is not valid"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,230 @@
+{
+  "testsuite/run": [
+    {
+      "links": {
+        "progress": {
+          "id": "fa2952421bb65050251da82b234bcb7f",
+          "url": "https://cicdazureappclient.service-now.com/api/sn_cicd/progress/fa2952421bb65050251da82b234bcb7f"
+        }
+      },
+      "status": "0",
+      "status_label": "Pending",
+      "status_message": "",
+      "status_detail": "",
+      "error": "",
+      "percent_complete": 0
+    }
+  ],
+  "progress": [
+    {
+      "links": {
+        "progress": {
+          "id": "fa2952421bb65050251da82b234bcb7f",
+          "url": "https://cicdazureappclient.service-now.com/api/sn_cicd/progress/fa2952421bb65050251da82b234bcb7f"
+        },
+        "results": {
+          "id": "be2952421bb65050251da82b234bcb18",
+          "url": "https://cicdazureappclient.service-now.com/api/sn_cicd/testsuite/results/be2952421bb65050251da82b234bcb18"
+        }
+      },
+      "status": "2",
+      "status_label": "Successful",
+      "status_message": "Suite passed",
+      "status_detail": "Suite passed",
+      "error": "",
+      "percent_complete": 100
+    }
+  ],
+  "testsuite/results": [
+    {
+      "links": {
+        "results": {
+          "id": "be2952421bb65050251da82b234bcb18",
+          "url": "https://cicdazureappclient.service-now.com/sys_atf_test_suite_result.do?sys_id=be2952421bb65050251da82b234bcb18"
+        }
+      },
+      "status": "2",
+      "status_label": "Successful",
+      "status_message": "",
+      "status_detail": "",
+      "error": "",
+      "test_suite_status": "success",
+      "test_suite_duration": "0 Seconds",
+      "rolledup_test_success_count": 0,
+      "rolledup_test_failure_count": 0,
+      "rolledup_test_error_count": 0,
+      "rolledup_test_skip_count": 0,
+      "test_suite_name": "My Quick Start Tests",
+      "child_suite_results": [
+        {
+          "links": {
+            "results": {
+              "id": "3e2952421bb65050251da82b234bcb9a",
+              "url": "https://cicdazureappclient.service-now.com/sys_atf_test_suite_result.do?sys_id=3e2952421bb65050251da82b234bcb9a"
+            }
+          },
+          "status": "2",
+          "status_label": "Successful",
+          "status_message": "",
+          "status_detail": "",
+          "error": "",
+          "test_suite_status": "success",
+          "test_suite_duration": "0 Seconds",
+          "rolledup_test_success_count": 0,
+          "rolledup_test_failure_count": 0,
+          "rolledup_test_error_count": 0,
+          "rolledup_test_skip_count": 0,
+          "test_suite_name": "My PRB MGMT: Problem Management",
+          "child_suite_results": []
+        },
+        {
+          "links": {
+            "results": {
+              "id": "7e2952421bb65050251da82b234bcb9b",
+              "url": "https://cicdazureappclient.service-now.com/sys_atf_test_suite_result.do?sys_id=7e2952421bb65050251da82b234bcb9b"
+            }
+          },
+          "status": "2",
+          "status_label": "Successful",
+          "status_message": "",
+          "status_detail": "",
+          "error": "",
+          "test_suite_status": "success",
+          "test_suite_duration": "0 Seconds",
+          "rolledup_test_success_count": 0,
+          "rolledup_test_failure_count": 0,
+          "rolledup_test_error_count": 0,
+          "rolledup_test_skip_count": 0,
+          "test_suite_name": "My SLM:Service Level Management",
+          "child_suite_results": []
+        },
+        {
+          "links": {
+            "results": {
+              "id": "b22952421bb65050251da82b234bcb1a",
+              "url": "https://cicdazureappclient.service-now.com/sys_atf_test_suite_result.do?sys_id=b22952421bb65050251da82b234bcb1a"
+            }
+          },
+          "status": "2",
+          "status_label": "Successful",
+          "status_message": "",
+          "status_detail": "",
+          "error": "",
+          "test_suite_status": "success",
+          "test_suite_duration": "0 Seconds",
+          "rolledup_test_success_count": 0,
+          "rolledup_test_failure_count": 0,
+          "rolledup_test_error_count": 0,
+          "rolledup_test_skip_count": 0,
+          "test_suite_name": "My Assessmeent CORE: Assessment",
+          "child_suite_results": []
+        },
+        {
+          "links": {
+            "results": {
+              "id": "ba2952421bb65050251da82b234bcb98",
+              "url": "https://cicdazureappclient.service-now.com/sys_atf_test_suite_result.do?sys_id=ba2952421bb65050251da82b234bcb98"
+            }
+          },
+          "status": "2",
+          "status_label": "Successful",
+          "status_message": "",
+          "status_detail": "",
+          "error": "",
+          "test_suite_status": "success",
+          "test_suite_duration": "0 Seconds",
+          "rolledup_test_success_count": 0,
+          "rolledup_test_failure_count": 0,
+          "rolledup_test_error_count": 0,
+          "rolledup_test_skip_count": 0,
+          "test_suite_name": "My INCIDENT MGMT: Incident Management",
+          "child_suite_results": []
+        },
+        {
+          "links": {
+            "results": {
+              "id": "be2952421bb65050251da82b234bcb9c",
+              "url": "https://cicdazureappclient.service-now.com/sys_atf_test_suite_result.do?sys_id=be2952421bb65050251da82b234bcb9c"
+            }
+          },
+          "status": "2",
+          "status_label": "Successful",
+          "status_message": "",
+          "status_detail": "",
+          "error": "",
+          "test_suite_status": "success",
+          "test_suite_duration": "0 Seconds",
+          "rolledup_test_success_count": 0,
+          "rolledup_test_failure_count": 0,
+          "rolledup_test_error_count": 0,
+          "rolledup_test_skip_count": 0,
+          "test_suite_name": "My Survey MGMT: Survey Management",
+          "child_suite_results": []
+        },
+        {
+          "links": {
+            "results": {
+              "id": "f22952421bb65050251da82b234bcb1b",
+              "url": "https://cicdazureappclient.service-now.com/sys_atf_test_suite_result.do?sys_id=f22952421bb65050251da82b234bcb1b"
+            }
+          },
+          "status": "2",
+          "status_label": "Successful",
+          "status_message": "",
+          "status_detail": "",
+          "error": "",
+          "test_suite_status": "success",
+          "test_suite_duration": "0 Seconds",
+          "rolledup_test_success_count": 0,
+          "rolledup_test_failure_count": 0,
+          "rolledup_test_error_count": 0,
+          "rolledup_test_skip_count": 0,
+          "test_suite_name": "My CHG:Change Management",
+          "child_suite_results": []
+        },
+        {
+          "links": {
+            "results": {
+              "id": "fa2952421bb65050251da82b234bcb99",
+              "url": "https://cicdazureappclient.service-now.com/sys_atf_test_suite_result.do?sys_id=fa2952421bb65050251da82b234bcb99"
+            }
+          },
+          "status": "2",
+          "status_label": "Successful",
+          "status_message": "",
+          "status_detail": "",
+          "error": "",
+          "test_suite_status": "success",
+          "test_suite_duration": "0 Seconds",
+          "rolledup_test_success_count": 0,
+          "rolledup_test_failure_count": 0,
+          "rolledup_test_error_count": 0,
+          "rolledup_test_skip_count": 0,
+          "test_suite_name": "My On-Call: On-Call Scheduling",
+          "child_suite_results": []
+        },
+        {
+          "links": {
+            "results": {
+              "id": "fe2952421bb65050251da82b234bcb9d",
+              "url": "https://cicdazureappclient.service-now.com/sys_atf_test_suite_result.do?sys_id=fe2952421bb65050251da82b234bcb9d"
+            }
+          },
+          "status": "2",
+          "status_label": "Successful",
+          "status_message": "",
+          "status_detail": "",
+          "error": "",
+          "test_suite_status": "success",
+          "test_suite_duration": "0 Seconds",
+          "rolledup_test_success_count": 0,
+          "rolledup_test_failure_count": 0,
+          "rolledup_test_error_count": 0,
+          "rolledup_test_skip_count": 0,
+          "test_suite_name": "Survey : Platform tests",
+          "child_suite_results": []
+        }
+      ]
+    }
+  ]
+}

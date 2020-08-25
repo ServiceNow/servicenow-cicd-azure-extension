@@ -1,0 +1,62 @@
+{
+  "plugin/activate": [
+    {
+      "links": {
+        "progress": {
+          "id": "15ca2dc2dbfed01026a440ceaa96196e",
+          "url": "https://cicdazureappauthor.service-now.com/api/sn_cicd/progress/15ca2dc2dbfed01026a440ceaa96196e"
+        }
+      },
+      "status": "0",
+      "status_label": "Pending",
+      "status_message": "",
+      "status_detail": "",
+      "error": "",
+      "percent_complete": 0
+    }
+  ],
+  "progress": [
+    {
+      "links": {
+        "progress": {
+          "id": "15ca2dc2dbfed01026a440ceaa96196e",
+          "url": "https://cicdazureappauthor.service-now.com/api/sn_cicd/progress/15ca2dc2dbfed01026a440ceaa96196e"
+        }
+      },
+      "status": "1",
+      "status_label": "Running",
+      "status_message": "",
+      "status_detail": "Preparing to activate plugin, this may take a while...",
+      "error": "",
+      "percent_complete": 0
+    },
+    {
+      "links": {
+        "progress": {
+          "id": "15ca2dc2dbfed01026a440ceaa96196e",
+          "url": "https://cicdazureappauthor.service-now.com/api/sn_cicd/progress/15ca2dc2dbfed01026a440ceaa96196e"
+        }
+      },
+      "status": "1",
+      "status_label": "Running",
+      "status_message": "Updating Usage Analytics",
+      "status_detail": "Preparing to activate plugin, this may take a while...",
+      "error": "",
+      "percent_complete": 99
+    },
+    {
+      "links": {
+        "progress": {
+          "id": "15ca2dc2dbfed01026a440ceaa96196e",
+          "url": "https://cicdazureappauthor.service-now.com/api/sn_cicd/progress/15ca2dc2dbfed01026a440ceaa96196e"
+        }
+      },
+      "status": "2",
+      "status_label": "Successful",
+      "status_message": "Plugin activated/upgraded successfuly",
+      "status_detail": "Preparing to activate plugin, this may take a while...",
+      "error": "",
+      "percent_complete": 100
+    }
+  ]
+}

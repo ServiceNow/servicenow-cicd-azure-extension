@@ -18,15 +18,17 @@ module.exports = {
             });
         return API
             .SCApplyChanges(options)
-            .then(function (status) {
-                console.log('\x1b[32mSuccess\x1b[0m\n');
-                if(status.status_message)
-                console.log('Status is: ' + status.status_message)
+            .then(function (response) {
+                process.stdout.write('\x1b[32mSuccess\x1b[0m\n');
+                if (response.status_message) {
+                    process.stdout.write('Status is: ' + response.status_message);
+                    return response.status_message;
+                }
             })
             .catch(err => {
-                console.error('\x1b[31mInstallation failed\x1b[0m\n');
-                console.error('The error is:', err);
-                return Promise.reject();
+                process.stderr.write('\x1b[31mInstallation failed\x1b[0m\n');
+                process.stderr.write('The error is:' + err);
+                return Promise.reject(err);
             })
     }
 }

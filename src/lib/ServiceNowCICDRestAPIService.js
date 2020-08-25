@@ -1,6 +1,6 @@
 ﻿const https = require('https');
 const URL = require('url');
-const respError = function(error, response) {
+const respError = function (error, response) {
     this.errorMessage = error;
     this.response = response;
 }
@@ -31,7 +31,7 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
     const config = {
         instance,
         auth,
-        delayInProgressPolling: 200
+        delayInProgressPolling: 1000
     };
     const errCodeMessages = {
         401: 'The user credentials are incorrect.',
@@ -58,9 +58,9 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
      */
     function activatePlugin(id) {
         const URL = 'plugin/' + id + '/activate';
-        return request(URL, {method: 'POST'})
+        return request(URL, false, 'POST')
             .then(resp => getProgress(resp))
-            .catch(err=>Promise.reject(err.errorMessage))
+            .catch(err => Promise.reject(err.errorMessage))
             .then(resp => resp.status_message);
     }
 
@@ -71,9 +71,9 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
      */
     function deactivatePlugin(id) {
         const URL = 'plugin/' + id + '/rollback';
-        return request(URL, {method: 'POST'})
+        return request(URL, false, 'POST')
             .then(resp => getProgress(resp))
-            .catch(err=>Promise.reject(err.errorMessage))
+            .catch(err => Promise.reject(err.errorMessage))
             .then(resp => resp.status_message);
     }
 
@@ -85,7 +85,7 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
     function getTSResults(resultID) {
         const URL = 'testsuite/results/' + resultID;
         return request(URL)
-            .catch(err=>Promise.reject(err.errorMessage));
+            .catch(err => Promise.reject(err.errorMessage));
     }
 
     /**
@@ -102,15 +102,16 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
         if (!options || !(options.test_suite_sys_id || options.test_suite_name)) {
             return Promise.reject('Please specify test_suite_name or test_suite_sys_id');
         }
-        if(options.test_suite_sys_id && options.test_suite_name) {
+        if (options.test_suite_sys_id && options.test_suite_name) {
             delete options.test_suite_name;
         }
-        const URL = createURL('testsuite/run',
-            'test_suite_sys_id test_suite_name browser_name browser_version os_name os_version', options);
-        return request(URL, {method: 'POST'})
+        return request(
+            'testsuite/run',
+            {fields: 'test_suite_sys_id test_suite_name browser_name browser_version os_name os_version', options},
+            'POST')
             .then(resp => getProgress(resp))
-            .catch(err=> (err.response.results && err.response.results.id) ?
-                    err.responce : Promise.reject(err.errorMessage))
+            .catch(err => (err.response.results && err.response.results.id) ?
+                err.response : Promise.reject(err.errorMessage))
             .then(resp => getPropertyByPath(resp, 'results.id'))
             .then(resultID => resultID ? getTSResults(resultID) : Promise.reject('No result ID'))
     }
@@ -128,13 +129,12 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
         if (!options || !(options.scope || options.sys_id)) {
             return Promise.reject('Please specify scope or sys_id');
         }
-        if(options.scope && options.sys_id) {
+        if (options.scope && options.sys_id) {
             delete options.scope;
         }
-        const URL = createURL('app_repo/install', 'sys_id scope version', options);
-        return request(URL, {method: 'POST'})
+        return request('app_repo/install', {fields: 'sys_id scope version', options}, 'POST')
             .then(resp => getProgress(resp))
-            .catch(err=>Promise.reject(err.errorMessage))
+            .catch(err => Promise.reject(err.errorMessage))
             .then(resp => resp.rollback_version || (resp.results && resp.results.rollback_version));
     }
 
@@ -151,24 +151,21 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
         if (!options || !(options.scope || options.sys_id) || !options.version) {
             return Promise.reject('Please specify scope or sys_id, and version');
         }
-        if(options.scope && options.sys_id) {
+        if (options.scope && options.sys_id) {
             delete options.scope;
         }
-        let URL = createURL('app_repo/rollback', 'sys_id scope version', options);
-        return request(URL, {method: 'POST'})
-            .catch(err=>{
-                if(forceRollback && err.errorMessage.indexOf('Expected rollback version does not match target: ') === 0) {
+        return request('app_repo/rollback', {fields: 'sys_id scope version', options}, 'POST')
+            .catch(err => {
+                if (forceRollback && err.errorMessage.indexOf('Expected rollback version does not match target: ') === 0) {
                     options.version = err.errorMessage.substr(49);
-                    URL = createURL('app_repo/rollback', 'sys_id scope version', options);
-                    return  request(URL, {method: 'POST'});
-                }
-                else {
+                    return request('app_repo/rollback', {fields: 'sys_id scope version', options}, 'POST');
+                } else {
                     return Promise.reject(err);
                 }
             })
             .then(resp => getProgress(resp))
-            .then(()=>options.version)
-            .catch(err=>Promise.reject(err.errorMessage));
+            .then(() => options.version)
+            .catch(err => Promise.reject(err.errorMessage));
     }
 
     /**
@@ -184,13 +181,27 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
         if (!options || !(options.scope || options.sys_id)) {
             return Promise.reject('Please specify scope or sys_id');
         }
-        if(options.scope && options.sys_id) {
+        if (options.scope && options.sys_id) {
             delete options.scope;
         }
-        const URL = createURL('app_repo/publish', 'sys_id scope version dev_notes', options);
-        return request(URL, {method: 'POST'})
+        let promise = Promise.resolve();
+        if (!options.version && options.autodetect) {
+            promise = getCurrentApplicationVersion(options).then(version=>{
+                if(version) {
+                    version = version.split('.');
+                    version[2]++;
+                    version = version.join('.');
+                    options.version = version;
+                }
+            });
+        }
+        return promise.then(() => request('app_repo/publish', {
+            fields: 'sys_id scope version dev_notes',
+            options
+        }, 'POST')
             .then(resp => getProgress(resp))
-            .catch(err=>Promise.reject(err.errorMessage));
+            .catch(err => Promise.reject(err.errorMessage))
+            .then(() => options.version));
     }
 
     /**
@@ -206,13 +217,12 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
         if (!options || !(options.app_scope || options.app_sys_id)) {
             return Promise.reject('Please specify app_scope or app_sys_id');
         }
-        if(options.app_scope && options.app_sys_id) {
+        if (options.app_scope && options.app_sys_id) {
             delete options.app_scope;
         }
-        const URL = createURL('sc/apply_changes', 'app_sys_id app_scope branch_name', options);
-        return request(URL, {method: 'POST'})
+        return request('sc/apply_changes', {fields: 'app_sys_id app_scope branch_name', options}, 'POST')
             .then(resp => getProgress(resp))
-            .catch(err=>Promise.reject(err.errorMessage));
+            .catch(err => Promise.reject(err.errorMessage));
     }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -240,7 +250,8 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
                         if (status === 2) {
                             return Promise.resolve(response);
                         } else {
-                            return Promise.reject(new respError(progressBody.error || progressBody.status_message, response));
+                            progressBody.results = response.results;
+                            return Promise.reject(new respError(progressBody.error || progressBody.status_message, progressBody));
                         }
                     } else {
                         process.stdout.write('.');
@@ -254,22 +265,49 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
         }
     }
 
+    function getCurrentApplicationVersion(options) {
+        if (options.sys_id) {
+            return request(`https://${config.instance}/api/now/table/sys_app/${options.sys_id}?sysparm_fields=version`)
+                .then(data => {
+                    return (data && data.version) || false;
+                })
+                .catch(() => false);
+        } else {
+            return request(`https://${config.instance}/api/now/table/sys_app?sysparm_fields=scope,version`)
+                .then(data => {
+                    let version = false;
+                    if (Array.isArray(data)) {
+                        data = data.filter(e => e.scope = options.scope);
+                        if (data[0]) {
+                            version = data[0].version;
+                        }
+                    }
+                    return version;
+                })
+                .catch(() => false);
+        }
+    }
+
     /**
      * Make a wrapper to https request
      * @param url
-     * @param options
+     * @param data object|boolean
+     * @param method
      * @returns {Promise<string>}
      */
 
-    function request(url, options = {}) {
+    function request(url, data = false, method = 'GET') {
         if (transport) {
-            return transport(url, options);
+            return transport(url, data, method);
         }
-
+        if (data) {
+            url = createURL(url, data.fields, data.options);
+        }
         if (url.indexOf('https://') !== 0) {
             url = `https://${config.instance}/api/sn_cicd/${url}`;
         }
         let urldata = URL.parse(url);
+        let options = {method};
         options.host = urldata.host;
         options.path = urldata.path;
         options.auth = config.auth;
@@ -339,7 +377,6 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
                 });
             });
             req.on('error', function (err) {
-                console.error(2, err)
                 reject(err);
             });
             if (params.method === 'POST' && postData) {
@@ -349,6 +386,7 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
         });
     }
 }
+
 function createURL(prefix, fields, options) {
     return prefix + '?' +
         fields
@@ -357,4 +395,5 @@ function createURL(prefix, fields, options) {
             .map(optName => optName + '=' + encodeURIComponent(options[optName]))
             .join('&');
 }
+
 module.exports = ServiceNowCICDRestAPIService;

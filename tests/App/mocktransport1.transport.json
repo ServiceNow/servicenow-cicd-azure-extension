@@ -1,0 +1,74 @@
+{
+  "now/table/sys_app": [
+    [
+      {
+        "scope": "x_sofse_cicdazurea",
+        "version": "1.3.37"
+      },
+      {
+        "scope": "x_sofse_cicd_azure",
+        "version": "1.0.0"
+      }
+    ]
+  ],
+  "app_repo/publish": [
+    {
+      "links": {
+        "progress": {
+          "id": "06a84bca1b3ed01027dfa82b234bcbd5",
+          "url": "https://cicdazureappauthor.service-now.com/api/sn_cicd/progress/06a84bca1b3ed01027dfa82b234bcbd5"
+        }
+      },
+      "status": "0",
+      "status_label": "Pending",
+      "status_message": "",
+      "status_detail": "",
+      "error": "",
+      "percent_complete": 0
+    }
+  ],
+  "progress": [
+    {
+      "links": {
+        "progress": {
+          "id": "06a84bca1b3ed01027dfa82b234bcbd5",
+          "url": "https://cicdazureappauthor.service-now.com/api/sn_cicd/progress/06a84bca1b3ed01027dfa82b234bcbd5"
+        }
+      },
+      "status": "1",
+      "status_label": "Running",
+      "status_message": "",
+      "status_detail": "",
+      "error": "",
+      "percent_complete": 2
+    },
+    {
+      "links": {
+        "progress": {
+          "id": "06a84bca1b3ed01027dfa82b234bcbd5",
+          "url": "https://cicdazureappauthor.service-now.com/api/sn_cicd/progress/06a84bca1b3ed01027dfa82b234bcbd5"
+        }
+      },
+      "status": "1",
+      "status_label": "Running",
+      "status_message": "",
+      "status_detail": "",
+      "error": "",
+      "percent_complete": 99
+    },
+    {
+      "links": {
+        "progress": {
+          "id": "06a84bca1b3ed01027dfa82b234bcbd5",
+          "url": "https://cicdazureappauthor.service-now.com/api/sn_cicd/progress/06a84bca1b3ed01027dfa82b234bcbd5"
+        }
+      },
+      "status": "2",
+      "status_label": "Successful",
+      "status_message": "Success!",
+      "status_detail": "",
+      "error": "",
+      "percent_complete": 100
+    }
+  ]
+}

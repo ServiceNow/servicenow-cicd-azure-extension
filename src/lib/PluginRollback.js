@@ -12,12 +12,13 @@ module.exports = {
                 console.log('\x1b[32mSuccess\x1b[0m\nPlugin has been deactivated.');
                 if (status) {
                     console.log('Status is: ' + status);
+                    return status
                 }
             })
             .catch(err => {
-                console.error('\x1b[31mPlugin deactivation failed\x1b[0m\n');
-                console.error('The error is:', err);
-                return Promise.reject();
+                process.stderr.write('\x1b[31mPlugin deactivation failed\x1b[0m\n');
+                process.stderr.write('The error is:' +  err);
+                return Promise.reject(err);
             })
     }
 }

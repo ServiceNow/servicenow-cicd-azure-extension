@@ -1,0 +1,96 @@
+{
+  "sc/apply_changes": [
+    {
+      "links": {
+        "progress": {
+          "id": "46ffe0611b7a901027dfa82b234bcb6a",
+          "url": "https://cicdazureappauthor.service-now.com/api/sn_cicd/progress/46ffe0611b7a901027dfa82b234bcb6a"
+        }
+      },
+      "status": "0"
+    }
+  ],
+  "progress": [
+    {
+      "links": {
+        "progress": {
+          "id": "46ffe0611b7a901027dfa82b234bcb6a",
+          "url": "https://cicdazureappauthor.service-now.com/api/sn_cicd/progress/46ffe0611b7a901027dfa82b234bcb6a"
+        },
+        "source": {
+          "id": "0cdb16a7db821010969a9646db9619bd",
+          "url": "https://cicdazureappauthor.service-now.com/api/now/table/sys_app/0cdb16a7db821010969a9646db9619bd"
+        }
+      },
+      "status": "1",
+      "status_label": "Running",
+      "status_detail": "Validating the application to import.",
+      "percent_complete": 63
+    },
+    {
+      "links": {
+        "progress": {
+          "id": "46ffe0611b7a901027dfa82b234bcb6a",
+          "url": "https://cicdazureappauthor.service-now.com/api/sn_cicd/progress/46ffe0611b7a901027dfa82b234bcb6a"
+        },
+        "source": {
+          "id": "0cdb16a7db821010969a9646db9619bd",
+          "url": "https://cicdazureappauthor.service-now.com/api/now/table/sys_app/0cdb16a7db821010969a9646db9619bd"
+        }
+      },
+      "status": "1",
+      "status_label": "Running",
+      "status_detail": "Preparing to activate plugin, this may take a while...",
+      "percent_complete": 68
+    },
+    {
+      "links": {
+        "progress": {
+          "id": "46ffe0611b7a901027dfa82b234bcb6a",
+          "url": "https://cicdazureappauthor.service-now.com/api/sn_cicd/progress/46ffe0611b7a901027dfa82b234bcb6a"
+        },
+        "source": {
+          "id": "0cdb16a7db821010969a9646db9619bd",
+          "url": "https://cicdazureappauthor.service-now.com/api/now/table/sys_app/0cdb16a7db821010969a9646db9619bd"
+        }
+      },
+      "status": "1",
+      "status_label": "Running",
+      "status_detail": "Uninstalling the application.",
+      "percent_complete": 83
+    },
+    {
+      "links": {
+        "progress": {
+          "id": "46ffe0611b7a901027dfa82b234bcb6a",
+          "url": "https://cicdazureappauthor.service-now.com/api/sn_cicd/progress/46ffe0611b7a901027dfa82b234bcb6a"
+        },
+        "source": {
+          "id": "0cdb16a7db821010969a9646db9619bd",
+          "url": "https://cicdazureappauthor.service-now.com/api/now/table/sys_app/0cdb16a7db821010969a9646db9619bd"
+        }
+      },
+      "status": "1",
+      "status_label": "Running",
+      "status_detail": "Importing the application.",
+      "percent_complete": 100
+    },
+    {
+      "links": {
+        "progress": {
+          "id": "46ffe0611b7a901027dfa82b234bcb6a",
+          "url": "https://cicdazureappauthor.service-now.com/api/sn_cicd/progress/46ffe0611b7a901027dfa82b234bcb6a"
+        },
+        "source": {
+          "id": "0cdb16a7db821010969a9646db9619bd",
+          "url": "https://cicdazureappauthor.service-now.com/api/now/table/sys_app/0cdb16a7db821010969a9646db9619bd"
+        }
+      },
+      "status": "2",
+      "status_label": "Successful",
+      "status_message": "This operation succeeded",
+      "status_detail": "Successfully applied commit cb92e9c027a6934345f0c9a6a878f4a663e7f988 from source control",
+      "percent_complete": 100
+    }
+  ]
+}
