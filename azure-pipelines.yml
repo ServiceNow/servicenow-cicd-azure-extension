@@ -19,11 +19,15 @@ steps:
 
 - script: npm run build
   displayName: 'Create extension file'
+  name: build
 
-- script: echo $(artifactName)
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish artifacts: '
-  inputs:
-    pathToPublish: src/$(artifactName)
-    artifactName: $(artifactName)
-    publishLocation: 'container'
+- script: echo '$ARTIFACTNAME'
+
+- script: echo '$artifactName'
+
+#- task: PublishBuildArtifacts@1
+#  displayName: 'Publish artifacts: '
+#  inputs:
+#    pathToPublish: src/$(artifactName)
+#    artifactName: $(artifactName)
+#    publishLocation: 'container'
