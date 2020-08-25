@@ -1,0 +1,28 @@
+pool:
+  name: Azure Pipelines
+  demands:
+  - npm
+  - node.js
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: Npm@1
+  displayName: 'npm install'
+  inputs:
+    verbose: false
+
+- script: npm run test
+  displayName: 'Run Unit tests task'
+
+- script: npm run integration
+  displayName: 'Run Integration tests task'
+
+- script: npm run build
+  displayName: 'Create extension file'
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish artifacts: drop'
+  inputs:
+    artifactName: 'drop'
+    publishLocation: 'filePath'
+    targetPath: src/*.vsix

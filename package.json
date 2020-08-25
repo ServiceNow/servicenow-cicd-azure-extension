@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest mockTransport --runInBand",
     "integration": "jest integration --runInBand --bail",
-    "build": "build.js"
+    "build": "node build.js"
   },
   "repository": {
     "type": "git",
