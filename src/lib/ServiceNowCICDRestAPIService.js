@@ -227,6 +227,11 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
+    /**
+     * Async wait
+     * @param ms
+     * @returns {Promise<unknown>}
+     */
     function wait(ms) {
         return new Promise(a => setTimeout(() => a(), ms));
     }
@@ -265,6 +270,12 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
         }
     }
 
+    /**
+     * get current app version via now/table rest api
+     *
+     * @param options object
+     * @returns {Promise<string|boolean>}
+     */
     function getCurrentApplicationVersion(options) {
         if (options.sys_id) {
             return request(`https://${config.instance}/api/now/table/sys_app/${options.sys_id}?sysparm_fields=version`)
@@ -353,6 +364,12 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
         return path.split('.').reduce((xs, x) => (xs && xs[x]) ? xs[x] : null, object);
     }
 
+    /**
+     * Wrapper for https calls
+     * @param params object
+     * @param postData object
+     * @returns {Promise<object>}
+     */
     function httpsRequest(params, postData) {
         return new Promise(function (resolve, reject) {
             let req = https.request(params, function (res) {
@@ -387,6 +404,13 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
     }
 }
 
+/**
+ * helper for URL building
+ * @param prefix string
+ * @param fields string space-separated list of fields
+ * @param options object
+ * @returns {string}
+ */
 function createURL(prefix, fields, options) {
     return prefix + '?' +
         fields

@@ -81,7 +81,7 @@ function setVersion(version) {
     return Promise.all(promises).then(() => stringVersion);
 }
 
-function incrementVersion() {
+function updateVersion() {
     return Promise
         .all(['', ...tasks].map(task => getVersion(task)))
         .then(versions => {
@@ -95,7 +95,7 @@ function incrementVersion() {
                     version = v;
                 }
             });
-            version[2]++;
+            // version[2]++;
             return setVersion(version);
         });
 }
@@ -136,7 +136,7 @@ function createArchive() {
     });
 }
 
-incrementVersion()
+updateVersion()
     .then(version => build(version))
     .then(() => console.log('success'))
     .catch(e => console.error(e));
