@@ -12,4 +12,5 @@
   <Default Extension=".resjson" ContentType="text/plain"/>
   <Default Extension=".vsixmanifest" ContentType="text/xml"/>
   <Default Extension=".vsomanifest" ContentType="application/json"/>
+  <Default Extension=".html" ContentType="text/html"/>
 </Types>

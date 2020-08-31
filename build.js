@@ -86,7 +86,7 @@ function updateVersion() {
         .all(['', ...tasks].map(task => getVersion(task)))
         .then(versions => {
             let version = versions.pop();
-            version.forEach(v => {
+            versions.forEach(v => {
                 if (
                     v[0] > version[0] ||
                     (v[0] === version[0] && v[1] > version[1]) ||

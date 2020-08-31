@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        * {
+            font-family: monospace;
+            font-size: 14px;
+        }
+
+        div#main {
+            min-width: 850px;
+            width: 50%;
+            background-color: #f0f0f0;
+            margin: 20px auto;
+            padding: 30px;
+            border: solid 1px #bbbbbb;
+            border-radius: 10px;
+        }
+
+        div {
+            padding: 2px;
+        }
+
+        .constant {
+            color: rgb(197, 6, 11);
+        }
+
+        .string {
+            color: rgb(3, 106, 7);
+        }
+
+        .constant.numeric {
+            color: rgb(0, 0, 205);
+        }
+
+        .list {
+            color: rgb(185, 6, 144);
+        }
+
+        .meta.tag {
+            color: rgb(0, 22, 142);
+        }
+
+        .indent {
+            padding-left: 14px;
+        }
+
+        .indent2 {
+            padding-left: 28px;
+        }
+    </style>
+</head>
+<body>
+<div id="main">
+    <div><span class="meta tag">pool</span><span class="keyword">:</span></div>
+    <div><span class="meta tag indent">  name</span><span class="keyword">:</span> Azure Pipelines
+    </div>
+    <div><span class="meta tag indent">  vmImage</span><span class="keyword">:</span><span class="string">'vs2017-win2016'</span>
+    </div>
+    <div>&nbsp;</div>
+    <div><span class="meta tag">jobs</span><span class="keyword">:</span></div>
+    <div><span class="list markup">- </span><span class="meta tag">job</span><span class="keyword">:</span>
+        PublishAndInstall
+    </div>
+    <div><span class="meta tag indent">  steps</span><span class="keyword">:</span></div>
+    <div><span class="list markup indent">  - </span><span class="meta tag">task</span><span class="keyword">:</span>
+        midnight-labs.vss-services-servicenow-cicd.serviceNowCICD-SC-Apply.ServiceNow-CICD-SC-Apply@1
+    </div>
+    <div><span class="meta tag indent2">    displayName</span><span class="keyword">:</span><span class="string">'ServiceNow CI/CD Apply Changes'</span>
+    </div>
+    <div><span class="meta tag indent2">    inputs</span><span class="keyword">:</span></div>
+    <div><span class="indent-guide indent2"></span><span class="meta tag indent">  connectedServiceName</span><span
+            class="keyword">:</span>
+        devserver
+    </div>
+    <div><span class="indent-guide indent2"></span><span class="meta tag indent">  appScope</span><span class="keyword">:</span><span
+            class="string">'x_mycompany_app'</span></div>
+    <div>&nbsp;</div>
+    <div><span class="list markup indent">  - </span><span class="meta tag">task</span><span class="keyword">:</span>
+        midnight-labs.vss-services-servicenow-cicd.serviceNowCICD-App-Publish.ServiceNow-CICD-App-Publish@1
+    </div>
+    <div><span class="meta tag indent2">    displayName</span><span class="keyword">:</span><span class="string">'ServiceNow CI/CD Publish Application'</span>
+    </div>
+    <div><span class="meta tag indent2">    inputs</span><span class="keyword">:</span></div>
+    <div><span class="indent-guide indent2"></span><span class="meta tag indent">  connectedServiceName</span><span
+            class="keyword">:</span>
+        devserver
+    </div>
+    <div><span class="indent-guide indent2"></span><span class="meta tag indent">  scope</span><span
+            class="keyword">:</span><span class="string">'x_mycompany_app'</span></div>
+    <div><span class="indent-guide indent2"></span><span class="meta tag indent">  versionFormat</span><span
+            class="keyword">:</span> template
+    </div>
+    <div><span class="indent-guide indent2"></span><span class="meta tag indent">  versionTemplate</span><span
+            class="keyword">:</span><span class="constant numeric">1.1</span></div>
+    <div><span class="indent-guide indent2"></span><span class="meta tag indent">  devNotes</span><span class="keyword">:</span><span
+            class="string">'Update version number'</span></div>
+    <div><span class="meta tag indent2">    name</span><span class="keyword">:</span><span
+            class="string">'Publish'</span></div>
+    <div>&nbsp;</div>
+    <div><span class="list markup indent">  - </span><span class="meta tag">task</span><span class="keyword">:</span>
+        midnight-labs.vss-services-servicenow-cicd.ServiceNow-CICD-App-Install.ServiceNow-CICD-App-Install@1
+    </div>
+    <div><span class="meta tag indent2">    displayName</span><span class="keyword">:</span><span class="string">'ServiceNow CI/CD Install App'</span>
+    </div>
+    <div><span class="meta tag indent2">    inputs</span><span class="keyword">:</span></div>
+    <div><span class="indent-guide indent2"></span><span class="meta tag indent">  connectedServiceName</span><span
+            class="keyword">:</span>
+        prodserver
+    </div>
+    <div><span class="indent-guide indent2"></span><span class="meta tag indent">  scope</span><span
+            class="keyword">:</span><span class="string">'x_mycompany_app'</span></div>
+    <div><span class="meta tag indent2">    name</span><span class="keyword">:</span><span
+            class="string">'Install'</span></div>
+    <div>&nbsp;</div>
+    <div><span class="list markup indent">  - </span><span class="meta tag">task</span><span class="keyword">:</span>
+        midnight-labs.vss-services-servicenow-cicd.serviceNowCICD-plugin-activate-task.ServiceNow-CICD-Plugin-Activate@1
+    </div>
+    <div><span class="meta tag indent2">    displayName</span><span class="keyword">:</span><span class="string">'ServiceNow CI/CD add a plugin'</span>
+    </div>
+    <div><span class="meta tag indent2">    inputs</span><span class="keyword">:</span></div>
+    <div><span class="indent-guide indent2"></span><span class="meta tag indent">  connectedServiceName</span><span
+            class="keyword">:</span>
+        prodserver
+    </div>
+    <div><span class="indent-guide indent2"></span><span class="meta tag indent">  pluginId</span><span class="keyword">:</span><span
+            class="string">'com.glide.web_service_aggregate'</span></div>
+    <div>&nbsp;</div>
+    <div>&nbsp;</div>
+    <div><span class="list markup">- </span><span class="meta tag">job</span><span class="keyword">:</span> Tests
+    </div>
+    <div><span class="meta tag indent">dependsOn</span><span class="keyword">:</span>
+        PublishAndInstall
+    </div>
+    <div><span class="meta tag indent">steps</span><span class="keyword">:</span></div>
+    <div><span class="list markup indent2">- </span><span class="meta tag">task</span><span class="keyword">:</span>
+        midnight-labs.vss-services-servicenow-cicd.serviceNowCICD-TestSuite-Run.ServiceNow-CICD-TestSuite-Run@1
+    </div>
+    <div><span class="indent-guide indent2"></span><span class="meta tag indent">displayName</span><span
+            class="keyword">:</span><span class="string">'ServiceNow CI/CD Start Test Suite'</span></div>
+    <div><span class="indent-guide indent2"></span><span class="meta tag indent">inputs</span><span
+            class="keyword">:</span></div>
+    <div><span class="indent-guide indent2"></span><span class="meta tag indent2">connectedServiceName</span><span
+            class="keyword">:</span> prodserver
+    </div>
+    <div><span class="indent-guide indent2"></span><span class="meta tag indent2">testSuiteSysId</span><span
+            class="keyword">:</span>
+        0a383a65532023008cd9ddeeff7b1258
+    </div>
+    <div>&nbsp;</div>
+    <div><span class="list markup indent2">- </span><span class="meta tag">task</span><span class="keyword">:</span>
+        midnight-labs.vss-services-servicenow-cicd.serviceNowCICD-TestSuite-Run.ServiceNow-CICD-TestSuite-Run@1
+    </div>
+    <div><span class="indent-guide indent2"></span><span class="meta tag indent">displayName</span><span
+            class="keyword">:</span><span class="string">'ServiceNow CI/CD Start Test Suite'</span></div>
+    <div><span class="indent-guide indent2"></span><span class="meta tag indent">inputs</span><span
+            class="keyword">:</span></div>
+    <div><span class="indent-guide indent2"></span><span class="meta tag indent2">connectedServiceName</span><span
+            class="keyword">:</span> prodserver
+    </div>
+    <div><span class="indent-guide indent2"></span><span class="meta tag indent2">testSuiteSysId</span><span
+            class="keyword">:</span>
+        73159102db125010022240ceaa961937
+    </div>
+    <div>&nbsp;</div>
+    <div><span class="list markup">- </span><span class="meta tag">job</span><span class="keyword">:</span> Rollback
+    </div>
+    <div><span class="meta tag indent">dependsOn</span><span class="keyword">:</span></div>
+    <div><span class="list markup indent2">- </span>PublishAndInstall</div>
+    <div><span class="list markup indent2">- </span>Tests</div>
+    <div><span class="meta tag indent">condition</span><span class="keyword">:</span>
+        failed('Tests')
+    </div>
+    <div><span class="meta tag indent">variables</span><span class="keyword">:</span></div>
+    <div><span class="meta tag indent2">rollbackVersion</span><span class="keyword">:</span>
+        $<span class="paren lparen">[</span> dependencies.PublishAndInstall.outputs<span
+                class="paren lparen">[</span><span class="string">'Install.rollbackVersion'</span><span
+                class="paren rparen">]</span><span class="paren rparen">]</span></div>
+    <div>&nbsp;</div>
+    <div><span class="meta tag indent">steps</span><span class="keyword">:</span></div>
+    <div><span class="list markup indent2">- </span><span class="meta tag">task</span><span class="keyword">:</span>
+        midnight-labs.vss-services-servicenow-cicd.serviceNowCICD-App-Rollback.ServiceNow-CICD-App-Rollback@1
+    </div>
+    <div><span class="indent-guide indent2"></span><span class="meta tag indent">displayName</span><span
+            class="keyword">:</span><span class="string">'ServiceNow CI/CD Rollback App'</span></div>
+    <div><span class="indent-guide indent2"></span><span class="meta tag indent">inputs</span><span
+            class="keyword">:</span></div>
+    <div><span class="indent-guide indent2"></span><span class="meta tag indent2">connectedServiceName</span><span
+            class="keyword">:</span> prodserver
+    </div>
+    <div><span class="indent-guide indent2"></span><span class="meta tag indent2">  scope</span><span
+            class="keyword">:</span><span class="string">'x_mycompany_app'</span></div>
+    <div><span class="indent-guide indent2"></span><span class="meta tag indent2">autodetectVersion</span><span
+            class="keyword">:</span><span class="constant language boolean">no</span></div>
+    <div>&nbsp;</div>
+    <div><span class="list markup indent2">- </span><span class="meta tag">task</span><span class="keyword">:</span>
+        midnight-labs.vss-services-servicenow-cicd.serviceNowCICD-plugin-rollback-task.ServiceNow-CICD-Plugin-Rollback@1
+    </div>
+    <div><span class="indent-guide indent2"></span><span class="meta tag indent">displayName</span><span
+            class="keyword">:</span><span class="string">'ServiceNow CI/CD rollback a plugin'</span></div>
+    <div><span class="indent-guide indent2"></span><span class="meta tag indent">inputs</span><span
+            class="keyword">:</span></div>
+    <div><span class="indent-guide indent2"></span><span class="meta tag indent2">connectedServiceName</span><span
+            class="keyword">:</span> prodserver
+    </div>
+    <div><span class="indent-guide indent2"></span><span class="meta tag indent2">pluginId</span><span
+            class="keyword">:</span><span class="string">'com.glide.web_service_aggregate'</span></div>
+</div>
+</body>
+</html>
