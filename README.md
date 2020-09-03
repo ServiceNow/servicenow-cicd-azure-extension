@@ -1,38 +1,96 @@
-# cicdplugin
+# ServiceNow CI/CD plugin for Azure Devops pipelines
+
+## Contents
+
+- [Intro](#intro)
+- [Installation](#installation)
+- [Tests](#tests)
+- [Build](#build)
+- [Integration](#Integration)
+- [API Docs](#api-docs)
+- [List of tasks](#tasks)
+
+---
+
+## Intro
+
+Here you can find the sourcecode of ServiceNow's extension for the Azure Devops pipelines.
+This extension covers only CI/CD subset of ServiceNow REST API and it aims to help people integrate both Continues Integration and Continues Delivery into Azure pipelines infrastructure.
+
+## Installation
+```shell script
+git clone git@github.com:antonmalyi/cicdplugin.git
+cd cicdplugin
+npm install
+```
+
+### Requirements
+- nodejs ver >=8.0
+### DevDependecies
+- [jest](https://github.com/facebook/jest)
+### Dependencies
+- [archiver](https://github.com/archiverjs/node-archiver)
+- [fs-extra](https://github.com/jprichardson/node-fs-extra)
+
+## Tests
+
+Project contains the [tests](tests/) folder. Inside are two files with mocks - [pipeline.js](tests/pipeline.js) and [transport.js](tests/transport.js) - pipeline emulates the AzureDevops pipeline inputs and variables, and transport have a mock for a ServiceNow API calls, it consumes the jsons generated from real server responses. The third file in the root of tests is [integration.test.js](tests/integration.test.js). This one emulates the whole pipeline's inputs from ADO and works as a pipeline itself, sending the requests for real ServiceNow server. The integration tests is required before building the extension artifact.
+
+The tests folder contains also subfolders with tests and mock-data jsons. These are the unit tests for existing endpoints and for correct error processing like 404s.
+
+Tests should be ran via npm commands:
+
+#### Unit tests
+```shell script
+npm run test
+```   
+
+#### Integration test
+```shell script
+npm run integration
+```   
+
+> Nota Bene. For some reasons the Rollback Plugin task sometimes fails on the ServiceNow instances despite of Plugin Activate success. You can try to run test again and get green status. Also, the Apply Changes task is now commented due to existing difference between API and interface processing at ServiceNow. Please, check this later. 
+
+## Build
+
+```shell script
+npm run buid
+```
+
+This command will check the latest version among all the tasks jsons an extension' manifest file, update every one with the latest, copy all necessary files and folders into folder 'out' and generate the .vsix file with name `servicenow.extension.x.y.z.vsix` where x.y.z is the current version of extension. This file is ready to upload into the marketplace.
+
+File [extension.vsixmanifest](src/extension/extension.vsixmanifest) contains the info about Extension, it's publisher, version, name and description. If you start a **fork** - make sure you have changed this to corresponding publisher and dropped the version to 1.0.0 here and in every `task.json` file. 
+
+## Integration
+
+This project contains [azure-pipeline.yml](azure-pipelines.yml) file - when this repository added into ADO as a pipeline source, it will automatically create a pipeline, triggered by changes in `master` branch. It will install dependencies, run the Unit and Integration test and on success it will build and publish the artifact mentioned in [Build](#build) section.
+
+## API docs
+
+All the API calls are made corresponding with ServiceNow [REST API documentation](https://developer.servicenow.com/dev.do#!/reference/api/orlando/rest/cicd-api). Extension covers all the endpoints mentioned there. Some of endpoints have no separate task in extension's because of helper nature of these endpoint i.e. progress API.
+
+## Tasks
+
+- Apply SourceControl Changes
+> Apply changes from a remote source control to a specified local application
+
+- Publish Application
+> Installs the specified application from the application repository onto the local instance
+
+- Install Application
+> Installs the specified application from the application repository onto the local instance
+
+- Rollback App
+> Initiate a rollback of a specified application to a specified version.
+
+- Add a plugin
+> Activate a desired plugin on ServiceNow instance
+
+- Rollback a plugin
+> Rollback a desired plugin on ServiceNow instance
+
+- Start Test Suite
+> Start a specified automated test suite. 
 
 
-
-GET /sn_cicd/testsuite/results/{result_id}
-The API returns these JSON or XML elements in the response body.
-child_suite_results	Results of nested test suites. The format of this content is the same as the parent test.
-error	Error message.
-links	Object that contains all links and sys_ids associated with the response.
-links.results	Object that contains the results information.
-links.results.id	Unique identifier of the results information. Use this value when calling the endpoint /sn_cicd/testsuite/results/{result_id}.
-links.results.url	URL to use to obtain the results of the endpoint execution, such as results.
-percent_complete	Percentage of the request that is complete.
-rolledup_test_error_count	Number of tests with errors.
-rolledup_test_failure_count	Number of tests that failed.
-rolledup_test_skip_count	Number of tests that were skipped.
-rolledup_test_success_count	Number of tests that ran successfully.
-status	Numeric execution state. Used with status_label, such as 0: Pending.
-Values:
-0 (Pending)
-1 (Running)
-2 (Successful)
-3 (Failed)
-4 (Canceled)
-status_detail	Additional information about the current state.
-status_label	Execution state description. Used with status, such as 0: Pending.
-Values:
-Pending
-Running
-Successful
-Failed
-Canceled
-status_message	Description of the current state.
-test_suite_duration	Amount of time that it took to execute the test suite.
-Unit: Seconds
-
-test_suite_name	Name of the test suite.
-test_suite_status	State of the test suite.

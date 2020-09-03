@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
   <Metadata>
-    <Identity Language="en-US" Id="vss-services-servicenow-cicd" Version="1.3.23" Publisher="midnight-labs" />
+    <Identity Language="en-US" Id="vss-services-servicenow-cicd" Version="1.3.25" Publisher="midnight-labs" />
     <DisplayName>ServiceNow CI/CD</DisplayName>
     <Description xml:space="preserve">This extension allows you to integrate Azure Pipelines with ServiceNow CI/CD.</Description>
     <Categories>Azure Pipelines</Categories>
@@ -22,5 +22,7 @@
   <Assets>
     <Asset Type="Microsoft.VisualStudio.Services.Icons.Default" d:Source="File" Path="images/service-now.png" Addressable="true" />
     <Asset Type="Microsoft.VisualStudio.Services.Manifest" d:Source="File" Path="extension.vsomanifest" Addressable="true" />
+    <Asset Type="Microsoft.VisualStudio.Services.Content.Details" d:Source="File" Path="overview.md" Addressable="true" />
+    <Asset Type="example-pipeline.html" d:Source="File" Path="example-pipeline.html" Addressable="true" />
   </Assets>
 </PackageManifest>
