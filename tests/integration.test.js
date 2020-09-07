@@ -3,7 +3,7 @@ const tasks = {};
 'AppInstall AppPublish AppRollback PluginActivate PluginRollback SCApply TestRun'.split(' ').forEach(task => tasks[task] = require(`../src/lib/${task}`));
 
 Pipeline.defaults({
-    auth: "admin:SoftServe1!"
+    auth: process.env.AUTH_STRING || ''
 });
 
 describe('Unit test on real serverts', () => {

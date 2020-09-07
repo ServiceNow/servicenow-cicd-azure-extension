@@ -7,8 +7,8 @@ const Pipeline = require('../pipeline');
 const Transport = require('../transport');
 
 Pipeline.defaults({
-    auth:"admin:SoftServe1!",
-    url:"cicdazureappauthor.service-now.com"
+    auth:"login:password",
+    url: "somedomain.service-now.com"
 });
 
 const installTask = require('../../src/lib/PluginActivate');

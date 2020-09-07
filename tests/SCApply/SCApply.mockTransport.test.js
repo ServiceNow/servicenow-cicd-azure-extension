@@ -2,8 +2,8 @@ const Pipeline = require('../pipeline');
 const Transport = require('../transport');
 
 Pipeline.defaults({
-    auth:"admin:password",
-    url:"somedomain.service-now.com"
+    auth:"login:password",
+    url: "somedomain.service-now.com"
 });
 const transportOptions1 = require('./mocktransport1.transport.json');
 const transportOptions2 = require('./mocktransport2.transport.json');
