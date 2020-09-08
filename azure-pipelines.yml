@@ -16,6 +16,8 @@ steps:
 
 - script: npm run integration
   displayName: 'Run Integration tests task'
+  env:
+    AUTH_STRING: $(authString)
 
 - script: npm run build
   displayName: 'Create extension file'

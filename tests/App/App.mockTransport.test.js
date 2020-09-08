@@ -8,7 +8,8 @@ const Transport = require('../transport');
 
 
 Pipeline.defaults({
-    auth:"admin:SoftServe1!"
+    auth: "login:password",
+    url: "somedomain.service-now.com"
 });
 
 
