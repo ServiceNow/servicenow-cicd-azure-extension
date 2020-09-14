@@ -288,7 +288,7 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
                 .then(data => {
                     let version = false;
                     if (Array.isArray(data)) {
-                        data = data.filter(e => e.scope = options.scope);
+                        data = data.filter(e => e.scope === options.scope);
                         if (data[0]) {
                             version = data[0].version;
                         }
