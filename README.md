@@ -50,12 +50,12 @@ npm run test
 npm run integration
 ```   
 
-> Nota Bene. For some reasons the Rollback Plugin task sometimes fails on the ServiceNow instances despite of Plugin Activate success. You can try to run test again and get green status. Also, the Apply Changes task is now commented due to existing difference between API and interface processing at ServiceNow. Please, check this later. 
+> Note: The Rollback Plugin task will sometimes fails on ServiceNow instances despite a previously successful response to a Plugin Activate task. You can retry the test suite and hope the flakiness disappears and the tests pass. Also, the Apply Changes task in the integration tests is temporarily commented out while differences in behavior between the API and UI for Apply Remote Changes in an instance (Orlando or Paris) are being resolved. 
 
 ## Build
 
 ```shell script
-npm run buid
+npm run build
 ```
 
 This command will check the latest version among all the tasks jsons an extension' manifest file, update every one with the latest, copy all necessary files and folders into folder 'out' and generate the .vsix file with name `servicenow.extension.x.y.z.vsix` where x.y.z is the current version of extension. This file is ready to upload into the marketplace.
