@@ -1,4 +1,4 @@
-# ServiceNow CI/CD plugin for Azure Devops pipelines
+# ServiceNow CI/CD Extension for Azure Pipelines
 
 ## Contents
 
@@ -19,7 +19,7 @@ This extension covers only CI/CD subset of ServiceNow REST API and it aims to he
 
 ## Installation
 ```shell script
-git clone git@github.com:antonmalyi/cicdplugin.git
+git clone https://github.com/ServiceNow/servicenow-cicd-azure-extension.git
 cd cicdplugin
 npm install
 ```
