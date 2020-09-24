@@ -2,13 +2,13 @@
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
   <Metadata>
     <Identity Language="en-US" Id="vss-services-servicenow-cicd" Version="1.4.0" Publisher="ServiceNow" />
-    <DisplayName>ServiceNow® Extension for CI/CD</DisplayName>
+    <DisplayName>ServiceNow CI/CD</DisplayName>
     <Description xml:space="preserve">This extension provides Tasks for Azure Pipelines to enable CI/CD with ServiceNow applications.</Description>
     <Categories>Azure Pipelines</Categories>
     <Properties>
       <Property Id="Microsoft.VisualStudio.Services.Branding.Color" Value="#81b5a1" />
     </Properties>
-    <GalleryFlags>Private</GalleryFlags>
+    <GalleryFlags>Public</GalleryFlags>
     <Icon>images/service-now.png</Icon>
     <PublisherDetails>
       <DisplayName>ServiceNow</DisplayName>
