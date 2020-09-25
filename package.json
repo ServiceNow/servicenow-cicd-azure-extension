@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/antonmalyi/cicdplugin.git"
+    "url": "git+ssh://git@github.com:ServiceNow/servicenow-cicd-azure-extension.git"
   },
   "keywords": [
     "azure",
@@ -18,12 +18,12 @@
     "extension",
     "cicd"
   ],
-  "author": "SoftServe inc.",
+  "author": "ServiceNow",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/antonmalyi/cicdplugin/issues"
+    "url": "https://github.com/ServiceNow/servicenow-cicd-azure-extension/issues"
   },
-  "homepage": "https://github.com/antonmalyi/cicdplugin#readme",
+  "homepage": "https://github.com/ServiceNow/servicenow-cicd-azure-extension#readme",
   "dependencies": {
     "archiver": "^5.0.0",
     "fs-extra": "^9.0.1"
