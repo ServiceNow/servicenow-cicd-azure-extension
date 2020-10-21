@@ -2,7 +2,7 @@
     "$schema": "https://raw.githubusercontent.com/Microsoft/azure-pipelines-task-lib/master/tasks.schema.json",
     "id": "23e1b115-2add-408e-aad7-a3bd182106b4",
     "name": "ServiceNow-CICD-Plugin-Activate",
-    "friendlyName": "ServiceNow CI/CD add a plugin",
+    "friendlyName": "ServiceNow CI/CD Activate Plugin",
     "description": "Activate a desired plugin on your ServiceNow instance",
     "helpMarkDown": "",
     "category": "Package",
