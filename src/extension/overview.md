@@ -34,7 +34,7 @@ Build steps are not independently named, and can be run as `task.sh` throughout 
 
 **Get Started Video**
 
-[![](http://img.youtube.com/vi/09xZXgVZmME/0.jpg)](http://www.youtube.com/watch?v=09xZXgVZmME "Get Started with Azure Pipelines in 10 Minutes")
+[![](https://github.com/ServiceNow/servicenow-cicd-azure-extension/raw/stepbystepinstructions/src/extension/youtube_link.png)](http://www.youtube.com/watch?v=09xZXgVZmME "Get Started with Azure Pipelines in 10 Minutes")
 
 ## API docs
 
