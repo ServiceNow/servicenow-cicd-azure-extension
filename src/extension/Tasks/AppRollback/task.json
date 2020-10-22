@@ -12,7 +12,7 @@
         "Minor": 3,
         "Patch": 26
     },
-    "instanceNameFormat": "ServiceNow CI/CD Rollback App",
+    "instanceNameFormat": "ServiceNow CI/CD Rollback Application",
     "showEnvironmentVariables": false,
     "inputs": [
         {
