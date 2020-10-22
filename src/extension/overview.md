@@ -13,7 +13,7 @@
 
 ## Intro
 
-This extension provides Tasks for setting up Continuous Integration (CI) or Continuous Delivery (CD) workflows using Azure Pipelines for developing applications on the Now Platform. Click on the below screenshot to see a video for how you can use this extension to get started faster. 
+This extension provides Tasks for setting up Continuous Integration (CI) or Continuous Delivery (CD) workflows using Azure Pipelines for developing applications on the Now Platform. **Click on the below screenshot to see a video for how you can use this extension to get started faster.**
 
 [![](https://github.com/ServiceNow/servicenow-cicd-azure-extension/raw/stepbystepinstructions/src/extension/youtube_link.png)](http://www.youtube.com/watch?v=09xZXgVZmME "Get Started with Azure Pipelines in 10 Minutes")
 
