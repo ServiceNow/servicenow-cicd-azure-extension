@@ -6,6 +6,8 @@
 - [Usage](#usage)
 - [API Docs](#api-docs)
 - [List of Build Steps](#build-steps)
+- [Support Model](#support-model)
+- [Governance Model](#governance-model)
 
 ---
 
