@@ -14,8 +14,7 @@
 
 ## Intro
 
-Here you can find the sourcecode of ServiceNow's extension for the Azure Devops pipelines.
-This extension covers only CI/CD subset of ServiceNow REST API and it aims to help people integrate both Continues Integration and Continues Delivery into Azure pipelines infrastructure.
+This extension is [published on the Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=ServiceNow.vss-services-servicenow-cicd) to help Now Platform application developers get started faster in setting up CI/CD pipelines using Azure Pipelines. Please see the extension landing page for more instructions on how to get set up. 
 
 ## Installation
 ```shell script
