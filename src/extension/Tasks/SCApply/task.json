@@ -9,8 +9,8 @@
     "author": "ServiceNow",
     "version": {
         "Major": 1,
-        "Minor": 3,
-        "Patch": 26
+        "Minor": 5,
+        "Patch": 1
     },
     "instanceNameFormat": "ServiceNow CI/CD Apply Changes",
     "showEnvironmentVariables": false,
