@@ -9,8 +9,8 @@
     "author": "ServiceNow",
     "version": {
         "Major": 1,
-        "Minor": 5,
-        "Patch": 1
+        "Minor": 6,
+        "Patch": 0
     },
     "instanceNameFormat": "ServiceNow CI/CD Start Test Suite",
     "showEnvironmentVariables": false,
@@ -43,12 +43,12 @@
             "required": true,
             "helpMarkDown": "Name of the browser to use to run the client test. This value must match what is specified in the scheduled client test runner.",
             "options": {
-                "Any": "any",
-                "Chrome": "chrome",
-                "Firefox": "firefox",
-                "Edge": "edge",
-                "IE": "ie",
-                "Safari": "safari"
+                "any": "any",
+                "chrome": "chrome",
+                "firefox": "firefox",
+                "edge": "edge",
+                "ie": "ie",
+                "safari": "safari"
             },
             "defaultValue": "any"
         },
