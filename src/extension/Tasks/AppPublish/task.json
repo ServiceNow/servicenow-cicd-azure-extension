@@ -9,7 +9,7 @@
     "author": "ServiceNow",
     "version": {
         "Major": 1,
-        "Minor": 5,
+        "Minor": 6,
         "Patch": 1
     },
     "instanceNameFormat": "ServiceNow CI/CD Publish Application",
