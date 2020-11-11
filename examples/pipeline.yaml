@@ -39,7 +39,7 @@ stages:
       inputs:
         connectedServiceName: 'chiarngtestdemo'
         testSuiteSysId: '$(TESTSUITEID)'
-        browserName: 'Any'
+        browserName: 'any'
   - job: Rollback
     dependsOn: InstallToTest_RunTest
     condition: failed()
