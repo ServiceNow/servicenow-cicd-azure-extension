@@ -1,7 +1,7 @@
 ServiceNow CI/CD Extension for Azure Pipelines
 ===================
 
-[![Documentation](https://img.shields.io/github/release/ServiceNow/servicenow-cicd-azure-extension.svg?label=Documentation)](https://marketplace.visualstudio.com/items?itemName=ServiceNow.vss-services-servicenow-cicd)
+[![Documentation](https://img.shields.io/github/release/ServiceNow/servicenow-cicd-azure-extension.svg?label=Documentation&color=blueviolet)](https://marketplace.visualstudio.com/items?itemName=ServiceNow.vss-services-servicenow-cicd)
 [![GitHub release](https://img.shields.io/github/release/ServiceNow/servicenow-cicd-azure-extension.svg?label=Release)](https://github.com/ServiceNow/servicenow-cicd-azure-extension/releases/latest)
 [![Contributors](https://img.shields.io/github/contributors/ServiceNow/servicenow-cicd-azure-extension.svg)](https://github.com/ServiceNow/servicenow-cicd-azure-extension/graphs/contributors)
 
