@@ -23,7 +23,10 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
     ) {
         throw new Error('Incorrect auth');
     }
+   instance = instance.replace(/(^\https:|^)\/\//, '').replace(/^\/|\/$/g, '');
+    /* Replaced the regular expression so that if the instance URL contains extra parameters those can be used.
     instance = instance.replace(/(?:^https?:\/\/)?([^\/]+)(?:\/.*$)/, '$1');
+    */
     if (!instance.length) {
         throw new Error('Incorrect instance');
     }
