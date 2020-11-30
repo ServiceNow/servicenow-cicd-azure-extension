@@ -80,10 +80,10 @@
       "properties": {
         "name": "ServiceNow CICD",
         "displayName": "ServiceNow CICD",
-        "helpMarkDown": "Use to connect the Azure pipeline to ServiceNow CICD.",
+        "helpMarkDown": "Define your ServiceNow instance endpoints and service account credentials to use the CI/CD APIs.",
         "url": {
           "displayName": "ServiceNow Instance",
-          "helpText": "The Service Now instance Url, e.g. `https://instance.service-now.com`."
+          "helpText": "Enter the full URL for your ServiceNow instance, for example `https://instancename.service-now.com/`, or `https://proxy.company.com/instancename/`."
         },
         "authenticationSchemes": [
           {
