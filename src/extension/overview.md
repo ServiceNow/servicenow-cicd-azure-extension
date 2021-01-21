@@ -15,7 +15,7 @@
 
 This extension provides Tasks for setting up Continuous Integration (CI) or Continuous Delivery (CD) workflows using Azure Pipelines for developing applications on the Now Platform. **Click on the below screenshot to see a video for how you can use this extension to get started faster.**
 
-[![Get Started with Azure Pipelines in 10 Minutes](https://github.com/ServiceNow/servicenow-cicd-azure-extension/raw/master/src/extension/youtube_link.png)](http://www.youtube.com/watch?v=09xZXgVZmME "Get Started with Azure Pipelines in 10 Minutes")
+[![Setting up your first CI/CD pipeline with Azure Pipelines](https://github.com/ServiceNow/servicenow-cicd-azure-extension/raw/master/src/extension/youtube_link.png)](https://www.youtube.com/watch?v=ncI0etU33P0 "Setting up your first CI/CD pipeline with Azure Pipelines")
 
 The Tasks are API wrappers for the [CI/CD APIs](https://developer.servicenow.com/dev.do#!/reference/api/paris/rest/cicd-api) first released with Orlando, and do not cover other ServiceNow APIs. They will currently work with the Orlando and Paris releases. 
 
