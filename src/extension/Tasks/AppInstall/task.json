@@ -42,6 +42,20 @@
             "label": "Version",
             "required": false,
             "helpMarkDown": "Version of the application to install. Default: Latest"
+        },
+        {
+            "name": "autoUpgradeBaseApp",
+            "type": "boolean",
+            "label": "Auto Upgrade Base App",
+            "required": false,
+            "helpMarkDown": "Only applicable if Application Customization is active and the associated application is a higher version than the currently installed version. Default: false"
+        },
+        {
+            "name": "baseAppVersion",
+            "type": "string",
+            "label": "Base App Version",
+            "required": false,
+            "helpMarkDown": "Version of the base application on which to apply the customizations."
         }
     ],
     "runsOn": [

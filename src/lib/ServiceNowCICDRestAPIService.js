@@ -122,7 +122,8 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
     /**
      * Install the specified application from the application repository onto the local instance
      * available options are:
-     * scope, sys_id, version
+     * scope, sys_id, version, auto_upgrade_base_app, base_app_version
+     * 
      * required options are:
      * scope|sys_id
      * @param options
@@ -135,7 +136,7 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
         if (options.scope && options.sys_id) {
             delete options.scope;
         }
-        return request('app_repo/install', {fields: 'sys_id scope version', options}, 'POST')
+        return request('app_repo/install', {fields: 'sys_id scope version auto_upgrade_base_app base_app_version', options}, 'POST')
             .then(resp => getProgress(resp))
             .catch(err => Promise.reject(err.errorMessage))
             .then(resp => resp.rollback_version || (resp.results && resp.results.rollback_version));
