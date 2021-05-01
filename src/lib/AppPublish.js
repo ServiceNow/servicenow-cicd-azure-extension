@@ -2,7 +2,13 @@ const APIService = require('./ServiceNowCICDRestAPIService');
 const fs = require('fs');
 const path = require('path');
 
-function getCurrVersionFromFS(sysId, scope) {
+function getIncrement() {
+
+}
+
+function getCurrVersionFromFS(options) {
+    const { sys_id: sysId, scope, is_app_customization: isAppCustomization } = options;
+    const filePrefix = isAppCustomization ? 'sys_app_customization_' : 'sys_app_' ;
     const sourceDir = process.env['BUILD_SOURCESDIRECTORY'];
     let version;
     if (sourceDir) {
@@ -17,7 +23,7 @@ function getCurrVersionFromFS(sysId, scope) {
                     console.log('Trying ' + projectPath);
                     if (sysId) {
                         const verMatch = fs
-                            .readFileSync(path.join(projectPath, 'sys_app_' + sysId + '.xml'))
+                            .readFileSync(path.join(projectPath, filePrefix + sysId + '.xml'))
                             .toString()
                             .match(/<version>([^<]+)<\/version>/);
                         if (verMatch) {
@@ -27,7 +33,8 @@ function getCurrVersionFromFS(sysId, scope) {
                         const dirContent = fs.readdirSync(projectPath);
                         if (dirContent) {
                             const escapedScope = scope.replace(/&/g, '&amp;').replace(/</g, '&lt;');
-                            let apps = dirContent.filter(f => /^sys_app_[0-9a-f]{32}\.xml$/.test(f));
+                            const regex = new RegExp(`^${filePrefix}[0-9a-f]{32}\.xml$`);
+                            let apps = dirContent.filter(f => regex.test(f));
                             for (const app of apps) {
                                 console.log('Try ' + app);
                                 const fcontent = fs.readFileSync(path.join(projectPath, app)).toString();
@@ -61,12 +68,17 @@ module.exports = {
     run: () => {
         let options = {};
         let version;
-        'scope sys_id dev_notes'
+        'scope sys_id dev_notes is_app_customization increment_by'
             .split(' ')
             .forEach(name => {
                 const val = pipeline.get(name);
                 if (val) {
-                    options[name] = val;
+                    if (name === 'is_app_customization') {
+                        // convert 'false' to false
+                        options[name] = val === 'true' ? true : false;
+                    } else {
+                        options[name] = val;
+                    }
                 }
             });
         let versionType = pipeline.get('versionFormat');
@@ -82,18 +94,24 @@ module.exports = {
                 break;
             case "detect":
                 console.log('Trying to get version from FS')
-                version = getCurrVersionFromFS(options.sys_id, options.scope);
+                version = getCurrVersionFromFS(options);
                 if (version) {
-                    console.log('Current version is ' + version + ', incrementing');
+                    if (+options.increment_by < 0) {
+                        return Promise.reject('Increment_by should be positive or zero.');
+                    } else {
+                        increment = options.increment_by ? +options.increment_by : 0;
+                    }
+
+                    console.log('Current version is ' + version + ', incrementing by ' + increment);
                     version = version.split('.').map(digit => parseInt(digit));
-                    version[2]++;
+                    version[2]+=increment;
                     version = version.join('.');
                     options.version = version;
                 }
                 break;
              case "detect_without_autoincrement":
                 console.log('Trying to get version from FS')
-                version = getCurrVersionFromFS(options.sys_id, options.scope);
+                version = getCurrVersionFromFS(options);
                 if (version) {
                     options.version = version;
                 }

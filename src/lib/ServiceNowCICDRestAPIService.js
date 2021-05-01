@@ -185,15 +185,26 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
         if (!options || !(options.scope || options.sys_id)) {
             return Promise.reject('Please specify scope or sys_id');
         }
+
+        if (!options || (options.is_app_customization && !options.sys_id)) {
+            return Promise.reject('Sys_id is not defined, while is_app_customization is checked.');
+        }
+        
         if (options.scope && options.sys_id) {
             delete options.scope;
         }
         let promise = Promise.resolve();
         if (!options.version && options.autodetect) {
+            let increment;
+            if (+options.increment_by < 0) {
+                return Promise.reject('Increment_by should be positive or zero.');
+            } else {
+                increment = options.increment_by ? +options.increment_by : 0;
+            }
             promise = getCurrentApplicationVersion(options).then(version=>{
                 if(version) {
                     version = version.split('.');
-                    version[2]++;
+                    version[2]+=increment;
                     version = version.join('.');
                     options.version = version;
                 }
@@ -282,7 +293,8 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
      */
     function getCurrentApplicationVersion(options) {
         if (options.sys_id) {
-            return request(`https://${config.instance}/api/now/table/sys_app/${options.sys_id}?sysparm_fields=version`)
+            const table = options.is_app_customization ? 'sys_app_customization' : 'sys_app';
+            return request(`https://${config.instance}/api/now/table/${table}/${options.sys_id}?sysparm_fields=version`)
                 .then(data => {
                     return (data && data.version) || false;
                 })
