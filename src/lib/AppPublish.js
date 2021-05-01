@@ -2,10 +2,6 @@ const APIService = require('./ServiceNowCICDRestAPIService');
 const fs = require('fs');
 const path = require('path');
 
-function getIncrement() {
-
-}
-
 function getCurrVersionFromFS(options) {
     const { sys_id: sysId, scope, is_app_customization: isAppCustomization } = options;
     const filePrefix = isAppCustomization ? 'sys_app_customization_' : 'sys_app_' ;
