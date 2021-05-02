@@ -4,7 +4,6 @@ const path = require('path');
 
 function getCurrVersionFromFS(options) {
     const { sys_id: sysId, scope, is_app_customization: isAppCustomization } = options;
-    const filePrefix = isAppCustomization ? 'sys_app_customization_' : 'sys_app_' ;
     const sourceDir = process.env['BUILD_SOURCESDIRECTORY'];
     let version;
     if (sourceDir) {
@@ -18,6 +17,7 @@ function getCurrVersionFromFS(options) {
                     const projectPath = path.join(sourceDir, match[1]);
                     console.log('Trying ' + projectPath);
                     if (sysId) {
+                        const filePrefix = isAppCustomization ? 'sys_app_customization_' : 'sys_app_' ;
                         const verMatch = fs
                             .readFileSync(path.join(projectPath, filePrefix + sysId + '.xml'))
                             .toString()
@@ -29,8 +29,8 @@ function getCurrVersionFromFS(options) {
                         const dirContent = fs.readdirSync(projectPath);
                         if (dirContent) {
                             const escapedScope = scope.replace(/&/g, '&amp;').replace(/</g, '&lt;');
-                            const regex = new RegExp(`^${filePrefix}[0-9a-f]{32}\.xml$`);
-                            let apps = dirContent.filter(f => regex.test(f));
+                            // use sys_app_ cause it's not customization table for sure(sys_id is not provided)
+                            let apps = dirContent.filter(f => /^sys_app_[0-9a-f]{32}\.xml$/.test(f));
                             for (const app of apps) {
                                 console.log('Try ' + app);
                                 const fcontent = fs.readFileSync(path.join(projectPath, app)).toString();
