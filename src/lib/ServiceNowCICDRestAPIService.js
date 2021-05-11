@@ -53,6 +53,7 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
     this.appRepoRollback = appRepoRollback;
     this.appRepoPublish = appRepoPublish;
     this.SCApplyChanges = SCApplyChanges;
+    this.scanInstance = scanInstance;
 
     /**
      * Activate plugin by its ID
@@ -117,6 +118,21 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
                 err.response : Promise.reject(err.errorMessage))
             .then(resp => getPropertyByPath(resp, 'results.id'))
             .then(resultID => resultID ? getTSResults(resultID) : Promise.reject('No result ID'))
+    }
+
+    /**
+     * Scan instance, available options are:
+     * full, point, suiteCombo, suiteScoped, suiteUpdate
+     * 
+     * @param url       string
+     * @param options   object
+     * @param payload   array
+     * @returns {Promise<string>} If available, the previously installed version. If not available, null.
+     */
+    function scanInstance(url, options, payload = '') {
+        return request(url, {fields: 'target_table target_sys_id', options}, 'POST', payload)
+            .then(resp => getProgress(resp))
+            .catch(err => Promise.reject(err.errorMessage))
     }
 
     /**
@@ -256,14 +272,20 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
                         process.stdout.write('\n');
                         response.results = getPropertyByPath(progressBody, 'links.results');
                         if (status === 2) {
-                            return Promise.resolve(response);
+                            return Promise.resolve(progressBody);
                         } else {
                             progressBody.results = response.results;
                             return Promise.reject(new respError(progressBody.error || progressBody.status_message, progressBody));
                         }
                     } else {
-                        process.stdout.write('.');
-                        return wait(config.delayInProgressPolling).then(() => getProgress(response))
+                        if (status === 1) {
+                            const percentage = getPropertyByPath(response, 'percent_complete');
+                            if (percentage) {
+                                process.stdout.write(`${percentage}% complete`);
+                            }
+                        }
+                        process.stdout.write('.\n');
+                        return wait(config.delayInProgressPolling).then(() => getProgress(progressBody))
                     }
                 });
         } else {
@@ -304,13 +326,14 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
 
     /**
      * Make a wrapper to https request
-     * @param url
-     * @param data object|boolean
-     * @param method
+     * @param url       string
+     * @param data      object|boolean
+     * @param method    string
+     * @param payload   string
      * @returns {Promise<string>}
      */
 
-    function request(url, data = false, method = 'GET') {
+    function request(url, data = false, method = 'GET', payload = '') {
         if (transport) {
             return transport(url, data, method);
         }
@@ -330,7 +353,7 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
         }
         options.headers.accept = 'application/json';
         options.headers['User-Agent'] = 'sncicd_extint_azure';
-        return httpsRequest(options)
+        return httpsRequest(options, payload)
             .catch(err => {
                 // console.error(err);
                 let message = err.code || (
@@ -415,12 +438,12 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
  * @returns {string}
  */
 function createURL(prefix, fields, options) {
-    return prefix + '?' +
-        fields
-            .split(' ')
-            .filter(optName => options.hasOwnProperty(optName))
-            .map(optName => optName + '=' + encodeURIComponent(options[optName]))
-            .join('&');
+    const params = fields
+        .split(' ')
+        .filter(optName => options.hasOwnProperty(optName))
+        .map(optName => optName + '=' + encodeURIComponent(options[optName]));
+    
+    return prefix + (params.length ? '?' + params.join('&') : '');
 }
 
 module.exports = ServiceNowCICDRestAPIService;
