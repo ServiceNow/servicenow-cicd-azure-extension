@@ -11,6 +11,7 @@ const tasks = [
     'PluginRollback',
     'SCApply',
     'TestRun',
+    'ScanInstance'
 ];
 
 function copy(src, dst) {
