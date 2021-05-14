@@ -50,7 +50,7 @@ module.exports = {
             .then(function (response) {
                 console.log('\x1b[32mSuccess\x1b[0m\n');
                 if (response.status_message) {
-                    console.log('Status is: ' + response.status_message);
+                    console.log('Status message: ' + response.status_message);
                     return response.status_message;
                 }
             })

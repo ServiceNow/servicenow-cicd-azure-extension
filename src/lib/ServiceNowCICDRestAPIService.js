@@ -131,7 +131,7 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
      */
     function scanInstance(url, options, payload = '') {
         return request(url, {fields: 'target_table target_sys_id', options}, 'POST', payload)
-            .then(resp => getProgress(resp))
+            .then(resp => getProgress(resp, true))
             .catch(err => Promise.reject(err.errorMessage))
     }
 
@@ -258,9 +258,10 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
     /**
      * Wait until progress resolves and return result or reject on error.
      * @param response object
+     * @param returnProgress bool
      * @returns {Promise<string>|<object>}
      */
-    function getProgress(response) {
+     function getProgress(response, returnProgress = false) {
         let status = +response.status;
         const progressId = getPropertyByPath(response, 'links.progress.id');
         if (progressId && (status === 0 || status === 1)) {
@@ -272,20 +273,20 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
                         process.stdout.write('\n');
                         response.results = getPropertyByPath(progressBody, 'links.results');
                         if (status === 2) {
-                            return Promise.resolve(progressBody);
+                            return Promise.resolve(returnProgress ? progressBody : response);
                         } else {
                             progressBody.results = response.results;
                             return Promise.reject(new respError(progressBody.error || progressBody.status_message, progressBody));
                         }
                     } else {
                         if (status === 1) {
-                            const percentage = getPropertyByPath(response, 'percent_complete');
+                            const percentage = getPropertyByPath(progressBody, 'percent_complete');
                             if (percentage) {
                                 process.stdout.write(`${percentage}% complete`);
                             }
                         }
                         process.stdout.write('.\n');
-                        return wait(config.delayInProgressPolling).then(() => getProgress(progressBody))
+                        return wait(config.delayInProgressPolling).then(() => getProgress(response, returnProgress))
                     }
                 });
         } else {
