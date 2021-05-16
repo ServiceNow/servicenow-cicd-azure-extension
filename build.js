@@ -11,6 +11,8 @@ const tasks = [
     'PluginRollback',
     'SCApply',
     'TestRun',
+    'ScanInstance',
+    'BatchInstall'
 ];
 
 function copy(src, dst) {
@@ -60,7 +62,7 @@ function setVersion(version) {
             .then(json => {
                 json.version = objVersion;
                 return fse.writeJson(fName, json, {spaces: 4});
-            })
+            });
     });
     promises.push(new Promise((resolve, reject) => {
         const fName = path.join(__dirname, 'src/extension/extension.vsixmanifest');

@@ -1,0 +1,86 @@
+{
+    "$schema": "https://raw.githubusercontent.com/Microsoft/azure-pipelines-task-lib/master/tasks.schema.json",
+    "id": "13e1b115-2add-408e-aad7-a3bd182106b8",
+    "name": "ServiceNow-CICD-Batch-Install",
+    "friendlyName": "Schechot CI/CD Batch Install",
+    "description": "Installs Batch and get progress and results of runs.",
+    "helpMarkDown": "",
+    "category": "Package",
+    "author": "Schechot",
+    "version": {
+        "Major": 1,
+        "Minor": 8,
+        "Patch": 0
+    },
+    "instanceNameFormat": "Schechot CI/CD Batch Install",
+    "showEnvironmentVariables": false,
+    "inputs": [
+        {
+            "name": "connectedServiceName",
+            "type": "connectedService:SCHECHOT CICD",
+            "label": "ServiceNow endpoint",
+            "required": true,
+            "helpMarkDown": "ServiceNow endpoint connection"
+        },
+        {
+            "name": "payloadSource",
+            "label": "Batch Payload",
+            "type": "radio",
+            "options": {
+                "file": "Read payload from file.",
+                "pipeline": "Define payload manually."
+            },
+            "defaultValue": "file",
+            "helpMarkDown": "Select corresponding option to define batch payload.",
+            "required": true
+        },
+        {
+            "name": "batchName",
+            "type": "string",
+            "label": "Name",
+            "required": true,
+            "helpMarkDown": "Name field in a batch payload.",
+            "visibleRule": "payloadSource=pipeline"
+        },
+        {
+            "name": "batchNotes",
+            "type": "string",
+            "label": "Notes",
+            "required": false,
+            "helpMarkDown": "Notes field in a batch payload.",
+            "visibleRule": "payloadSource=pipeline"
+        },
+        {
+            "name": "batchPackages",
+            "type": "string",
+            "label": "Packages",
+            "required": true,
+            "helpMarkDown": "Stringified JSON with packages to install, comma-separated.",
+            "visibleRule": "payloadSource=pipeline"
+        },
+        {
+            "name": "batchFile",
+            "type": "string",
+            "label": "Batch File",
+            "required": false,
+            "helpMarkDown": "Name or path to the batch file in a repo. Default: manifest.json",
+            "visibleRule": "payloadSource=file"
+        }
+    ],
+    "runsOn": [
+        "Agent",
+        "MachineGroup",
+        "Server"
+    ],
+    "execution": {
+        "Node": {
+            "target": "index.js"
+        }
+    },
+    "outputVariables": [
+        {
+            "name": "rollbackUrl",
+            "description": "Rollback Url"
+        }
+    ]
+}

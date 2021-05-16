@@ -3,7 +3,7 @@ const URL = require('url');
 const respError = function (error, response) {
     this.errorMessage = error;
     this.response = response;
-}
+};
 
 /**
  *
@@ -34,7 +34,7 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
     const config = {
         instance,
         auth,
-        delayInProgressPolling: 1000
+        delayInProgressPolling: 3000
     };
     const errCodeMessages = {
         401: 'The user credentials are incorrect.',
@@ -53,6 +53,8 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
     this.appRepoRollback = appRepoRollback;
     this.appRepoPublish = appRepoPublish;
     this.SCApplyChanges = SCApplyChanges;
+    this.scanInstance = scanInstance;
+    this.batchInstall = batchInstall;
 
     /**
      * Activate plugin by its ID
@@ -116,7 +118,74 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
             .catch(err => (err.response.results && err.response.results.id) ?
                 err.response : Promise.reject(err.errorMessage))
             .then(resp => getPropertyByPath(resp, 'results.id'))
-            .then(resultID => resultID ? getTSResults(resultID) : Promise.reject('No result ID'))
+            .then(resultID => resultID ? getTSResults(resultID) : Promise.reject('No result ID'));
+    }
+
+    /**
+     * Scan instance, available options are:
+     * full, point, suiteCombo, suiteScoped, suiteUpdate
+     * 
+     * @param url       string
+     * @param options   object
+     * @param payload   string
+     * @returns {Promise<string>} If available, the previously installed version. If not available, null.
+     */
+    function scanInstance(url, options, payload = '') {
+        return request(url, {fields: 'target_table target_sys_id', options}, 'POST', payload)
+            .then(resp => getProgress(resp, true))
+            .catch(err => Promise.reject(err.errorMessage));
+    }
+
+    /**
+     * Batch Install. Payload could be obtained from repo file or workflow definition.
+     * 
+     * @param url       string
+     * @param payload   string
+     * @returns {Promise<string>} If available, the previously installed version. If not available, null.
+     */
+    function batchInstall(url, payload) {
+        return request(url, false, 'POST', payload)
+            .then(resp => getProgress(resp))
+            .then(resp => {
+                const progressUrl = resp.links.progress.url;
+                const resultsUrl = resp.links.results.url;
+                const rollbackUrl = resp.links.rollback.url;
+                request(progressUrl).then(response => {
+                    if (response.status_message) {
+                        console.log('Status is: ' + response.status_message);
+                        return response.status_message;
+                    }
+                });
+                extractBatchResults(resultsUrl).then(msg => msg && console.log("Status messages:", msg));
+
+                return rollbackUrl;
+            })
+            .catch(errObj => {
+                try {
+                    const resultsUrl = errObj.response.results.url;
+                    extractBatchResults(resultsUrl).then(msg => msg && console.log("Status messages:", msg));
+                    return Promise.reject(errObj.errorMessage);
+                } catch (error) {
+                    return Promise.reject();
+                }
+            });
+    }
+
+    /**
+     * Extract batch install verbose messages
+     * 
+     * @param url   string
+     * @returns     string
+     */
+    function extractBatchResults(url) {
+        return url && request(url).then((resp) => {
+            let msg = '';
+            resp.batch_items.forEach((item) => {
+                msg += item.status_message && ('\n' + item.status_message);
+            });
+
+            return msg;
+        }).catch(err => {console.log(err)});
     }
 
     /**
@@ -138,7 +207,9 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
         return request('app_repo/install', {fields: 'sys_id scope version', options}, 'POST')
             .then(resp => getProgress(resp))
             .catch(err => Promise.reject(err.errorMessage))
-            .then(resp => resp.rollback_version || (resp.results && resp.results.rollback_version));
+            .then(resp => { 
+                return resp.rollback_version || (resp.results && resp.results.rollback_version);
+            });
     }
 
     /**
@@ -242,9 +313,10 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
     /**
      * Wait until progress resolves and return result or reject on error.
      * @param response object
+     * @param returnProgress bool
      * @returns {Promise<string>|<object>}
      */
-    function getProgress(response) {
+    function getProgress(response, returnProgress = false) {
         let status = +response.status;
         const progressId = getPropertyByPath(response, 'links.progress.id');
         if (progressId && (status === 0 || status === 1)) {
@@ -256,14 +328,20 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
                         process.stdout.write('\n');
                         response.results = getPropertyByPath(progressBody, 'links.results');
                         if (status === 2) {
-                            return Promise.resolve(response);
+                            return Promise.resolve(returnProgress ? progressBody : response);
                         } else {
-                            progressBody.results = response.results;
+                            progressBody.results = response.results || getPropertyByPath(response, 'links.results');
                             return Promise.reject(new respError(progressBody.error || progressBody.status_message, progressBody));
                         }
                     } else {
-                        process.stdout.write('.');
-                        return wait(config.delayInProgressPolling).then(() => getProgress(response))
+                        if (status === 1) {
+                            const percentage = getPropertyByPath(progressBody, 'percent_complete');
+                            if (percentage) {
+                                process.stdout.write(`${percentage}% complete`);
+                            }
+                        }
+                        process.stdout.write('.\n');
+                        return wait(config.delayInProgressPolling).then(() => getProgress(response, returnProgress));
                     }
                 });
         } else {
@@ -310,7 +388,7 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
      * @returns {Promise<string>}
      */
 
-    function request(url, data = false, method = 'GET') {
+    function request(url, data = false, method = 'GET', payload = '') {
         if (transport) {
             return transport(url, data, method);
         }
@@ -330,9 +408,9 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
         }
         options.headers.accept = 'application/json';
         options.headers['User-Agent'] = 'sncicd_extint_azure';
-        return httpsRequest(options)
+
+        return httpsRequest(options, payload)
             .catch(err => {
-                // console.error(err);
                 let message = err.code || (
                     err.statusCode && (
                         errCodeMessages[err.statusCode] || err.statusCode
@@ -354,7 +432,7 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
                     message = 'Instance is hibernated';
                 }
                 return Promise.reject(new respError(message, err));
-            })
+            });
     }
 
     /**
