@@ -25,6 +25,7 @@ stages:
         connectedServiceName: 'chiarngdevdemo'
         sysId: '$(APPSYSID)'
         versionFormat: 'detect'
+        isAppCustomization: true
 
 - stage: Test
   condition: and(succeeded(), ne(variables['Build.SourceBranch'], 'refs/heads/master'))
@@ -35,6 +36,8 @@ stages:
       inputs:
         connectedServiceName: 'chiarngtestdemo'
         sysId: '$(APPSYSID)'
+        autoUpgradeBaseApp: true
+        baseAppVersion: '<ver>'
     - task: ServiceNow-CICD-TestSuite-Run@1
       inputs:
         connectedServiceName: 'chiarngtestdemo'
