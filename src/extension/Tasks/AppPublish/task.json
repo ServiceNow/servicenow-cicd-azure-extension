@@ -52,6 +52,22 @@
             "required": true
         },
         {
+            "name": "isAppCustomization",
+            "type": "boolean",
+            "label": "Is App Customisation",
+            "required": false,
+            "visibleRule": "versionFormat=detect || versionFormat=autodetect || versionFormat=detect_without_autoincrement",
+            "helpMarkDown": "Requires sys_id instead of scope if true."
+        },
+        {
+            "name": "incrementBy",
+            "type": "string",
+            "label": "Increment By",
+            "required": false,
+            "helpMarkDown": "Increment version value. Default: 0.",
+            "visibleRule": "versionFormat=detect || versionFormat=autodetect"
+        },
+        {
             "name": "version",
             "type": "string",
             "label": "Version",
@@ -85,7 +101,7 @@
             "target": "index.js"
         }
     },
-    "OutputVariables": [
+    "outputVariables": [
         {
             "name": "publishVersion",
             "description": "The current publication version."

@@ -2,6 +2,18 @@ const APIService = require('./ServiceNowCICDRestAPIService');
 const fs = require('fs');
 const path = require('path');
 
+/**
+ * @param versionType   string
+ * @param options       object
+ * @throws Error
+ */
+function checkIsAppCustomization(versionType, options) {
+    if (['autodetect','detect','detect_without_autoincrement'].includes[versionType] && 
+        options.is_app_customization === true && !options.sys_id) {
+        throw Error('sys_id is not defined!');
+    }
+}
+
 function getCurrVersionFromFS(options) {
     const { sys_id: sysId, scope, is_app_customization: isAppCustomization } = options;
     const sourceDir = process.env['BUILD_SOURCESDIRECTORY'];
@@ -43,7 +55,7 @@ function getCurrVersionFromFS(options) {
                     }
                 }
             } else {
-                process.stderr.write('sn_source_control.properties not found\n')
+                process.stderr.write('sn_source_control.properties not found\n');
             }
         } catch (e) {
             process.stderr.write(e.toString() + '\n');
@@ -78,6 +90,7 @@ module.exports = {
                 }
             });
         let versionType = pipeline.get('versionFormat');
+        checkIsAppCustomization(versionType, options);
         switch (versionType) {
             case "exact":
                 options.version = pipeline.get('version', true);
@@ -89,7 +102,7 @@ module.exports = {
                         .replace(/\D+/g, '');
                 break;
             case "detect":
-                console.log('Trying to get version from FS')
+                console.log('Trying to get version from FS');
                 version = getCurrVersionFromFS(options);
                 if (version) {
                     if (+options.increment_by < 0) {
@@ -106,7 +119,7 @@ module.exports = {
                 }
                 break;
              case "detect_without_autoincrement":
-                console.log('Trying to get version from FS')
+                console.log('Trying to get version from FS');
                 version = getCurrVersionFromFS(options);
                 if (version) {
                     options.version = version;
@@ -134,6 +147,6 @@ module.exports = {
                 process.stderr.write('\x1b[31mPublication failed\x1b[0m\n');
                 process.stderr.write('The error is:' + err);
                 return Promise.reject(err);
-            })
+            });
     }
-}
+};
