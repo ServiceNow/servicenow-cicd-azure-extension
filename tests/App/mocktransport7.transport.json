@@ -1,10 +1,10 @@
 {
-  "app_repo/publish": [
+  "app_repo/rollback": [
     {
       "links": {
         "progress": {
-          "id": "06a84bca1b3ed01027dfa82b234bcbd5",
-          "url": "https://cicdazureappauthor.service-now.com/api/sn_cicd/progress/06a84bca1b3ed01027dfa82b234bcbd5"
+          "id": "eeb84b4a1bf65050251da82b234bcbdf",
+          "url": "https://cicdazureappclient.service-now.com/api/sn_cicd/progress/eeb84b4a1bf65050251da82b234bcbdf"
         }
       },
       "status": "0",
@@ -19,8 +19,8 @@
     {
       "links": {
         "progress": {
-          "id": "06a84bca1b3ed01027dfa82b234bcbd5",
-          "url": "https://cicdazureappauthor.service-now.com/api/sn_cicd/progress/06a84bca1b3ed01027dfa82b234bcbd5"
+          "id": "eeb84b4a1bf65050251da82b234bcbdf",
+          "url": "https://cicdazureappclient.service-now.com/api/sn_cicd/progress/eeb84b4a1bf65050251da82b234bcbdf"
         }
       },
       "status": "1",
@@ -28,18 +28,18 @@
       "status_message": "",
       "status_detail": "",
       "error": "",
-      "percent_complete": 2
+      "percent_complete": 94
     },
     {
       "links": {
         "progress": {
-          "id": "06a84bca1b3ed01027dfa82b234bcbd5",
-          "url": "https://cicdazureappauthor.service-now.com/api/sn_cicd/progress/06a84bca1b3ed01027dfa82b234bcbd5"
+          "id": "eeb84b4a1bf65050251da82b234bcbdf",
+          "url": "https://cicdazureappclient.service-now.com/api/sn_cicd/progress/eeb84b4a1bf65050251da82b234bcbdf"
         }
       },
       "status": "2",
       "status_label": "Successful",
-      "status_message": "Success!",
+      "status_message": "",
       "status_detail": "",
       "error": "",
       "percent_complete": 100

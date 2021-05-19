@@ -32,6 +32,7 @@
     "node": ">=8.0.0"
   },
   "devDependencies": {
-    "jest": "^26.4.0"
+    "jest": "^26.4.0",
+    "rewire": "^5.0.0"
   }
 }

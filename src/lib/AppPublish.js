@@ -2,6 +2,10 @@ const APIService = require('./ServiceNowCICDRestAPIService');
 const fs = require('fs');
 const path = require('path');
 
+function getBuildId() {
+    return process.env['BUILD_BUILDID'];
+}
+
 function getCurrVersionFromFS(sysId, scope) {
     const sourceDir = process.env['BUILD_SOURCESDIRECTORY'];
     let version;
@@ -76,9 +80,7 @@ module.exports = {
                 break;
             case "template":
                 options.version = pipeline.get('versionTemplate', true) +
-                    '.' +
-                    process.env['BUILD_BUILDID']
-                        .replace(/\D+/g, '');
+                    '.' + getBuildId().replace(/\D+/g, '');
                 break;
             case "detect":
                 console.log('Trying to get version from FS')
