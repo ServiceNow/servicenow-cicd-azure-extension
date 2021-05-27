@@ -207,6 +207,8 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
                     version[2]+=increment;
                     version = version.join('.');
                     options.version = version;
+                } else {
+                    return Promise.reject('Can\'t autodetect version number.');
                 }
             });
         }

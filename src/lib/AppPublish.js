@@ -8,9 +8,9 @@ const path = require('path');
  * @throws Error
  */
 function checkIsAppCustomization(versionType, options) {
-    if (['autodetect','detect','detect_without_autoincrement'].includes[versionType] && 
+    if (['autodetect','detect'].includes(versionType) && 
         options.is_app_customization === true && !options.sys_id) {
-        throw Error('sys_id is not defined!');
+        throw Error('Sys_id is not defined!');
     }
 }
 
@@ -103,6 +103,7 @@ module.exports = {
                 break;
             case "detect":
                 console.log('Trying to get version from FS');
+                let increment;
                 version = getCurrVersionFromFS(options);
                 if (version) {
                     if (+options.increment_by < 0) {
@@ -115,13 +116,6 @@ module.exports = {
                     version = version.split('.').map(digit => parseInt(digit));
                     version[2]+=increment;
                     version = version.join('.');
-                    options.version = version;
-                }
-                break;
-             case "detect_without_autoincrement":
-                console.log('Trying to get version from FS');
-                version = getCurrVersionFromFS(options);
-                if (version) {
                     options.version = version;
                 }
                 break;
