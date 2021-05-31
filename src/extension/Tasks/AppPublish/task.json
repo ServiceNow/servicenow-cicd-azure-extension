@@ -77,7 +77,7 @@
         {
             "name": "versionTemplate",
             "type": "string",
-            "label": "Version template ( like 2.4 )",
+            "label": "Version template ( like x.y )",
             "required": false,
             "helpMarkDown": "Major and minor versions, delimited by dot. Patch version will be generated automatically.",
             "visibleRule": "versionFormat=template"
