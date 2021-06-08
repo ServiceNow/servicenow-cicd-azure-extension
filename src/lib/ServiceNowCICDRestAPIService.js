@@ -181,7 +181,7 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
         return url && request(url).then((resp) => {
             let msg = '';
             resp.batch_items.forEach((item) => {
-                msg += item.status_message && ('\n' + item.status_message);
+                msg += `\n${item.name}: ${item.state}. ${item.status_message}`;
             });
 
             return msg;
