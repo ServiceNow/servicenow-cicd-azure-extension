@@ -8,7 +8,7 @@ module.exports = {
     },
     run: () => {
         let options = {};
-        'scope sys_id version'
+        'scope sys_id version auto_upgrade_base_app base_app_version'
             .split(' ')
             .forEach(name => {
                 const val = pipeline.get(name);
