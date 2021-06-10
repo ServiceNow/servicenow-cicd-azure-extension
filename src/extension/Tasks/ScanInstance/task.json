@@ -1,0 +1,100 @@
+{
+    "$schema": "https://raw.githubusercontent.com/Microsoft/azure-pipelines-task-lib/master/tasks.schema.json",
+    "id": "13e1b115-2add-408e-aad7-a3bd182106b0",
+    "name": "ServiceNow-CICD-Scan-Instance",
+    "friendlyName": "ServiceNow CI/CD Scan Instance",
+    "description": "Execute Instance Scans and get progress and results of runs.",
+    "helpMarkDown": "",
+    "category": "Package",
+    "author": "ServiceNow",
+    "version": {
+        "Major": 1,
+        "Minor": 8,
+        "Patch": 55
+    },
+    "instanceNameFormat": "ServiceNow CI/CD Scan Instance",
+    "showEnvironmentVariables": false,
+    "inputs": [
+        {
+            "name": "connectedServiceName",
+            "type": "connectedService:ServiceNow CICD",
+            "label": "ServiceNow endpoint",
+            "required": true,
+            "helpMarkDown": "ServiceNow endpoint connection"
+        },
+        {
+            "name": "scanType",
+            "label": "Scan type",
+            "type": "radio",
+            "options": {
+                "full": "Full scan(no params required).",
+                "point": "Point scan(target_table, target_sys_id required).",
+                "suiteCombo": "Combo scan(combo_sys_id required).",
+                "suiteScoped": "Suite Scoped scan(suite_sys_id param, appScopeSysIds payload required).",
+                "suiteUpdate": "Suite Update scan(suite_sys_id param, updateSetSysIds payload required)."
+            },
+            "defaultValue": "full",
+            "helpMarkDown": "Select corresponding option to define the scan strategy.",
+            "required": true
+        },
+        {
+            "name": "targetTable",
+            "type": "string",
+            "label": "Target Table",
+            "required": true,
+            "helpMarkDown": "Target table in point scan type.",
+            "visibleRule": "scanType=point"
+        },
+        {
+            "name": "targetSysId",
+            "type": "string",
+            "label": "Target Sys Id",
+            "required": true,
+            "helpMarkDown": "Target Sys Id in point scan type.",
+            "visibleRule": "scanType=point"
+        },
+        {
+            "name": "comboSysId",
+            "type": "string",
+            "label": "Combo Sys Id",
+            "required": true,
+            "helpMarkDown": "Combo Sys Id in combo scan type.",
+            "visibleRule": "scanType=suiteCombo"
+        },
+        {
+            "name": "suiteSysId",
+            "type": "string",
+            "label": "Suite Sys Id",
+            "required": true,
+            "helpMarkDown": "Combo Sys Id in scoped&update scan type.",
+            "visibleRule": "scanType=suiteScoped || scanType=suiteUpdate"
+        },
+        {
+            "name": "appScopeSysIds",
+            "type": "string",
+            "label": "App Scope Sys IDs",
+            "required": true,
+            "helpMarkDown": "List of Scope Sys Ids, comma separated.",
+            "visibleRule": "scanType=suiteScoped"
+        },
+        {
+            "name": "updateSetSysIds",
+            "type": "string",
+            "label": "Update Sys IDs",
+            "required": true,
+            "helpMarkDown": "List of Update Sys Ids, comma separated.",
+            "visibleRule": "scanType=suiteUpdate"
+        }
+    ],
+    "runsOn": [
+        "Agent",
+        "MachineGroup",
+        "Server"
+    ],
+    "execution": {
+        "Node": {
+            "target": "index.js"
+        }
+    },
+    "outputVariables": []
+}

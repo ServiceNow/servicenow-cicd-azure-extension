@@ -6,7 +6,20 @@ function getBuildId() {
     return process.env['BUILD_BUILDID'];
 }
 
-function getCurrVersionFromFS(sysId, scope) {
+/**
+ * @param versionType   string
+ * @param options       object
+ * @throws Error
+ */
+function checkIsAppCustomization(versionType, options) {
+    if (['autodetect','detect'].includes(versionType) && 
+        options.is_app_customization === true && !options.sys_id) {
+        throw Error('Sys_id is not defined!');
+    }
+}
+
+function getCurrVersionFromFS(options) {
+    const { sys_id: sysId, scope, is_app_customization: isAppCustomization } = options;
     const sourceDir = process.env['BUILD_SOURCESDIRECTORY'];
     let version;
     if (sourceDir) {
@@ -20,8 +33,9 @@ function getCurrVersionFromFS(sysId, scope) {
                     const projectPath = path.join(sourceDir, match[1]);
                     console.log('Trying ' + projectPath);
                     if (sysId) {
+                        const filePrefix = isAppCustomization ? 'sys_app_customization_' : 'sys_app_' ;
                         const verMatch = fs
-                            .readFileSync(path.join(projectPath, 'sys_app_' + sysId + '.xml'))
+                            .readFileSync(path.join(projectPath, filePrefix + sysId + '.xml'))
                             .toString()
                             .match(/<version>([^<]+)<\/version>/);
                         if (verMatch) {
@@ -31,6 +45,7 @@ function getCurrVersionFromFS(sysId, scope) {
                         const dirContent = fs.readdirSync(projectPath);
                         if (dirContent) {
                             const escapedScope = scope.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+                            // use sys_app_ cause it's not customization table for sure(sys_id is not provided)
                             let apps = dirContent.filter(f => /^sys_app_[0-9a-f]{32}\.xml$/.test(f));
                             for (const app of apps) {
                                 console.log('Try ' + app);
@@ -44,7 +59,7 @@ function getCurrVersionFromFS(sysId, scope) {
                     }
                 }
             } else {
-                process.stderr.write('sn_source_control.properties not found\n')
+                process.stderr.write('sn_source_control.properties not found\n');
             }
         } catch (e) {
             process.stderr.write(e.toString() + '\n');
@@ -65,15 +80,21 @@ module.exports = {
     run: () => {
         let options = {};
         let version;
-        'scope sys_id dev_notes'
+        'scope sys_id dev_notes is_app_customization increment_by'
             .split(' ')
             .forEach(name => {
                 const val = pipeline.get(name);
                 if (val) {
-                    options[name] = val;
+                    if (name === 'is_app_customization') {
+                        // convert 'false' to false
+                        options[name] = val === 'true' ? true : false;
+                    } else {
+                        options[name] = val;
+                    }
                 }
             });
         let versionType = pipeline.get('versionFormat');
+        checkIsAppCustomization(versionType, options);
         switch (versionType) {
             case "exact":
                 options.version = pipeline.get('version', true);
@@ -83,20 +104,20 @@ module.exports = {
                     '.' + getBuildId().replace(/\D+/g, '');
                 break;
             case "detect":
-                console.log('Trying to get version from FS')
-                version = getCurrVersionFromFS(options.sys_id, options.scope);
+                console.log('Trying to get version from FS');
+                let increment;
+                version = getCurrVersionFromFS(options);
                 if (version) {
-                    console.log('Current version is ' + version + ', incrementing');
+                    if (+options.increment_by < 0) {
+                        return Promise.reject('Increment_by should be positive or zero.');
+                    } else {
+                        increment = options.increment_by ? +options.increment_by : 0;
+                    }
+
+                    console.log('Current version is ' + version + ', incrementing by ' + increment);
                     version = version.split('.').map(digit => parseInt(digit));
-                    version[2]++;
+                    version[2]+=increment;
                     version = version.join('.');
-                    options.version = version;
-                }
-                break;
-             case "detect_without_autoincrement":
-                console.log('Trying to get version from FS')
-                version = getCurrVersionFromFS(options.sys_id, options.scope);
-                if (version) {
                     options.version = version;
                 }
                 break;
@@ -122,6 +143,6 @@ module.exports = {
                 process.stderr.write('\x1b[31mPublication failed\x1b[0m\n');
                 process.stderr.write('The error is:' + err);
                 return Promise.reject(err);
-            })
+            });
     }
-}
+};

@@ -72,29 +72,39 @@ This project contains [azure-pipeline.yml](azure-pipelines.yml) file - when this
 
 ## API docs
 
-All the API calls are made corresponding with ServiceNow [REST API documentation](https://developer.servicenow.com/dev.do#!/reference/api/orlando/rest/cicd-api). Extension covers all the endpoints mentioned there. Some of endpoints have no separate task in extension's because of helper nature of these endpoint i.e. progress API.
+All the API calls are made corresponding with ServiceNow [REST API documentation](https://developer.servicenow.com/dev.do#!/reference/api/quebec/rest/cicd-api). Extension covers all the endpoints mentioned there. Some of endpoints have no separate task in extension's because of helper nature of these endpoint i.e. progress API.
 
 ## Tasks
 
-- Apply SourceControl Changes
+- Apply Remote Changes (from Source Control linked Git Repo)
 > Apply changes from a remote source control to a specified local application
 
 - Publish Application
-> Installs the specified application from the application repository onto the local instance
+> Publishes the specified application and all of its artifacts to the application repository. Different modes for choosing the version to publish are available, selectable as parameters.  
+> - __versionFormat__: 
+>   - __exact__: Use the version specified in the 'version' parameter
+>   - __template__: Use the specified version template (x.y) in the 'versionTemplate' parameter with an auto-generated appended z value based on the build number
+>   - __detect__: Detect the version of the application from XML file in Git repo. Use the 'isAppCustomization' parameter to indicate whether this should check for the version from the sys_app_{id}.xml or sys_app_customization_{id}.xml file. Will fail if no sources found
+>   - __detect_without_autoincrement__: Detect the version of the application from XML file in Git repo, and do not auto increment
+>   - __autodetect__: Detect the currently installed version from the instance's sys_app or sys_app_customization table on instance. Use 'isAppCustomization' parameter to choose the case
+> - __version__: Provide a version in the form x.y.z for the 'exact' versionFormat mode
+> - __versionTemplate__: Provide a version template in the form x.y for the 'template' versionFormat mode. (Final versions are in x.y.z form)
+> - __incrementBy__: {_integer_ n} Use this parameter to set up auto-incrementing for your pipeline in the form x.y.z+n
+> - __isAppCustomization__: {Yes, No} This parameter is necessary for detecting the Application Customization version properly, from either Git repo XML file or from the table from your instance. It's important to note that the 'isAppCustomization' flag requires providing sys_id instead of scope! 
 
 - Install Application
 > Installs the specified application from the application repository onto the local instance
 
-- Rollback App
+- Rollback Application
 > Initiate a rollback of a specified application to a specified version.
 
-- Add a plugin
+- Activate Plugin
 > Activate a desired plugin on ServiceNow instance
 
-- Rollback a plugin
+- Rollback Plugin
 > Rollback a desired plugin on ServiceNow instance
 
-- Start Test Suite
+- Start ATF Test Suite
 > Start a specified automated test suite. 
 
 ## Support Model

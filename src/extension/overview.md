@@ -17,7 +17,7 @@ This extension provides Tasks for setting up Continuous Integration (CI) or Cont
 
 [![Setting up your first CI/CD pipeline with Azure Pipelines](https://github.com/ServiceNow/servicenow-cicd-azure-extension/raw/master/src/extension/youtube_link.png)](https://www.youtube.com/watch?v=ncI0etU33P0 "Setting up your first CI/CD pipeline with Azure Pipelines")
 
-The Tasks are API wrappers for the [CI/CD APIs](https://developer.servicenow.com/dev.do#!/reference/api/paris/rest/cicd-api) first released with Orlando, and do not cover other ServiceNow APIs. They will currently work with the Orlando and Paris releases. 
+The Tasks are API wrappers for the [CI/CD APIs](https://developer.servicenow.com/dev.do#!/reference/api/quebec/rest/cicd-api) first released with Orlando, and do not cover other ServiceNow APIs. They will currently work with the Orlando and Paris releases. 
 
 Please reference our [open-source GitHub repo](https://github.com/ServiceNow/servicenow-cicd-azure-extension) for the implementation, as well as to submit any Issues or Pull Requests. For an example pipeline yml file, please copy from our [template](https://github.com/ServiceNow/servicenow-cicd-azure-extension/blob/master/examples/pipeline.yaml). 
 
@@ -43,26 +43,36 @@ The extension's Azure Pipelines Tasks are wrappers for the CI/CD APIs released a
 
 ## Build Steps
 
-- ServiceNow CI/CD Install Application
-> Installs the specified application from the application repository onto the local instance
+- ServiceNow CI/CD Apply Changes
+> Apply changes from a remote source control to a specified local application
 
 - ServiceNow CI/CD Publish Application
+> Publishes the specified application and all of its artifacts to the application repository. Different modes for choosing the version to publish are available, selectable as parameters.  
+> - __versionFormat__: 
+>   - __exact__: Use the version specified in the 'version' parameter
+>   - __template__: Use the specified version template (x.y) in the 'versionTemplate' parameter with an auto-generated appended z value based on the build number
+>   - __detect__: Detect the version of the application from XML file in Git repo. Use the 'isAppCustomization' parameter to indicate whether this should check for the version from the sys_app_{id}.xml or sys_app_customization_{id}.xml file. Will fail if no sources found
+>   - __detect_without_autoincrement__: Detect the version of the application from XML file in Git repo, and do not auto increment
+>   - __autodetect__: Detect the currently installed version from the instance's sys_app or sys_app_customization table on instance. Use 'isAppCustomization' parameter to choose the case
+> - __version__: Provide a version in the form x.y.z for the 'exact' versionFormat mode
+> - __versionTemplate__: Provide a version template in the form x.y for the 'template' versionFormat mode. (Final versions are in x.y.z form)
+> - __incrementBy__: {_integer_ n} Use this parameter to set up auto-incrementing for your pipeline in the form x.y.z+n
+> - __isAppCustomization__: {Yes, No} This parameter is necessary for detecting the Application Customization version properly, from either Git repo XML file or from the table from your instance. It's important to note that the 'isAppCustomization' flag requires providing sys_id instead of scope! 
+
+- ServiceNow CI/CD Install Application
 > Installs the specified application from the application repository onto the local instance
 
 - ServiceNow CI/CD Rollback Application
 > Initiate a rollback of a specified application to a specified version.
 
 - ServiceNow CI/CD Activate Plugin
-> Activate a desired plugin on your ServiceNow instance
+> Activate a desired plugin on ServiceNow instance
 
 - ServiceNow CI/CD Rollback Plugin
-> Rollback a desired plugin on your ServiceNow instance
-
-- ServiceNow CI/CD Apply Changes
-> Apply changes from a remote source control to a specified local application
+> Rollback a desired plugin on ServiceNow instance
 
 - ServiceNow CI/CD Start Test Suite
-> Start a specified automated test suite.
+> Start a specified automated test suite. 
 
 ## Support Model
 
