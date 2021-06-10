@@ -1,0 +1,20 @@
+# This is example workflow for Batch Install feature(presented in Quebec release).
+# Payload source described here is 'file'(pipeline|file).
+# Please fill <gaps> with proper values.
+
+trigger:
+  - master
+
+stages:
+  - stage: DeployToProd
+    condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
+    jobs:
+      - job: Batch_Install
+        steps:
+          - checkout: self
+          - task: ServiceNow-CICD-Batch-Install@1
+            displayName: ServiceNow CI/CD Batch Install
+            inputs:
+              connectedServiceName: '<client_host>'
+              payloadSource: 'file'   # reqired(pipeline|file)
+              batchFile: '<filename>' # optional, default: manifest.json

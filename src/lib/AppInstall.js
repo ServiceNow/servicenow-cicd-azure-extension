@@ -8,7 +8,7 @@ module.exports = {
     },
     run: () => {
         let options = {};
-        'scope sys_id version'
+        'scope sys_id version auto_upgrade_base_app base_app_version'
             .split(' ')
             .forEach(name => {
                 const val = pipeline.get(name);
@@ -34,6 +34,7 @@ module.exports = {
                 console.log('\x1b[32mSuccess\x1b[0m\n');
                 if (version) {
                     pipeline.setVar('ServiceNow-CICD-App-Install.rollbackVersion', version);
+                    console.log('Installed version is: ' + version);
                     pipeline.setVar('rollbackVersion', version);
                     console.log('Rollback version is: ' + version);
                     return version;

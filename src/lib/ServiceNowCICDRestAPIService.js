@@ -189,9 +189,25 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
     }
 
     /**
+     * Scan instance, available options are:
+     * full, point, suiteCombo, suiteScoped, suiteUpdate
+     * 
+     * @param url       string
+     * @param options   object
+     * @param payload   array
+     * @returns {Promise<string>} If available, the previously installed version. If not available, null.
+     */
+    function scanInstance(url, options, payload = '') {
+        return request(url, {fields: 'target_table target_sys_id', options}, 'POST', payload)
+            .then(resp => getProgress(resp, true))
+            .catch(err => Promise.reject(err.errorMessage))
+    }
+
+    /**
      * Install the specified application from the application repository onto the local instance
      * available options are:
-     * scope, sys_id, version
+     * scope, sys_id, version, auto_upgrade_base_app, base_app_version
+     * 
      * required options are:
      * scope|sys_id
      * @param options
@@ -204,7 +220,7 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
         if (options.scope && options.sys_id) {
             delete options.scope;
         }
-        return request('app_repo/install', {fields: 'sys_id scope version', options}, 'POST')
+        return request('app_repo/install', {fields: 'sys_id scope version auto_upgrade_base_app base_app_version', options}, 'POST')
             .then(resp => getProgress(resp))
             .catch(err => Promise.reject(err.errorMessage))
             .then(resp => { 
@@ -255,17 +271,30 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
         if (!options || !(options.scope || options.sys_id)) {
             return Promise.reject('Please specify scope or sys_id');
         }
+
+        if (!options || (options.is_app_customization && !options.sys_id)) {
+            return Promise.reject('Sys_id is not defined, while is_app_customization is checked.');
+        }
+        
         if (options.scope && options.sys_id) {
             delete options.scope;
         }
         let promise = Promise.resolve();
         if (!options.version && options.autodetect) {
+            let increment;
+            if (+options.increment_by < 0) {
+                return Promise.reject('Increment_by should be positive or zero.');
+            } else {
+                increment = options.increment_by ? +options.increment_by : 0;
+            }
             promise = getCurrentApplicationVersion(options).then(version=>{
                 if(version) {
                     version = version.split('.');
-                    version[2]++;
+                    version[2]+=increment;
                     version = version.join('.');
                     options.version = version;
+                } else {
+                    return Promise.reject('Can\'t autodetect version number.');
                 }
             });
         }
@@ -316,6 +345,7 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
      * @param returnProgress bool
      * @returns {Promise<string>|<object>}
      */
+
     function getProgress(response, returnProgress = false) {
         let status = +response.status;
         const progressId = getPropertyByPath(response, 'links.progress.id');
@@ -341,6 +371,7 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
                             }
                         }
                         process.stdout.write('.\n');
+
                         return wait(config.delayInProgressPolling).then(() => getProgress(response, returnProgress));
                     }
                 });
@@ -359,7 +390,8 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
      */
     function getCurrentApplicationVersion(options) {
         if (options.sys_id) {
-            return request(`https://${config.instance}/api/now/table/sys_app/${options.sys_id}?sysparm_fields=version`)
+            const table = options.is_app_customization ? 'sys_app_customization' : 'sys_app';
+            return request(`https://${config.instance}/api/now/table/${table}/${options.sys_id}?sysparm_fields=version`)
                 .then(data => {
                     return (data && data.version) || false;
                 })
@@ -382,9 +414,10 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
 
     /**
      * Make a wrapper to https request
-     * @param url
-     * @param data object|boolean
-     * @param method
+     * @param url       string
+     * @param data      object|boolean
+     * @param method    string
+     * @param payload   string
      * @returns {Promise<string>}
      */
 
@@ -493,12 +526,12 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
  * @returns {string}
  */
 function createURL(prefix, fields, options) {
-    return prefix + '?' +
-        fields
-            .split(' ')
-            .filter(optName => options.hasOwnProperty(optName))
-            .map(optName => optName + '=' + encodeURIComponent(options[optName]))
-            .join('&');
+    const params = fields
+        .split(' ')
+        .filter(optName => options.hasOwnProperty(optName))
+        .map(optName => optName + '=' + encodeURIComponent(options[optName]));
+    
+    return prefix + (params.length ? '?' + params.join('&') : '');
 }
 
 module.exports = ServiceNowCICDRestAPIService;

@@ -1,0 +1,25 @@
+# This is example workflow for Batch Install feature(presented in Quebec release).
+# Payload source described here is 'file'(pipeline|file).
+# Please fill <gaps> with proper values.
+
+trigger:
+  - master
+
+stages:
+  - stage: Test
+    condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
+    jobs:
+      - job: Scan_Instance
+        steps:
+          - checkout: self
+          - task: ServiceNow-CICD-Scan-Instance@1
+            displayName: ServiceNow CI/CD Scan Instance
+            inputs:
+              connectedServiceName: '<client_host>'
+              scanType:        'full'     # required(full|point|suiteCombo|suiteScoped|suiteUpdate)
+              targetTable:     '<table>'  # required if type=point
+              targetSysId:     '<sys_id>' # required if type=point
+              comboSysId:      '<sys_id>' # required if type=suiteCombo
+              suiteSysId:      '<sys_id>' # required if type=suiteScoped|suiteUpdate
+              appScopeSysIds:  '<id,id>'  # required if type=suiteScoped
+              updateSetSysIds: '<id,id>'  #required if type=suiteUpdate

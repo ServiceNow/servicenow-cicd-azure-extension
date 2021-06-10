@@ -8,7 +8,7 @@ module.exports = {
     },
     run: () => {
         let options = {};
-        'app_scope app_sys_id branch'
+        'app_scope app_sys_id branch_name'
             .split(' ')
             .forEach(name => {
                 const val = pipeline.get(name);
