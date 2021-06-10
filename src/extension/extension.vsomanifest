@@ -2,6 +2,16 @@
   "manifestVersion": 1,
   "contributions": [
     {
+      "id": "serviceNow-CICD-Batch-Install",
+      "type": "ms.vss-distributed-task.task",
+      "targets": [
+        "ms.vss-distributed-task.tasks"
+      ],
+      "properties": {
+        "name": "Tasks/BatchInstall"
+      }
+    },
+    {
       "id": "serviceNow-CICD-Scan-Instance",
       "type": "ms.vss-distributed-task.task",
       "targets": [

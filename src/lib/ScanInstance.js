@@ -30,13 +30,11 @@ module.exports = {
                 case 'suiteScoped':
                     // requires body-payload
                     payload = JSON.stringify({app_scope_sys_ids: options.app_scope_sys_ids.split(',')});
-                    console.log('DBG. Payload=', payload);
                     url = `instance_scan/suite_scan/${options.suite_sys_id}/scoped_apps`
                     break
                 case 'suiteUpdate':
                     // requires body-payload
                     payload = JSON.stringify({update_set_sys_ids: options.update_set_sys_ids.split(',')});
-                    console.log('DBG. Payload=', payload);
                     url = `instance_scan/suite_scan/${options.suite_sys_id}/update_sets`
                     break
                 default:
