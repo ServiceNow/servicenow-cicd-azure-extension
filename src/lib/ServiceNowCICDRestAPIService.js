@@ -290,7 +290,7 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
             promise = getCurrentApplicationVersion(options).then(version=>{
                 if(version) {
                     version = version.split('.');
-                    version[2]+=increment;
+                    version[2] = +version[2] + increment;
                     version = version.join('.');
                     options.version = version;
                 } else {

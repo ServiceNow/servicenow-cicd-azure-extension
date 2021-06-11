@@ -27,7 +27,7 @@ describe('Application actions: publish, install and rollback using mock server',
             versionFormat: "autodetect"
         }), new Transport(transportOptions.shift()));
         
-        return appPublishTask.run().then(ver => expect(ver).toEqual('1.3.38')).then(() => done()).catch(err => done(err||''));
+        return appPublishTask.run().then(ver => expect(ver).toEqual('1.3.37')).then(() => done()).catch(err => done(err||''));
     });
 
     test('Publish_exact', done => {
@@ -50,9 +50,10 @@ describe('Application actions: publish, install and rollback using mock server',
             url:"cicdazureappauthor.service-now.com",
             scope: "x_sofse_cicdazurea",
             versionFormat: "detect",
+            increment_by: 2,
         }), new Transport(transportOptions.shift()));
 
-        return appPublishTask.run().then(ver => expect(ver).toEqual('1.2.4')).then(() => done()).catch(err => done(err||''));
+        return appPublishTask.run().then(ver => expect(ver).toEqual('1.2.5')).then(() => done()).catch(err => done(err||''));
     });
 
     test('Publish_detect_no_incr', done => {
