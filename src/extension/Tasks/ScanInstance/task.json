@@ -1,6 +1,6 @@
 {
     "$schema": "https://raw.githubusercontent.com/Microsoft/azure-pipelines-task-lib/master/tasks.schema.json",
-    "id": "13e1b115-2add-408e-aad7-a3bd182106b0",
+    "id": "daa79da8-c2e8-4a02-bbec-b94b8809432f",
     "name": "ServiceNow-CICD-Scan-Instance",
     "friendlyName": "ServiceNow CI/CD Scan Instance",
     "description": "Execute Instance Scans and get progress and results of runs.",

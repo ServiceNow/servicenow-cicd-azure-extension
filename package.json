@@ -1,6 +1,6 @@
 {
   "name": "servicenow_cicd_azuredevops",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "description": "some description",
   "main": "build.js",
   "scripts": {
