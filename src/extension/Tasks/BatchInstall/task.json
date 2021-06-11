@@ -2,22 +2,22 @@
     "$schema": "https://raw.githubusercontent.com/Microsoft/azure-pipelines-task-lib/master/tasks.schema.json",
     "id": "13e1b115-2add-408e-aad7-a3bd182106b8",
     "name": "ServiceNow-CICD-Batch-Install",
-    "friendlyName": "Schechot CI/CD Batch Install",
-    "description": "Installs Batch and get progress and results of runs.",
+    "friendlyName": "ServiceNow CI/CD Batch Install",
+    "description": "Batch Install multiple applications and plugins, then get the progress and results.",
     "helpMarkDown": "",
     "category": "Package",
-    "author": "Schechot",
+    "author": "ServiceNow",
     "version": {
         "Major": 2,
         "Minor": 0,
         "Patch": 1
     },
-    "instanceNameFormat": "Schechot CI/CD Batch Install",
+    "instanceNameFormat": "ServiceNow CI/CD Batch Install",
     "showEnvironmentVariables": false,
     "inputs": [
         {
             "name": "connectedServiceName",
-            "type": "connectedService:SCHECHOT CICD",
+            "type": "connectedService:ServiceNow CICD",
             "label": "ServiceNow endpoint",
             "required": true,
             "helpMarkDown": "ServiceNow endpoint connection"
