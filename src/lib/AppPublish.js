@@ -116,7 +116,7 @@ module.exports = {
 
                     console.log('Current version is ' + version + ', incrementing by ' + increment);
                     version = version.split('.').map(digit => parseInt(digit));
-                    version[2]+=increment;
+                    version[2] = +version[2] + increment;
                     version = version.join('.');
                     options.version = version;
                 }
