@@ -8,9 +8,9 @@
     "category": "Package",
     "author": "ServiceNow",
     "version": {
-        "Major": 1,
-        "Minor": 8,
-        "Patch": 0
+        "Major": 2,
+        "Minor": 0,
+        "Patch": 1
     },
     "instanceNameFormat": "ServiceNow CI/CD add a plugin",
     "showEnvironmentVariables": false,
