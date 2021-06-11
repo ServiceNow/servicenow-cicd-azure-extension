@@ -24,7 +24,7 @@ This extension is [published on the Visual Studio Marketplace](https://marketpla
 ## Installation
 ```shell script
 git clone https://github.com/ServiceNow/servicenow-cicd-azure-extension.git
-cd cicdplugin
+cd servicenow-cicd-azure-extension
 npm install
 ```
 
