@@ -19,7 +19,7 @@ This extension provides Tasks for setting up Continuous Integration (CI) or Cont
 
 The Tasks are API wrappers for the [CI/CD APIs](https://developer.servicenow.com/dev.do#!/reference/api/quebec/rest/cicd-api) first released with Orlando, and do not cover other ServiceNow APIs. They will currently work for Orlando through Rome releases. 
 
-Please reference our [open-source GitHub repo](https://github.com/ServiceNow/servicenow-cicd-azure-extension) for the implementation, as well as to submit any Issues or Pull Requests. For an example pipeline yml file, please copy from our [template](https://github.com/ServiceNow/servicenow-cicd-azure-extension/blob/master/examples/pipeline.yaml). 
+Please reference our [open-source GitHub repo](https://github.com/ServiceNow/servicenow-cicd-azure-extension) for the implementation, as well as to submit any Issues or Pull Requests. For an example pipeline yml file, please copy from one of our [templates](https://github.com/ServiceNow/servicenow-cicd-azure-extension/blob/master/examples). 
 
 ## Usage
 
