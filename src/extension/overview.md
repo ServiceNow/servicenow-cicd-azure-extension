@@ -53,7 +53,7 @@ The extension's Azure Pipelines Tasks are wrappers for the CI/CD APIs released a
 >   - __template__: Use the specified version template (x.y) in the 'versionTemplate' parameter with an auto-generated appended z value based on the build number
 >   - __detect__: Detect the version of the application from XML file in Git repo. Use the 'isAppCustomization' parameter to indicate whether this should check for the version from the sys_app_{id}.xml or sys_app_customization_{id}.xml file. Will fail if no sources found
 >   - __detect_without_autoincrement__: Detect the version of the application from XML file in Git repo, and do not auto increment
->   - __autodetect__: Detect the currently installed version from the instance's sys_app or sys_app_customization table on instance. Use 'isAppCustomization' parameter to choose the case
+>   - __autodetect__: Detect the currently installed version from the instance's sys_app or sys_app_customization table on instance. (Use 'isAppCustomization' parameter to set which type of application this is.) This feature uses a Table API call, which requires a user with the necessary privileges on the instance. For example, by default `sn_cicd.sys_ci_automation` will not be sufficient. The `sys_app` and `sys_app_customization` table permissions can be updated to address this. 
 > - __version__: Provide a version in the form x.y.z for the 'exact' versionFormat mode
 > - __versionTemplate__: Provide a version template in the form x.y for the 'template' versionFormat mode. (Final versions are in x.y.z form)
 > - __incrementBy__: {_integer_ n} Use this parameter to set up auto-incrementing for your pipeline in the form x.y.z+n
