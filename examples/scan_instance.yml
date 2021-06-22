@@ -1,5 +1,5 @@
-# This is example workflow for Batch Install feature(presented in Quebec release).
-# Payload source described here is 'file'(pipeline|file).
+# This is example workflow for Instance Scan feature, new to the Quebec release.
+# Several types of scans can be run, for more details please see the Instance Scan API documentation in https://developer.servicenow.com/dev.do#!/reference/api/quebec/rest/cicd-api
 # Please fill <gaps> with proper values.
 
 trigger:
