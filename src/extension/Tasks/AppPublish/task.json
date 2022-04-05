@@ -3,7 +3,7 @@
     "id": "23e1b115-2add-408e-aad7-a3bd182106b2",
     "name": "ServiceNow-CICD-App-Publish",
     "friendlyName": "ServiceNow CI/CD Publish Application",
-    "description": "Installs the specified application from the application repository onto the local instance",
+    "description": "Publishes the specified application from specified instance to the application repository.",
     "helpMarkDown": "",
     "category": "Package",
     "author": "ServiceNow",
