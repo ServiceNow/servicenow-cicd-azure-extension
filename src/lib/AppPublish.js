@@ -129,7 +129,7 @@ module.exports = {
                 return Promise.reject();
         }
 
-        console.log('Start installation with version ' + (options.version || ''));
+        console.log('Start publishing with version ' + (options.version || ''));
         return API
             .appRepoPublish(options)
             .then(function (version) {
