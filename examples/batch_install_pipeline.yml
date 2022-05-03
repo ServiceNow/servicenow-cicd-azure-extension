@@ -12,7 +12,7 @@ stages:
       - job: Batch_Install
         steps:
           - checkout: self
-          - task: ServiceNow-CICD-Batch-Install@1
+          - task: ServiceNow-CICD-Batch-Install@2
             displayName: ServiceNow CI/CD Batch Install
             inputs:
               connectedServiceName: '<client_host>'
