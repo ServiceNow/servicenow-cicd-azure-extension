@@ -15,12 +15,12 @@ stages:
   jobs:
   - job: ApplyChange_Publish
     steps: 
-    - task: ServiceNow-CICD-SC-Apply@1
+    - task: ServiceNow-CICD-SC-Apply@2
       inputs:
         connectedServiceName: 'chiarngdevdemo'
         appSysId: '$(APPSYSID)'
         branchName: '$(BRANCH)'
-    - task: ServiceNow-CICD-App-Publish@1
+    - task: ServiceNow-CICD-App-Publish@2
       inputs:
         connectedServiceName: 'chiarngdevdemo'
         sysId: '$(APPSYSID)'
@@ -32,13 +32,13 @@ stages:
   jobs:
   - job: InstallToTest_RunTest
     steps:
-    - task: ServiceNow-CICD-App-Install@1
+    - task: ServiceNow-CICD-App-Install@2
       inputs:
         connectedServiceName: 'chiarngtestdemo'
         sysId: '$(APPSYSID)'
         autoUpgradeBaseApp: true
         baseAppVersion: '<ver>'
-    - task: ServiceNow-CICD-TestSuite-Run@1
+    - task: ServiceNow-CICD-TestSuite-Run@2
       inputs:
         connectedServiceName: 'chiarngtestdemo'
         testSuiteSysId: '$(TESTSUITEID)'
@@ -47,7 +47,7 @@ stages:
     dependsOn: InstallToTest_RunTest
     condition: failed()
     steps:
-    - task: ServiceNow-CICD-App-Rollback@1
+    - task: ServiceNow-CICD-App-Rollback@2
       inputs:
         connectedServiceName: 'chiarngtestdemo'
         sysId: '$(APPSYSID)'
@@ -58,7 +58,7 @@ stages:
   jobs:
   - job: InstallToProd
     steps:
-    - task: ServiceNow-CICD-App-Install@1
+    - task: ServiceNow-CICD-App-Install@2
       inputs:
         connectedServiceName: 'chiarngproddemo'
         sysId: '$(APPSYSID)'
