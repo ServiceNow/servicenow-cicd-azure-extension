@@ -12,7 +12,7 @@ stages:
       - job: Scan_Instance
         steps:
           - checkout: self
-          - task: ServiceNow-CICD-Scan-Instance@1
+          - task: ServiceNow-CICD-Scan-Instance@2
             displayName: ServiceNow CI/CD Scan Instance
             inputs:
               connectedServiceName: '<client_host>'
