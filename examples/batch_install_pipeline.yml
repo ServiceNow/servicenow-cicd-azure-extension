@@ -17,6 +17,6 @@ stages:
             inputs:
               connectedServiceName: '<client_host>'
               payloadSource: pipeline # reqired(pipeline|file)
-              batchName: '<batch_name>' # reqired
+              batchName: '<batch_name>' # required
               batchNotes: '<batch_name>' # optional
               batchPackages: '<payload>' # required({'id': '<id>','type': 'application','load_demo_data': false,'requested_version': '<ver>','requested_customization_version': '<ver>','notes': 'your_notes'}})
