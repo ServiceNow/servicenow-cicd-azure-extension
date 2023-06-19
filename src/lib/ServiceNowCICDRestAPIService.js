@@ -191,25 +191,10 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
     }
 
     /**
-     * Scan instance, available options are:
-     * full, point, suiteCombo, suiteScoped, suiteUpdate
-     * 
-     * @param url       string
-     * @param options   object
-     * @param payload   array
-     * @returns {Promise<string>} If available, the previously installed version. If not available, null.
-     */
-    function scanInstance(url, options, payload = '') {
-        return request(url, {fields: 'target_table target_sys_id', options}, 'POST', payload)
-            .then(resp => getProgress(resp, true))
-            .catch(err => Promise.reject(err.errorMessage))
-    }
-
-    /**
      * Install the specified application from the application repository onto the local instance
      * available options are:
      * scope, sys_id, version, auto_upgrade_base_app, base_app_version
-     * 
+     *
      * required options are:
      * scope|sys_id
      * @param options
