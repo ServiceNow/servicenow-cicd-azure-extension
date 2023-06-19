@@ -1,4 +1,4 @@
-﻿const https = require('https');
+const https = require('https');
 const URL = require('url');
 const respError = function (error, response) {
     this.errorMessage = error;
@@ -150,21 +150,23 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
                 const progressUrl = resp.links.progress.url;
                 const resultsUrl = resp.links.results.url;
                 const rollbackUrl = resp.links.rollback.url;
-                request(progressUrl).then(response => {
+                return request(progressUrl).then(response => {
                     if (response.status_message) {
                         console.log('Status is: ' + response.status_message);
                         return response.status_message;
                     }
+                }).then(()=>{
+                    return extractBatchResults(resultsUrl).then(msg => msg && console.log("Status messages:", msg));
+                }).then(()=>{
+                    return rollbackUrl;
                 });
-                extractBatchResults(resultsUrl).then(msg => msg && console.log("Status messages:", msg));
-
-                return rollbackUrl;
             })
             .catch(errObj => {
                 try {
                     const resultsUrl = errObj.response.results.url;
-                    extractBatchResults(resultsUrl).then(msg => msg && console.log("Status messages:", msg));
-                    return Promise.reject(errObj.errorMessage);
+                    return extractBatchResults(resultsUrl).then(msg => msg && console.log("Status messages:", msg)).then(()=> {
+                        return Promise.reject(errObj.errorMessage);
+                    });
                 } catch (error) {
                     return Promise.reject();
                 }
