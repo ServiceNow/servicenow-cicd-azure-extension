@@ -1,4 +1,4 @@
-const https = require('https');
+﻿const https = require('https');
 const URL = require('url');
 const respError = function (error, response) {
     this.errorMessage = error;
@@ -23,7 +23,7 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
     ) {
         throw new Error('Incorrect auth');
     }
-   instance = instance.replace(/(^\https:|^)\/\//, '').replace(/^\/|\/$/g, '');
+    instance = instance.replace(/(^\https:|^)\/\//, '').replace(/^\/|\/$/g, '');
     /* Replaced the regular expression so that if the instance URL contains extra parameters those can be used.
     instance = instance.replace(/(?:^https?:\/\/)?([^\/]+)(?:\/.*$)/, '$1');
     */
@@ -112,7 +112,7 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
         }
         return request(
             'testsuite/run',
-            {fields: 'test_suite_sys_id test_suite_name browser_name browser_version os_name os_version', options},
+            { fields: 'test_suite_sys_id test_suite_name browser_name browser_version os_name os_version', options },
             'POST')
             .then(resp => getProgress(resp))
             .catch(err => (err.response.results && err.response.results.id) ?
@@ -124,21 +124,21 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
     /**
      * Scan instance, available options are:
      * full, point, suiteCombo, suiteScoped, suiteUpdate
-     * 
+     *
      * @param url       string
      * @param options   object
      * @param payload   string
      * @returns {Promise<string>} If available, the previously installed version. If not available, null.
      */
     function scanInstance(url, options, payload = '') {
-        return request(url, {fields: 'target_table target_sys_id', options}, 'POST', payload)
+        return request(url, { fields: 'target_table target_sys_id', options }, 'POST', payload)
             .then(resp => getProgress(resp, true))
             .catch(err => Promise.reject(err.errorMessage));
     }
 
     /**
      * Batch Install. Payload could be obtained from repo file or workflow definition.
-     * 
+     *
      * @param url       string
      * @param payload   string
      * @returns {Promise<string>} If available, the previously installed version. If not available, null.
@@ -155,16 +155,16 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
                         console.log('Status is: ' + response.status_message);
                         return response.status_message;
                     }
-                }).then(()=>{
+                }).then(() => {
                     return extractBatchResults(resultsUrl).then(msg => msg && console.log("Status messages:", msg));
-                }).then(()=>{
+                }).then(() => {
                     return rollbackUrl;
                 });
             })
             .catch(errObj => {
                 try {
                     const resultsUrl = errObj.response.results.url;
-                    return extractBatchResults(resultsUrl).then(msg => msg && console.log("Status messages:", msg)).then(()=> {
+                    return extractBatchResults(resultsUrl).then(msg => msg && console.log("Status messages:", msg)).then(() => {
                         return Promise.reject(errObj.errorMessage);
                     });
                 } catch (error) {
@@ -175,7 +175,7 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
 
     /**
      * Extract batch install verbose messages
-     * 
+     *
      * @param url   string
      * @returns     string
      */
@@ -187,7 +187,7 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
             });
 
             return msg;
-        }).catch(err => {console.log(err)});
+        }).catch(err => { console.log(err) });
     }
 
     /**
@@ -207,10 +207,10 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
         if (options.scope && options.sys_id) {
             delete options.scope;
         }
-        return request('app_repo/install', {fields: 'sys_id scope version auto_upgrade_base_app base_app_version', options}, 'POST')
+        return request('app_repo/install', { fields: 'sys_id scope version auto_upgrade_base_app base_app_version', options }, 'POST')
             .then(resp => getProgress(resp))
             .catch(err => Promise.reject(err.errorMessage))
-            .then(resp => { 
+            .then(resp => {
                 return resp.rollback_version || (resp.results && resp.results.rollback_version);
             });
     }
@@ -231,11 +231,11 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
         if (options.scope && options.sys_id) {
             delete options.scope;
         }
-        return request('app_repo/rollback', {fields: 'sys_id scope version', options}, 'POST')
+        return request('app_repo/rollback', { fields: 'sys_id scope version', options }, 'POST')
             .catch(err => {
                 if (forceRollback && err.errorMessage.indexOf('Expected rollback version does not match target: ') === 0) {
                     options.version = err.errorMessage.substr(49);
-                    return request('app_repo/rollback', {fields: 'sys_id scope version', options}, 'POST');
+                    return request('app_repo/rollback', { fields: 'sys_id scope version', options }, 'POST');
                 } else {
                     return Promise.reject(err);
                 }
@@ -262,7 +262,7 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
         if (!options || (options.is_app_customization && !options.sys_id)) {
             return Promise.reject('Sys_id is not defined, while is_app_customization is checked.');
         }
-        
+
         if (options.scope && options.sys_id) {
             delete options.scope;
         }
@@ -274,8 +274,8 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
             } else {
                 increment = options.increment_by ? +options.increment_by : 0;
             }
-            promise = getCurrentApplicationVersion(options).then(version=>{
-                if(version) {
+            promise = getCurrentApplicationVersion(options).then(version => {
+                if (version) {
                     version = version.split('.');
                     version[2] = +version[2] + increment;
                     version = version.join('.');
@@ -310,12 +310,12 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
         if (options.app_scope && options.app_sys_id) {
             delete options.app_scope;
         }
-        return request('sc/apply_changes', {fields: 'app_sys_id app_scope branch_name', options}, 'POST')
+        return request('sc/apply_changes', { fields: 'app_sys_id app_scope branch_name', options }, 'POST')
             .then(resp => getProgress(resp))
             .catch(err => Promise.reject(err.errorMessage));
     }
 
-///////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////
 
     /**
      * Async wait
@@ -419,7 +419,7 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
             url = `https://${config.instance}/api/sn_cicd/${url}`;
         }
         let urldata = URL.parse(url);
-        let options = {method};
+        let options = { method };
         options.host = urldata.host;
         options.path = urldata.path;
         options.auth = config.auth;
@@ -488,7 +488,7 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
                         errState = true;
                     }
                     if (errState) {
-                        reject({statusCode: res.statusCode, body});
+                        reject({ statusCode: res.statusCode, body });
                     } else {
                         resolve(body);
                     }
@@ -517,7 +517,7 @@ function createURL(prefix, fields, options) {
         .split(' ')
         .filter(optName => options.hasOwnProperty(optName))
         .map(optName => optName + '=' + encodeURIComponent(options[optName]));
-    
+
     return prefix + (params.length ? '?' + params.join('&') : '');
 }
 
