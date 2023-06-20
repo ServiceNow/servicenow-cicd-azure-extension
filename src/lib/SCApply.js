@@ -8,7 +8,7 @@ module.exports = {
     },
     run: () => {
         let options = {};
-        'app_scope app_sys_id branch_name'
+        'app_scope app_sys_id branch_name repo_config_url repo_config_credentials_sys_id repo_config_default_branch_name repo_config_mid_server_sys_id repo_config_email repo_config_use_default_email_for_all repo_config_test_connection'
             .split(' ')
             .forEach(name => {
                 const val = pipeline.get(name);
