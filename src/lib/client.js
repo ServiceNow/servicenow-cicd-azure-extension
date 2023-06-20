@@ -328,17 +328,17 @@ const client = function ({ baseURL, auth, httpsProxyHost, httpsProxyPort, httpPr
 
         postProgress: async (...args) => {
             const response = await post(...args);
-            console.info('Request complated, waiting for result...');
+            console.info('Request completed, waiting for result...');
             return awaitResult(response);
         },
         putProgress: async (...args) => {
             const response = await put(...args);
-            console.info('Request complated, waiting for result...');
+            console.info('Request completed, waiting for result...');
             return awaitResult(response);
         },
         getProgress: async (...args) => {
             const response = await get(...args);
-            console.info('Request complated, waiting for result...');
+            console.info('Request completed, waiting for result...');
             return awaitResult(response);
         },
 
