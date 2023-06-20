@@ -3,7 +3,7 @@ const defaults = {};
 
 function Pipeline(data) {
     this.options = {...defaults};
-    Object.keys(data).forEach(key=>this.options[key] = data[key].toString());
+    Object.keys(data).forEach(key=>this.options[key] = typeof data[key] == 'undefined' ? undefined : data[key].toString());
     this.auth = () =>this.options.auth;
     this.url = () =>this.options.url;
 
