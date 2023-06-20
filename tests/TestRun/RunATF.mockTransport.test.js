@@ -17,7 +17,7 @@ describe('Run testsuite using real endpoint', () => {
         task.init(new Pipeline({
             "test_suite_sys_id": "0a383a65532023008cd9ddeeff7b1258"
         }), new Transport(transportOptions1));
-        return task.run().then(() => done()).catch(err => done(err));
+        task.run().then(() => done()).catch(err => done(err));
     });
 
     test('Run testsuite that will fail', () => {

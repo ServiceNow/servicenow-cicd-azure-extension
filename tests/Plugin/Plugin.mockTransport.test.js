@@ -20,7 +20,7 @@ describe('Activate and rollback plugin using mock transport', () => {
         installTask.init(new Pipeline({
             "pluginID": "com.servicenow_now_calendar"
         }), new Transport(transportOptions.shift()));
-        return installTask.run().then(() => done()).catch(err => done(err));
+        installTask.run().then(() => done()).catch(err => done(err));
     });
 
     test('Activate already active plugin', () => {
@@ -41,7 +41,7 @@ describe('Activate and rollback plugin using mock transport', () => {
         rollbackTask.init(new Pipeline({
             "pluginID": "com.servicenow_now_calendar"
         }), new Transport(transportOptions.shift()));
-        return rollbackTask.run().then(() => done()).catch(err => done(err));
+        rollbackTask.run().then(() => done()).catch(err => done(err));
     });
 
     test('Rollback already inactive plugin', () => {
