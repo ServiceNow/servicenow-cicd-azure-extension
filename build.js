@@ -61,7 +61,7 @@ function setVersion(version) {
             .readJson(fName)
             .then(json => {
                 json.version = objVersion;
-                return fse.writeJson(fName, json, {spaces: 4});
+                return fse.writeJson(fName, json, { spaces: 4 });
             });
     });
     promises.push(new Promise((resolve, reject) => {
@@ -102,20 +102,37 @@ function updateVersion() {
         });
 }
 
+async function npmDependencies() {
+
+    await copy('package.json', 'out/package.json');
+    const pack = await fse.readJson('out/package.json');
+    delete pack.devDependencies;
+    await fse.writeJson('out/package.json', { name: pack.name, version: pack.version, dependencies: pack.dependencies });
+
+    const spawn = require('child_process').spawnSync;
+    const npm = (require('os').platform() === 'win32' ? 'npm.cmd' : 'npm');
+    const child = spawn(npm, ['install'], { cwd: './out' });
+    // view output
+    console.log('NPM install log: ', child.output.toString('utf8'));
+    // view status
+    console.log('command status', child.status);
+}
+
 function build(version) {
     const outDir = path.join(__dirname, 'out');
     return fse.ensureDir(path.join(__dirname, 'tmp'), 0o2775)
         .then(() => fse.emptyDir(outDir))
         .then(() => copy('src/extension', 'out'))
+        .then(() => npmDependencies())
         .then(() => Promise.all(tasks.map(task => Promise.all([
-                copy('src/lib/AzureDevopsPipeline.js', `out/Tasks/${task}/AzureDevopsPipeline.js`),
-                copy('src/lib/ServiceNowCICDRestAPIService.js', `out/Tasks/${task}/ServiceNowCICDRestAPIService.js`),
-                copy('src/lib/index.js', `out/Tasks/${task}/index.js`),
-                copy(`src/lib/${task}.js`, `out/Tasks/${task}/task.js`),
-                copy('src/node_modules', `out/Tasks/${task}/node_modules`)
-            ])))
+            copy('src/lib/AzureDevopsPipeline.js', `out/Tasks/${task}/AzureDevopsPipeline.js`),
+            copy('src/lib/ServiceNowCICDRestAPIService.js', `out/Tasks/${task}/ServiceNowCICDRestAPIService.js`),
+            copy('src/lib/index.js', `out/Tasks/${task}/index.js`),
+            copy(`src/lib/${task}.js`, `out/Tasks/${task}/task.js`),
+            copy('out/node_modules', `out/Tasks/${task}/node_modules`)
+        ])))
         )
-        .then(() => createArchive(version))
+        .then(() => createArchive())
         .then(() => fse.move(path.join(__dirname, 'tmp/servicenow.vsix'), path.join(__dirname, `out/servicenow.extension.${version}.vsix`)))
         .then(() => console.log(`##vso[task.setvariable variable=artifactName;isOutput=true]servicenow.extension.${version}.vsix`));
 }
@@ -125,7 +142,7 @@ function createArchive() {
     return new Promise((resolve, reject) => {
         const output = fs.createWriteStream(path.join(__dirname, `tmp/servicenow.vsix`));
         const archive = archiver('zip', {
-            zlib: {level: 5} // Sets the compression level.
+            zlib: { level: 5 } // Sets the compression level.
         });
         output.on('close', () => resolve());
         output.on('end', () => resolve());

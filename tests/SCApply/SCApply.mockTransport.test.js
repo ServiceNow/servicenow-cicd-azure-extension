@@ -16,7 +16,7 @@ describe('Apply changes for remote, using the mock server', () => {
         task.init(new Pipeline({
             "app_scope": "somescope"
         }), new Transport(transportOptions1));
-        return task.run().then(() => done()).catch(err => done(err));
+        task.run().then(() => done()).catch(err => done(err));
     });
 
     test('Try to use unexisting scope', () => {

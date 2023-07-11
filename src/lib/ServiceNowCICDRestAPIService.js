@@ -1,5 +1,7 @@
 ﻿const https = require('https');
 const URL = require('url');
+const client = require('./client');
+
 const respError = function (error, response) {
     this.errorMessage = error;
     this.response = response;
@@ -23,7 +25,7 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
     ) {
         throw new Error('Incorrect auth');
     }
-   instance = instance.replace(/(^\https:|^)\/\//, '').replace(/^\/|\/$/g, '');
+    instance = instance.replace(/(^\https:|^)\/\//, '').replace(/^\/|\/$/g, '');
     /* Replaced the regular expression so that if the instance URL contains extra parameters those can be used.
     instance = instance.replace(/(?:^https?:\/\/)?([^\/]+)(?:\/.*$)/, '$1');
     */
@@ -36,6 +38,7 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
         auth,
         delayInProgressPolling: 3000
     };
+
     const errCodeMessages = {
         401: 'The user credentials are incorrect.',
         403: 'Forbidden. The user is not an admin or does not have the CICD role.',
@@ -44,6 +47,20 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
         409: 'Conflict. The requested item is not unique.',
         500: 'Internal server error. An unexpected error occurred while processing the request.'
     };
+
+    const clientConfig = {
+        baseURL: `https://${config.instance}/`,
+        auth: config.auth,
+        errCodeMessages,
+
+        httpsProxyHost: undefined,
+        httpsProxyPort: undefined,
+        httpProxyHost: undefined,
+        httpProxyPort: undefined,
+        certFilePath: undefined,
+        sleepTime: undefined,
+        maxTransactionIteration: undefined
+    }
 
     this.activatePlugin = activatePlugin;
     this.deActivatePlugin = deactivatePlugin;
@@ -112,7 +129,7 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
         }
         return request(
             'testsuite/run',
-            {fields: 'test_suite_sys_id test_suite_name browser_name browser_version os_name os_version', options},
+            { fields: 'test_suite_sys_id test_suite_name browser_name browser_version os_name os_version', options },
             'POST')
             .then(resp => getProgress(resp))
             .catch(err => (err.response.results && err.response.results.id) ?
@@ -124,21 +141,21 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
     /**
      * Scan instance, available options are:
      * full, point, suiteCombo, suiteScoped, suiteUpdate
-     * 
+     *
      * @param url       string
      * @param options   object
      * @param payload   string
      * @returns {Promise<string>} If available, the previously installed version. If not available, null.
      */
     function scanInstance(url, options, payload = '') {
-        return request(url, {fields: 'target_table target_sys_id', options}, 'POST', payload)
+        return request(url, { fields: 'target_table target_sys_id', options }, 'POST', payload)
             .then(resp => getProgress(resp, true))
             .catch(err => Promise.reject(err.errorMessage));
     }
 
     /**
      * Batch Install. Payload could be obtained from repo file or workflow definition.
-     * 
+     *
      * @param url       string
      * @param payload   string
      * @returns {Promise<string>} If available, the previously installed version. If not available, null.
@@ -150,21 +167,23 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
                 const progressUrl = resp.links.progress.url;
                 const resultsUrl = resp.links.results.url;
                 const rollbackUrl = resp.links.rollback.url;
-                request(progressUrl).then(response => {
+                return request(progressUrl).then(response => {
                     if (response.status_message) {
                         console.log('Status is: ' + response.status_message);
                         return response.status_message;
                     }
+                }).then(() => {
+                    return extractBatchResults(resultsUrl).then(msg => msg && console.log("Status messages:", msg));
+                }).then(() => {
+                    return rollbackUrl;
                 });
-                extractBatchResults(resultsUrl).then(msg => msg && console.log("Status messages:", msg));
-
-                return rollbackUrl;
             })
             .catch(errObj => {
                 try {
                     const resultsUrl = errObj.response.results.url;
-                    extractBatchResults(resultsUrl).then(msg => msg && console.log("Status messages:", msg));
-                    return Promise.reject(errObj.errorMessage);
+                    return extractBatchResults(resultsUrl).then(msg => msg && console.log("Status messages:", msg)).then(() => {
+                        return Promise.reject(errObj.errorMessage);
+                    });
                 } catch (error) {
                     return Promise.reject();
                 }
@@ -173,7 +192,7 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
 
     /**
      * Extract batch install verbose messages
-     * 
+     *
      * @param url   string
      * @returns     string
      */
@@ -185,29 +204,14 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
             });
 
             return msg;
-        }).catch(err => {console.log(err)});
-    }
-
-    /**
-     * Scan instance, available options are:
-     * full, point, suiteCombo, suiteScoped, suiteUpdate
-     * 
-     * @param url       string
-     * @param options   object
-     * @param payload   array
-     * @returns {Promise<string>} If available, the previously installed version. If not available, null.
-     */
-    function scanInstance(url, options, payload = '') {
-        return request(url, {fields: 'target_table target_sys_id', options}, 'POST', payload)
-            .then(resp => getProgress(resp, true))
-            .catch(err => Promise.reject(err.errorMessage))
+        }).catch(err => { console.log(err) });
     }
 
     /**
      * Install the specified application from the application repository onto the local instance
      * available options are:
      * scope, sys_id, version, auto_upgrade_base_app, base_app_version
-     * 
+     *
      * required options are:
      * scope|sys_id
      * @param options
@@ -220,10 +224,10 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
         if (options.scope && options.sys_id) {
             delete options.scope;
         }
-        return request('app_repo/install', {fields: 'sys_id scope version auto_upgrade_base_app base_app_version', options}, 'POST')
+        return request('app_repo/install', { fields: 'sys_id scope version auto_upgrade_base_app base_app_version', options }, 'POST')
             .then(resp => getProgress(resp))
             .catch(err => Promise.reject(err.errorMessage))
-            .then(resp => { 
+            .then(resp => {
                 return resp.rollback_version || (resp.results && resp.results.rollback_version);
             });
     }
@@ -244,11 +248,11 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
         if (options.scope && options.sys_id) {
             delete options.scope;
         }
-        return request('app_repo/rollback', {fields: 'sys_id scope version', options}, 'POST')
+        return request('app_repo/rollback', { fields: 'sys_id scope version', options }, 'POST')
             .catch(err => {
                 if (forceRollback && err.errorMessage.indexOf('Expected rollback version does not match target: ') === 0) {
                     options.version = err.errorMessage.substr(49);
-                    return request('app_repo/rollback', {fields: 'sys_id scope version', options}, 'POST');
+                    return request('app_repo/rollback', { fields: 'sys_id scope version', options }, 'POST');
                 } else {
                     return Promise.reject(err);
                 }
@@ -275,7 +279,7 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
         if (!options || (options.is_app_customization && !options.sys_id)) {
             return Promise.reject('Sys_id is not defined, while is_app_customization is checked.');
         }
-        
+
         if (options.scope && options.sys_id) {
             delete options.scope;
         }
@@ -287,8 +291,8 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
             } else {
                 increment = options.increment_by ? +options.increment_by : 0;
             }
-            promise = getCurrentApplicationVersion(options).then(version=>{
-                if(version) {
+            promise = getCurrentApplicationVersion(options).then(version => {
+                if (version) {
                     version = version.split('.');
                     version[2] = +version[2] + increment;
                     version = version.join('.');
@@ -307,6 +311,74 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
             .then(() => options.version));
     }
 
+
+    /**
+     * Lookup sys_repo_config record
+     * @param {*} params - parameters
+     * @param {String} params.url - Git repository URL
+     * @param {String} params.sys_app - sys_id of the application
+     * @param {String} params.app_scope - scope of the application
+     * @returns
+     */
+    const getAppDetails = async ({ url, sys_app, app_scope }) => {
+
+        const restClient = client(clientConfig);
+        let repoConfigs;
+
+        const defParams = { sysparm_display_value: false, sysparm_exclude_reference_link: true };
+        if (app_scope) {
+            repoConfigs = await restClient.list('sys_repo_config', { params: { ...defParams, 'sys_app.scope': app_scope } })
+        } else if (sys_app) {
+            repoConfigs = await restClient.list('sys_repo_config', { params: { ...defParams, 'sys_app.sys_id': sys_app } })
+        } else {
+            repoConfigs = await restClient.list('sys_repo_config', { params: { ...defParams, url } })
+        }
+
+        if (repoConfigs?.data?.result?.length) {
+            return repoConfigs.data.result[0];
+        }
+        return null
+    }
+
+    /**
+     * Create App from Repository
+     *
+     * This step creates the 'sys_repo_config' AND automatically pulls the latest changes from the Git repo
+     *
+     * @param {*} params
+     * @param {String} params.scope - scope of the application
+     * @param {String} params.url - Git repository URL
+     * @param {String} params.branch - Git branch name
+     * @param {String} params.defaultBranchName - Git default branch name
+     * @param {String} params.mid_server - MID Server sys_id
+     * @param {String} params.credential - Credential sys_id
+     * @param {String} params.email - Email address
+     * @param {Boolean} params.use_default_email_for_all - Use default email for all
+     * @param {Boolean} params.setTestConnection - Set test connection
+     * @returns
+     */
+    const createAppFromRepository = async ({ scope, url, branch, defaultBranchName, mid_server, credential, email, use_default_email_for_all, setTestConnection }) => {
+
+        const restClient = client(clientConfig);
+
+        console.info('Installing the application from Git repository %s (and create the \'sys_repo_config\' record)', url);
+
+        // call the 'devstudio' API to register the application (sys_repo_config)
+        let response = await restClient.postProgress('api/sn_devstudio/v1/vcs/apps',
+            { url, branch, defaultBranchName, mid_server, credential, email, use_default_email_for_all, setTestConnection },
+            { params: { sysparm_transaction_scope: scope } }
+        );
+
+        /*
+            There is an alternative to this: CICD Import from Source Control API
+            But it does NOT allow to set the 'email' and 'use_default_email_for_all' properties
+            /api/sn_cicd/sc/import?repo_url=https%3A%2F%2Fgithub.com/repo.git&branch_name=master&credential_sys_id=c89a31bd47838d107a2afb42e36d4316
+        */
+
+        return response;
+    }
+
+
     /**
      * Start applying changes from a remote source control to a specified local application.
      * available options are:
@@ -316,19 +388,71 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
      * @param options object
      * @returns {Promise<object>}
      */
-    function SCApplyChanges(options) {
+    async function SCApplyChanges(options) {
         if (!options || !(options.app_scope || options.app_sys_id)) {
             return Promise.reject('Please specify app_scope or app_sys_id');
         }
         if (options.app_scope && options.app_sys_id) {
             delete options.app_scope;
         }
-        return request('sc/apply_changes', {fields: 'app_sys_id app_scope branch_name', options}, 'POST')
+
+        if (options.branch_name && options.repo_config_url && options.repo_config_credentials_sys_id) {
+
+            // ensure (create) sys_repo_config record
+
+            const url = options.repo_config_url;
+            const branch = options.branch_name;
+
+            const defaultBranchName = options.repo_config_default_branch_name;
+            const mid_server = options.repo_config_mid_server_sys_id;
+            const credential = options.repo_config_credentials_sys_id;
+
+            const email = options.repo_config_email;
+            const use_default_email_for_all = options.repo_config_use_default_email_for_all;
+            const setTestConnection = options.repo_config_test_connection;
+
+            console.info('Verify if the \'sys_repo_config\' record exist for \'%s\' ', url);
+
+            const restClient = client(clientConfig);
+            let createApplication = true;
+            let configAppSysId;
+
+            const repoConfig = await getAppDetails({ url, sys_app: options.app_sys_id, app_scope: options.app_scope })
+            if (repoConfig) {
+                // verify record
+                configAppSysId = repoConfig.sys_app;
+                const configSysId = repoConfig.sys_id;
+                const configMidServer = repoConfig.mid_server;
+                const configCredential = repoConfig.credential;
+                const configUrl = repoConfig.url;
+
+                if (configAppSysId && (mid_server || '') == (configMidServer || '') && (credential || '') == (configCredential || '') && (url || '') == (configUrl || '')) {
+                    console.info('The the \'sys_repo_config\' record exist');
+                    createApplication = false;
+
+                } else {
+                    console.info('The the \'sys_repo_config\' record is different and needs to be deleted and recreated %j', repoConfig);
+                    await restClient.remove('sys_repo_config', configSysId);
+                }
+            }
+
+            if (createApplication) {
+                console.info('The the \'sys_repo_config\' record is missing');
+                await createAppFromRepository({ url, branch, defaultBranchName, mid_server, credential, email, use_default_email_for_all, setTestConnection })
+
+                // exit here as 'createAppFromRepository()' will also import the app from the repo
+                return {
+                    status_message: 'The \'sys_repo_config\' record was created and the application was imported from the Git repository'
+                };
+            }
+        }
+
+        return request('sc/apply_changes', { fields: 'app_sys_id app_scope branch_name', options }, 'POST')
             .then(resp => getProgress(resp))
             .catch(err => Promise.reject(err.errorMessage));
     }
 
-///////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////
 
     /**
      * Async wait
@@ -421,6 +545,7 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
      * @returns {Promise<string>}
      */
 
+    // return request('sc/apply_changes', { fields: 'app_sys_id app_scope branch_name', options }, 'POST')
     function request(url, data = false, method = 'GET', payload = '') {
         if (transport) {
             return transport(url, data, method);
@@ -432,7 +557,7 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
             url = `https://${config.instance}/api/sn_cicd/${url}`;
         }
         let urldata = URL.parse(url);
-        let options = {method};
+        let options = { method };
         options.host = urldata.host;
         options.path = urldata.path;
         options.auth = config.auth;
@@ -501,7 +626,7 @@ function ServiceNowCICDRestAPIService(instance, auth, transport = null) {
                         errState = true;
                     }
                     if (errState) {
-                        reject({statusCode: res.statusCode, body});
+                        reject({ statusCode: res.statusCode, body });
                     } else {
                         resolve(body);
                     }
@@ -530,7 +655,7 @@ function createURL(prefix, fields, options) {
         .split(' ')
         .filter(optName => options.hasOwnProperty(optName))
         .map(optName => optName + '=' + encodeURIComponent(options[optName]));
-    
+
     return prefix + (params.length ? '?' + params.join('&') : '');
 }
 
