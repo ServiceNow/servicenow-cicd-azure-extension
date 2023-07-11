@@ -27,6 +27,7 @@
   "dependencies": {
     "archiver": "^5.0.0",
     "axios": "^1.4.0",
+    "azure-pipelines-task-lib": "^4.4.0",
     "dotenv": "^16.3.1",
     "fs-extra": "^9.0.1",
     "http-cookie-agent": "^5.0.4",
