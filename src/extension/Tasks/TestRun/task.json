@@ -10,7 +10,7 @@
     "version": {
         "Major": 2,
         "Minor": 1,
-        "Patch": 0
+        "Patch": 1
     },
     "instanceNameFormat": "ServiceNow CI/CD Start Test Suite",
     "showEnvironmentVariables": false,
@@ -80,7 +80,7 @@
         "Server"
     ],
     "execution": {
-        "Node": {
+        "Node20_1": {
             "target": "index.js"
         }
     }
