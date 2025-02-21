@@ -29,7 +29,7 @@ npm install
 ```
 
 ### Requirements
-- nodejs ver >=22.0.0
+- nodejs ver >=20.0.0
 ### DevDependecies
 - [jest](https://github.com/facebook/jest)
 ### Dependencies
