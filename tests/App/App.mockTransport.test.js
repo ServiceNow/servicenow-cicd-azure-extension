@@ -20,87 +20,103 @@ const appRollbackTask = require('../../src/lib/AppRollback');
 // const app = rewire('../../src/lib/AppPublish');
 
 describe('Application actions: publish, install and rollback using mock server', () => {
-    test('Publish_autodetect', done => {
-        appPublishTask.init(new Pipeline({
+    test('Publish_autodetect', async() => {
+        await appPublishTask.init(new Pipeline({
             url:"cicdazureappauthor.service-now.com",
             scope: "x_sofse_cicdazurea",
             versionFormat: "autodetect"
         }), new Transport(transportOptions.shift()));
         
-        return appPublishTask.run().then(ver => expect(ver).toEqual('1.3.37')).then(() => done()).catch(err => done(err||''));
+        const ver = await appPublishTask.run();
+        expect(ver).toEqual('1.3.37');
     });
 
-    test('Publish_exact', done => {
-        appPublishTask.init(new Pipeline({
+    test('Publish_exact', async() => {
+        await appPublishTask.init(new Pipeline({
             url:"cicdazureappauthor.service-now.com",
             scope: "x_sofse_cicdazurea",
             versionFormat: "exact",
             version: "1.2.3"
         }), new Transport(transportOptions.shift()));
 
-        return appPublishTask.run().then(ver => expect(ver).toEqual('1.2.3')).then(() => done()).catch(err => done(err||''));
+        const ver = await appPublishTask.run();
+        expect(ver).toEqual('1.2.3');
     });
 
-    test('Publish_detect', done => {
+    test('Publish_detect', async() => {
         // Mock getCurrVersionFromFS()
         const mockedGetCurrVersionFromFS = jest.fn(() => '1.2.3');
         appPublishTask.__set__('getCurrVersionFromFS', mockedGetCurrVersionFromFS);
 
-        appPublishTask.init(new Pipeline({
+        await appPublishTask.init(new Pipeline({
             url:"cicdazureappauthor.service-now.com",
             scope: "x_sofse_cicdazurea",
             versionFormat: "detect",
             increment_by: 2,
         }), new Transport(transportOptions.shift()));
 
-        return appPublishTask.run().then(ver => expect(ver).toEqual('1.2.5')).then(() => done()).catch(err => done(err||''));
+        const ver = await appPublishTask.run();
+        expect(ver).toEqual('1.2.5');
     });
 
-    test('Publish_detect_no_incr', done => {
-        // Mock getCurrVersionFromFS()
-        const mockedGetCurrVersionFromFS = jest.fn(() => '1.2.3');
-        appPublishTask.__set__('getCurrVersionFromFS', mockedGetCurrVersionFromFS);
+    test('Publish_detect_no_incr', async() => {
+        try {
+            // Mock getCurrVersionFromFS()
+            const mockedGetCurrVersionFromFS = jest.fn(() => '1.2.3');
+            appPublishTask.__set__('getCurrVersionFromFS', mockedGetCurrVersionFromFS);
+            console.log('Mocked function output:', mockedGetCurrVersionFromFS());
 
-        appPublishTask.init(new Pipeline({
-            url:"cicdazureappauthor.service-now.com",
-            scope: "x_sofse_cicdazurea",
-            versionFormat: "detect_without_autoincrement",
-        }), new Transport(transportOptions.shift()));
+            await appPublishTask.init(new Pipeline({
+                url:"cicdazureappauthor.service-now.com",
+                scope: "x_sofse_cicdazurea",
+                versionFormat: "detect_without_autoincrement",
+            }), new Transport(transportOptions.shift()));
 
-        return appPublishTask.run().then(ver => expect(ver).toEqual('1.2.3')).then(() => done()).catch(err => done(err||''));
+            const ver = await appPublishTask.run().catch(err => {
+                console.error('appPublishTask.run() failed:', err);
+                throw err;
+            });
+
+            console.log('Publish_detect_no_incr output:', ver);
+            expect(ver).toEqual('1.2.3');
+
+        } catch (error) {
+            console.error('Test failed with error:', error);
+            throw error;
+        }
     });
     
-    test('Publish_template', done => {
+    test('Publish_template', async() => {
         // Mock getBuildId()
         const mockedGetBuildId = jest.fn(() => 'abc_3');
         appPublishTask.__set__('getBuildId', mockedGetBuildId);
 
-        appPublishTask.init(new Pipeline({
+        await appPublishTask.init(new Pipeline({
             url:"cicdazureappauthor.service-now.com",
             scope: "x_sofse_cicdazurea",
             versionFormat: "template",
             versionTemplate: "1.2"
         }), new Transport(transportOptions.shift()));
 
-        return appPublishTask.run().then(ver => expect(ver).toEqual('1.2.3')).
-            then(() => {
-                return done();
-            }).catch(err => done(err||''));
+        const ver = await appPublishTask.run();
+        expect(ver).toEqual('1.2.3');
     });
     
-    test('Install', done => {
-        appInstallTask.init(new Pipeline({
+    test('Install', async() => {
+        await appInstallTask.init(new Pipeline({
             url:"cicdazureappclient.service-now.com",
             scope: "x_sofse_cicdazurea",
         }), new Transport(transportOptions.shift()));
-        return appInstallTask.run().then(() => done()).catch(err => done(err||''));
+        
+        await appInstallTask.run();
     });
 
-    test('Rollback', done => {
-        appRollbackTask.init(new Pipeline({
+    test('Rollback', async() => {
+        await appRollbackTask.init(new Pipeline({
             url:"cicdazureappclient.service-now.com",
             scope: "x_sofse_cicdazurea",
         }), new Transport(transportOptions.shift()));
-        return appRollbackTask.run().then(() => done()).catch(err => done(err||''));
+        
+        await appRollbackTask.run();
     });
 });

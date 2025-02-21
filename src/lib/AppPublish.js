@@ -121,6 +121,13 @@ module.exports = {
                     options.version = version;
                 }
                 break;
+            case "detect_without_autoincrement":
+                    console.log('Trying to get version from FS')
+                    version = getCurrVersionFromFS(options.sys_id, options.scope);
+                    if (version) {
+                        options.version = version;
+                    }
+                break;
             case "autodetect":
                 options.autodetect = true;
                 break;

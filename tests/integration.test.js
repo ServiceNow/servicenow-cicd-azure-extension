@@ -15,61 +15,61 @@ describe('Unit test on real serverts', () => {
         //     }));
         //     return tasks.SCApply.run().then(() => done()).catch(err => done(err));
         // });
-        test('Publish', done => {
-            tasks.AppPublish.init(new Pipeline({
+        test('Publish', async() => {
+            await tasks.AppPublish.init(new Pipeline({
                 url: "cicdazureappauthor.service-now.com",
                 scope: "x_sofse_cicdazurea",
                 versionFormat: "autodetect"
             }));
-            return tasks.AppPublish.run().then(() => done()).catch(err => done(err || ''));
-        });
+            
+            await tasks.AppPublish.run();
 
-        test('Install', done => {
-            tasks.AppInstall.init(new Pipeline({
+        test('Install', async() => {
+            await tasks.AppInstall.init(new Pipeline({
                 url: "cicdazureappclient.service-now.com",
                 scope: "x_sofse_cicdazurea",
             }));
-            return tasks.AppInstall.run().then(() => done()).catch(err => done(err || ''));
+            await tasks.AppInstall.run();
         });
-        test('Activate a plugin', done => {
-            tasks.PluginActivate.init(new Pipeline({
+        test('Activate a plugin', async() => {
+            await tasks.PluginActivate.init(new Pipeline({
                 url: "cicdazureappclient.service-now.com",
                 "pluginID": "com.servicenow_now_calendar"
             }));
-            return tasks.PluginActivate.run().then(() => done()).catch(err => done(err));
+            await tasks.PluginActivate.run();
         });
     });
     describe('Testsuites job', () => {
-        test('Run testsuite', done => {
-            tasks.TestRun.init(new Pipeline({
+        test('Run testsuite', async() => {
+            await tasks.TestRun.init(new Pipeline({
                 url: "cicdazureappclient.service-now.com",
                 "test_suite_sys_id": "0a383a65532023008cd9ddeeff7b1258"
             }));
-            return tasks.TestRun.run().then(() => done()).catch(err => done(err));
+            await tasks.TestRun.run();
         });
 
-        test('Run testsuite that will fail', () => {
-            tasks.TestRun.init(new Pipeline({
+        test('Run testsuite that will fail', async() => {
+            await tasks.TestRun.init(new Pipeline({
                 url: "cicdazureappclient.service-now.com",
                 "test_suite_sys_id": "73159102db125010022240ceaa961937"
             }));
-            return expect(tasks.TestRun.run()).rejects.toBe('Testsuite failed');
+            await expect(tasks.TestRun.run()).rejects.toBe('Testsuite failed');
         });
     });
     describe('Rollback job', () => {
-        test('Rollback a plugin', done => {
-            tasks.PluginRollback.init(new Pipeline({
+        test('Rollback a plugin', async() => {
+            await tasks.PluginRollback.init(new Pipeline({
                 url: "cicdazureappclient.service-now.com",
                 "pluginID": "com.servicenow_now_calendar"
             }));
-            return tasks.PluginRollback.run().then(() => done()).catch(err => done(err));
+            await tasks.PluginRollback.run();
         });
-        test('Rollback', done => {
-            tasks.AppRollback.init(new Pipeline({
+        test('Rollback', async() => {
+            await tasks.AppRollback.init(new Pipeline({
                 url: "cicdazureappclient.service-now.com",
                 scope: "x_sofse_cicdazurea",
             }));
-            return tasks.AppRollback.run().then(() => done()).catch(err => done(err || ''));
+            await tasks.AppRollback.run();
         });
     });
 
