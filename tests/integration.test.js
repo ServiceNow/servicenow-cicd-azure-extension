@@ -23,7 +23,7 @@ describe('Unit test on real serverts', () => {
             }));
             
             await tasks.AppPublish.run();
-
+        });
         test('Install', async() => {
             await tasks.AppInstall.init(new Pipeline({
                 url: "cicdazureappclient.service-now.com",
