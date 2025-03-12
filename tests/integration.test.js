@@ -6,7 +6,7 @@ Pipeline.defaults({
     auth: process.env.AUTH_STRING || ''
 });
 
-describe('Unit test on real serverts', () => {
+describe('Unit test on real servers', () => {
     describe('Install job', () => {
         // test('Valid apply changes call', done => {
         //     tasks.SCApply.init(new Pipeline({
@@ -23,7 +23,7 @@ describe('Unit test on real serverts', () => {
             }));
             
             await tasks.AppPublish.run();
-
+        });
         test('Install', async() => {
             await tasks.AppInstall.init(new Pipeline({
                 url: "cicdazureappclient.service-now.com",
